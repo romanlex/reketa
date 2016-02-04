@@ -1,0 +1,413 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Личный кабинет</title>
+
+    
+    <link rel="stylesheet" href="css/vendor.packed.min.css">
+    <link rel="stylesheet" href="css/app.min.css">
+    
+    <link rel="shortcut icon" href="favicon.ico">
+    
+    <link rel="apple-touch-icon" href="img/app-logo.png" />
+    <link rel="apple-touch-icon" sizes="72x72" href="img/app-logo.png" />
+    <link rel="apple-touch-icon" sizes="114x114" href="img/app-logo.png" />
+    <link rel="apple-touch-icon" sizes="144x144" href="img/app-logo.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="img/app-logo.png" />
+    
+    <link rel="icon" sizes="192x192" href="img/app-logo.png">
+    <link rel="icon" sizes="128x128" href="img/app-logo.png">
+    
+    <!-- Tile icon for Win8 (144x144 + tile color) -->
+    <meta name="msapplication-TileImage" content="img/app-logo.png">
+    <meta name="msapplication-TileColor" content="#01BFCE">
+    
+    <meta name="theme-color" content="#01BFCE">
+    
+    <script src="js/jquery.min.js"></script>
+    <script src="js/vendor.packed.min.js"></script>
+    <script src="js/app.min.js"></script>
+</head>
+<body>
+<div id="wrapper" class="container">
+    <header id="header">
+        <div class="container">
+            <div class="menu-toggle">
+                <button class="navbar-toggle" data-toggle="popup" data-target="#sidebar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div class="twelve columns">
+                <a href="/" class="logo"><img src="img/logo.png" alt=""></a>
+            </div>
+            <div class="buttons pull-right">
+                <a href="basket.html" class="btn-image small basket"></a>
+            </div>
+        </div>
+    </header>
+    <div id="sidebar">
+        <button class="popup-close"></button>
+        <div class="sidebar-content">
+            <div class="sidebar-top">
+                <div class="sidemenu">
+                    <ul class="menu">
+                        <li class="active"><a href="index.html">Цветы</a></li>
+                        <li><a href="orders.html">Заказы</a></li>
+                        <li><a href="orders_empty.html">Заказы пусто</a></li>
+                        <li><a href="basket.html">Корзина</a></li>
+                        <li><a href="basket_empty.html">Корзина пусто</a></li>
+                        <li><a href="checkout.html">Оформление заказа</a></li>
+                        <li><a href="reasons.html">Поводы</a></li>
+                        <li><a href="#">Промокод</a></li>
+                        <li><a href="about.html">О Сервисе</a></li>
+                        <li><a href="support.html">Помощь</a></li>
+                        <li><a href="502.html">Ошибка сайта</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="sidebar-bottom">
+                <div class="upcoming-event">
+                    <ul>
+                        <li>
+                            <div class="upevent table" data-upevent-id="1">
+                                <div class="upevent-image cell">
+                                    <span class="label">ДР</span>
+                                </div>
+                                <div class="upevent data cell">
+                                    Константин Константинопольский
+                                    <div class="cause">День рождения <span>через 2 дня</span></div>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="upevent table" data-upevent-id="2">
+                                <div class="upevent-image cell">
+                                    <img src="img/upcoming-photo.png" alt="">
+                                </div>
+                                <div class="upevent data cell">
+                                    Елена Максимова
+                                    <div class="cause">День свадьбы <span>18 сен</span></div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="soon">
+                            <a href="#soon">Скоро еще 3 праздника</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="auth-panel not-authorized">
+                    <a href="/login.html" class="button">Вход</a>
+                </div>
+                <!--<div class="auth-panel">-->
+                   <!--<div class="username">-->
+                       <!--<a href="profile.html">Коля</a>-->
+                   <!--</div>-->
+                    <!--<div class="username-buttons pull-right">-->
+                        <!--<a href="?logout">Выход</a>-->
+                    <!--</div>-->
+                <!--</div>-->
+            </div>
+        </div>
+    </div>
+    <div id="content" class="profile-wrapper">
+        <div id="profile" class="table layout devided-slider profile" data-layout="devided-slider">
+            <div class="menu-wrapper cell middle">
+                <div class="title">
+                    <h3>Личные данные</h3>
+                </div>
+                <div class="menu">
+                    <ul class="layout-menu profile-menu">
+                        <li><a href="#personal">Личные данные</a></li>
+                        <li><a href="#creditcards">Карты</a></li>
+                        <li><a href="#delivery">Адреса доставки</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="content-panel cell middle">
+                <div id="slider-content" class="owl-carousel">
+                    <div class="item" data-hash="personal">
+                        <form action="/" id="edit-personal-data" class="edit-personal-data-form" method="POST">
+                            <input type="hidden" name="csrf" value="">
+                            <div class="form-group">
+                                <label for="name">Имя</label>
+                                <input type="text" name="name" value="Никита" id="name" autocomplete="off" tabindex="10">
+                            </div>
+                            <div class="form-group has-error">
+                                <label for="email">Email <span class="error">Email введён некорректно</span></label>
+                                <input type="text" name="email" class="error" value="kotik@mail.ru" id="email" tabindex="11" autocomplete="off">
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Мобильный</label>
+                                <div class="table">
+                                    <div class="cell">
+                                        <div class="input-group disabled">
+                                            <span class="input-group-addon"><img src="img/status-phone.png" alt="Подтвержден" title="Подтвержден"></span>
+                                            <input type="text" name="phone" id="phone" value="+7 911 923-23-10" tabindex="13" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="cell">
+                                        <button type="button" class="edit-phone" data-toggle="edit-phone" data-effect="mfp-zoom-in" tabindex="12">Изменить</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="item" data-hash="creditcards">
+                        <ul class="creditcard-list">
+                            <li data-card-id="1">
+                                <div class="creditcard">
+                                    <div class="creditcard-name">Карта #1</div>
+                                    <div class="creditcard-type mastercard"></div>
+                                    <div class="creditcard-number">
+                                        <span class="group dot">&bull;&bull;&bull;&bull;</span>
+                                        <span class="group dot">&bull;&bull;&bull;&bull;</span>
+                                        <span class="group dot">&bull;&bull;&bull;&bull;</span>
+                                        <span class="group">4454</span>
+                                    </div>
+                                    <div class="creditcard-manage">
+                                        <button type="delete-card" title="Удалить карту" class="delete tooltip"></button>
+                                        <span class="status approved tooltip" title="Карта одобрена"></span>
+                                    </div>
+                                </div>
+                            </li>
+                            <li data-card-id="2">
+                                <div class="creditcard waiting">
+                                    <div class="creditcard-name">Карта #2</div>
+                                    <div class="creditcard-type visa"></div>
+                                    <div class="creditcard-number">
+                                        <span class="group dot">&bull;&bull;&bull;&bull;</span>
+                                        <span class="group dot">&bull;&bull;&bull;&bull;</span>
+                                        <span class="group dot">&bull;&bull;&bull;&bull;</span>
+                                        <span class="group">4454</span>
+                                    </div>
+                                    <div class="creditcard-manage">
+                                        <button type="delete-card" title="Удалить карту" class="delete tooltip"></button>
+                                        <span class="status wait tooltip"></span>
+                                        <button type="refresh tooltip" class="refresh"></button>
+                                    </div>
+                                </div>
+                            </li>
+                            <li data-card-id="3">
+                                <div class="creditcard error">
+                                    <div class="creditcard-name">Карта #3</div>
+                                    <div class="creditcard-type maestro"></div>
+                                    <div class="creditcard-number">
+                                        <span class="group dot">&bull;&bull;&bull;&bull;</span>
+                                        <span class="group dot">&bull;&bull;&bull;&bull;</span>
+                                        <span class="group dot">&bull;&bull;&bull;&bull;</span>
+                                        <span class="group">4454</span>
+                                    </div>
+                                    <div class="creditcard-manage">
+                                        <button type="delete-card" title="Удалить карту" class="delete tooltip"></button>
+                                        <span class="status error tooltip" title="Карта заблокирована"></span>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+        
+                    </div>
+                    <div class="item" data-hash="delivery">
+                        <ul class="delivery-list">
+                            <li data-address-id="1">
+                                <div class="delivery-address">
+                                    Проспект Болшевиков дом 2, корпус 3, кв. 33
+                                </div>
+                                <button type="delete-address" title="Удалить адрес" class="delete"></button>
+                            </li>
+                            <li data-address-id="2">
+                                <div class="delivery-address">
+                                    Старопетергофское шоссе дом 2, корпус 3, кв. 33
+                                </div>
+                                <button type="delete-address" title="Удалить адрес" class="delete"></button>
+                            </li>
+                            <li data-address-id="3">
+                                <div class="delivery-address">
+                                    Улица Дыбенко дом 2, офис 669
+                                </div>
+                                <button type="delete-address" title="Удалить адрес" class="delete"></button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div data-to-slide="personal" class="bottom">
+                    <div class="button-group one-button">
+                        <button type="submit" data-to-slide="personal" class="btn-bordered" tabindex="14" disabled>Сохранить</button>
+                        <button type="dismiss" class="btn-dismiss hide">Отмена</button>
+                    </div>
+                </div>
+                <div data-to-slide="creditcards" class="bottom">
+                    <div class="button-group one-button">
+                        <button type="add-card" data-title="Добавление карты" data-content="#addCard" class="btn-bordered" >Добавить карту</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            $(function() {
+                app.profile.init();
+                app.layout.init();
+            })
+        </script>
+        <script type="text/x-tmpl" id="tmpl-creditcard">
+            <div class="creditcard">
+                <div class="creditcard-name">{%=o.cardname%}</div>
+                <div class="creditcard-type {%=o.cardtype%}"></div>
+                <div class="creditcard-number">
+                    <span class="group dot">&bull;&bull;&bull;&bull;</span>
+                    <span class="group dot">&bull;&bull;&bull;&bull;</span>
+                    <span class="group dot">&bull;&bull;&bull;&bull;</span>
+                    <span class="group">{%=o.cardnumber%}</span>
+                </div>
+                <div class="creditcard-manage">
+                    <button type="delete-card" title="Удалить карту" class="delete tooltip"></button>
+                    <span class="status refresh tooltip" title="Проверяется"></span>
+                </div>
+            </div>
+        </script>
+        <div id="ajax-loader"></div>
+    </div>
+</div>
+
+<footer id="footer">
+
+</footer>
+
+<script type="text/x-tmpl" id="tmpl-dialog">
+    <div id="{%=o.id%}" class="modal {% if (o.popupClass) { %}{%=o.popupClass%}{% } else { %}dialog-popup{% } %} mfp-with-anim mfp-hide">
+        {% if (o.title && o.title !== '') { %}
+            <div class="modal-title">
+                {%=o.title%}
+            </div>
+        {% } %}
+        <div class="modal-content">
+            {%#o.content%}
+        </div>
+        <div class="modal-bottom buttons">
+            {%#o.buttons%}
+        </div>
+    </div>
+</script>
+
+
+<div id="terms_of_use" class="terms_of_use modal mfp-with-anim mfp-zoom-in mfp-hide">
+    <div class="modal-title">
+        Условия использования
+    </div>
+    <div class="modal-content">
+        Текст соглашения
+        <br>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid at beatae distinctio ducimus ea ex fuga hic ipsam, iste laborum nostrum, quam quasi quibusdam reiciendis rerum, unde vero voluptas voluptatem.</p>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias animi at consectetur dolores earum expedita ipsam iusto, labore laborum molestias nihil possimus quam qui quis quos repellat similique tempore vitae!</p>
+    </div>
+</div>
+<div id="addCard" class="hide">
+    <form action="/" method="POST">
+        <div class="cardname form-group">
+            <label for="cardname">Укажите имя карты:</label>
+            <input type="text" id="cardname" name="cardname" placeholder="К примеру Рабочая карта">
+        </div>
+        <div class="creditcard waiting">
+            <div class="cardnumber group">
+                <label for="cardnumber">Номер карты</label>
+                <input type="text" id="cardnumber" name="cardnumber" placeholder="1234 5678 9012 3456" autocomplete="off">
+            </div>
+
+            <div class="row group">
+                <div class="seven columns">
+                    <div class="card-exp">
+                        <label for="exp_month">Срок действия ММ/ГГ</label>
+                        <select name="exp_month" id="exp_month">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                            <option value="11">11</option>
+                            <option value="12">12</option>
+                        </select>
+                        <select name="exp_year" id="exp_year">
+                            <option value="2016">2016</option>
+                            <option value="2017">2017</option>
+                            <option value="2018">2018</option>
+                            <option value="2019">2019</option>
+                            <option value="2020">2020</option>
+                            <option value="2021">2021</option>
+                            <option value="2022">2022</option>
+                            <option value="2023">2023</option>
+                            <option value="2024">2024</option>
+                            <option value="2025">2025</option>
+                            <option value="2026">2026</option>
+                            <option value="2027">2027</option>
+                            <option value="2028">2028</option>
+                            <option value="2029">2029</option>
+                            <option value="2030">2030</option>
+                            <option value="2031">2031</option>
+                            <option value="2032">2032</option>
+                            <option value="2033">2033</option>
+                            <option value="2034">2034</option>
+                            <option value="2035">2035</option>
+                            <option value="2036">2036</option>
+                            <option value="2037">2037</option>
+                            <option value="2038">2038</option>
+                            <option value="2039">2039</option>
+                            <option value="2040">2040</option>
+                            <option value="2041">2041</option>
+                            <option value="2042">2042</option>
+                            <option value="2043">2043</option>
+                            <option value="2044">2044</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="five columns">
+                    <div class="cardcvv">
+                        <label for="cvv">CVV2/CVC2</label>
+                        <input type="text" id="cvv" name="cvv" autocomplete="off" maxlength="3">
+                    </div>
+                </div>
+            </div>
+
+            <div class="cardholder group">
+                <label for="cardholder">Держатель карты</label>
+                <input type="text" id="cardholder" name="cardholder" autocomplete="off">
+            </div>
+        </div>
+
+
+        <div class="log"></div>
+    </form>
+</div>
+
+<div class="widget calendar" id="widget-calendar">
+    <button class="close"></button>
+    <form action="/" method="POST">
+    <div class="widget-content">
+        <button class="widget-button cleardate" data-toggle="clear-date" disabled>Очистить</button>
+        <span id="selectedDate">Дата доставки</span>
+        <input name="date" type="text" id="delivery-date" data-targetdate="selectedDate"/>
+
+        <div class="radio-group">
+            <input type="radio" name="timeofday" id="tod_morning" value="morning" disabled>
+            <label for="tod_morning">Утро</label>
+
+            <input type="radio" name="timeofday" id="tod_afternoon" value="afternoon" disabled>
+            <label for="tod_afternoon">День</label>
+
+            <input type="radio" name="timeofday" id="tod_evening" value="evening" disabled>
+            <label for="tod_evening">Вечер</label>
+        </div>
+    </div>
+    <div class="widget-submit">
+        <button type="submit" rel="submit" data-toggle="setDelivaryDate" disabled>Выбрать</button>
+    </div>
+    </form>
+</div>
+</body>
+</html>

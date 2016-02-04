@@ -1,0 +1,475 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+
+    
+    <link rel="stylesheet" href="css/vendor.packed.min.css">
+    <link rel="stylesheet" href="css/app.min.css">
+    
+    <link rel="shortcut icon" href="favicon.ico">
+    
+    <link rel="apple-touch-icon" href="img/app-logo.png" />
+    <link rel="apple-touch-icon" sizes="72x72" href="img/app-logo.png" />
+    <link rel="apple-touch-icon" sizes="114x114" href="img/app-logo.png" />
+    <link rel="apple-touch-icon" sizes="144x144" href="img/app-logo.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="img/app-logo.png" />
+    
+    <link rel="icon" sizes="192x192" href="img/app-logo.png">
+    <link rel="icon" sizes="128x128" href="img/app-logo.png">
+    
+    <!-- Tile icon for Win8 (144x144 + tile color) -->
+    <meta name="msapplication-TileImage" content="img/app-logo.png">
+    <meta name="msapplication-TileColor" content="#01BFCE">
+    
+    <meta name="theme-color" content="#01BFCE">
+    
+    <script src="js/jquery.min.js"></script>
+    <script src="js/vendor.packed.min.js"></script>
+    <script src="js/app.min.js"></script>
+</head>
+<body>
+    <div id="wrapper" class="container">
+        <header id="header">
+            <div class="container">
+                <div class="menu-toggle">
+                    <button class="navbar-toggle" data-toggle="popup" data-target="#sidebar">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+                <div class="twelve columns">
+                    <a href="/" class="logo"><img src="img/logo.png" alt=""></a>
+                </div>
+                <div class="buttons pull-right">
+                    <button class="btn-image big calendar" data-toggle="popup" data-target="#widget-calendar">Дата доставки</button>
+                    <a href="basket.html" class="btn-image small basket"></a>
+                </div>
+            </div>
+        </header>
+        <div id="sidebar">
+            <button class="popup-close"></button>
+            <div class="sidebar-content">
+                <div class="sidebar-top">
+                    <div class="sidemenu">
+                        <ul class="menu">
+                            <li class="active"><a href="index.html">Цветы</a></li>
+                            <li><a href="orders.html">Заказы</a></li>
+                            <li><a href="orders_empty.html">Заказы пусто</a></li>
+                            <li><a href="basket.html">Корзина</a></li>
+                            <li><a href="basket_empty.html">Корзина пусто</a></li>
+                            <li><a href="checkout.html">Оформление заказа</a></li>
+                            <li><a href="reasons.html">Поводы</a></li>
+                            <li><a href="#">Промокод</a></li>
+                            <li><a href="about.html">О Сервисе</a></li>
+                            <li><a href="support.html">Помощь</a></li>
+                            <li><a href="502.html">Ошибка сайта</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="sidebar-bottom">
+                    <div class="upcoming-event">
+                        <ul>
+                            <li>
+                                <div class="upevent table" data-upevent-id="1">
+                                    <div class="upevent-image cell">
+                                        <span class="label">ДР</span>
+                                    </div>
+                                    <div class="upevent data cell">
+                                        Константин Константинопольский
+                                        <div class="cause">День рождения <span>через 2 дня</span></div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="upevent table" data-upevent-id="2">
+                                    <div class="upevent-image cell">
+                                        <img src="img/upcoming-photo.png" alt="">
+                                    </div>
+                                    <div class="upevent data cell">
+                                        Елена Максимова
+                                        <div class="cause">День свадьбы <span>18 сен</span></div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="soon">
+                                <a href="#soon">Скоро еще 3 праздника</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="auth-panel not-authorized">
+                        <a href="/login.html" class="button">Вход</a>
+                    </div>
+                    <!--<div class="auth-panel">-->
+                       <!--<div class="username">-->
+                           <!--<a href="profile.html">Коля</a>-->
+                       <!--</div>-->
+                        <!--<div class="username-buttons pull-right">-->
+                            <!--<a href="?logout">Выход</a>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                </div>
+            </div>
+        </div>
+        <div id="content">
+            <script>
+                var bouquetsList = [ // Example ajax data object
+                    {
+                        id: 1,
+                        imgSrc: 'img/b1.jpg',
+                        gallery: [
+                            'img/b1.jpg','img/b2.jpg','img/b3.jpg'
+                        ],
+                        price: 2500,
+                        name: 'Летние ночи',
+                        availableData: 'с 28 сентября',
+                        label: 'summer',
+                        special: 8,
+                        size: {
+                            dia: '60 см',
+                            height: '30 см'
+                        },
+                        composition: 'Роза свитнесс, Гербера мини, Салал, Эвкалипт Бэби Блю, Хлопок, Лента',
+                        info: 'Диаметр: 60см<br>Высота: 30см<hr><p>Роза свитнесс, Гербера мини, Салал, Эвкалипт Бэби Блю, Хлопок, Лента</p>'
+                    },
+                    {
+                        id: 2,
+                        imgSrc: 'img/b2.jpg',
+                        price: 2800,
+                        name: 'Черничный пирог',
+                        availableData: 'с 28 октября',
+                        label: 'autumn',
+                        size: {
+                            dia: '60 см',
+                            height: '30 см'
+                        },
+                        composition: 'Роза свитнесс, Гербера мини, Салал, Эвкалипт Бэби Блю, Хлопок, Лента',
+                        info: 'Диаметр: 60см<br>Высота: 30см<hr><p>Роза свитнесс, Гербера мини, Салал, Эвкалипт Бэби Блю, Хлопок, Лента</p>'
+                    },
+                    {
+                        id: 3,
+                        imgSrc: 'img/b3.jpg',
+                        price: 1900,
+                        name: 'Свет добра',
+                        availableData: 'с 14 марта',
+                        size: {
+                            dia: '60 см',
+                            height: '30 см'
+                        },
+                        composition: 'Роза свитнесс, Гербера мини, Салал, Эвкалипт Бэби Блю, Хлопок, Лента',
+                        info: 'Диаметр: 60см<br>Высота: 30см<hr><p>Роза свитнесс, Гербера мини, Салал, Эвкалипт Бэби Блю, Хлопок, Лента</p>'
+                    },
+                    {
+                        id: 4,
+                        imgSrc: 'img/b4.jpg',
+                        price: 2300,
+                        name: 'Голубая луна',
+                        availableData: 'с 28 сентября',
+                        size: {
+                            dia: '60 см',
+                            height: '30 см'
+                        },
+                        composition: 'Роза свитнесс, Гербера мини, Салал, Эвкалипт Бэби Блю, Хлопок, Лента',
+                        info: 'Диаметр: 60см<br>Высота:30см<hr><p>Роза свитнесс, Гербера мини, Салал, Эвкалипт Бэби Блю, Хлопок, Лента</p>'
+                    },
+                    {
+                        id: 5,
+                        imgSrc: 'img/b5.jpg',
+                        price: 2800,
+                        name: 'Зной Италии',
+                        availableData: 'с 28 сентября',
+                        size: {
+                            dia: '60 см',
+                            height: '30 см'
+                        },
+                        composition: 'Роза свитнесс, Гербера мини, Салал, Эвкалипт Бэби Блю, Хлопок, Лента',
+                        info: 'Диаметр: 60см<br>Высота: 30см<hr><p>Роза свитнесс, Гербера мини, Салал, Эвкалипт Бэби Блю, Хлопок, Лента</p>'
+                    },
+                    {
+                        id: 6,
+                        imgSrc: 'img/b6.jpg',
+                        price: 2500,
+                        name: 'Свадьба близко',
+                        size: {
+                            dia: '60 см',
+                            height: '30 см'
+                        },
+                        composition: 'Роза свитнесс, Гербера мини, Салал, Эвкалипт Бэби Блю, Хлопок, Лента',
+                        info: 'Диаметр: 60см<br>Высота: 30см<hr><p>Роза свитнесс, Гербера мини, Салал, Эвкалипт Бэби Блю, Хлопок, Лента</p>'
+                    }
+                ];
+            
+                $(function() {
+                    app.bouquets.get({
+                        limit: 6,
+                        after: function(response) {
+                            //
+                        }
+                    });
+                });
+            </script>
+            
+            <script type="text/x-tmpl" id="tmpl-bouquet-list-item">
+                <div class="bouquet" data-toggle="popup" data-target="#popup-product-{%=o.id %}">
+                    {% if (o.imgSrc && o.imgSrc !== '') { %}
+                        <img src="{%=o.imgSrc%}" class="bouquet-image" alt="">
+                    {% } %}
+                    <div class="desc">
+                        <div class="title">{%=o.name%}</div>
+                        <div class="labels">
+                            {% if (o.label && o.label !== '') { %}
+                                <span class="type">{%=o.label%}</span>
+                            {% } %}
+                            {% if (o.special && o.special !== '') { %}
+                                <span class="special">8</span>
+                            {% } %}
+                        </div>
+                        {% if (o.availableData && o.availableData !== '') { %}
+                            <div class="available data">
+                                {%=o.availableData%}
+                            </div>
+                        {% } %}
+                        <div class="price-group">
+                            <button class="basket" data-toggle="to-basket" data-product-id="{%=o.id%}">
+                                <span class="price">{%=o.price%} &#x20bd;</span>
+                                <span class="icon">В корзину</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </script>
+            
+            <script type="text/x-tmpl" id="tmpl-bouquet-list-item-popup">
+                <div class="product-cart" data-product-id="{%=o.id %}" id="popup-product-{%=o.id %}" data-title="{%=o.name%}">
+                    <button class="popup-close" tabindex="1"></button>
+                    <button class="direction product_next" data-direction="next" tabindex="2"></button>
+                    <button class="direction product_prev" data-direction="prev" tabindex="3"></button>
+                    <div class="content">
+                        <div class="table layout devided">
+                            <div class="cell gallery">
+                                {% if (o.gallery && o.gallery !== '') { %}
+                                    <div class="owl-carousel gallery-list">
+                                    {% for (var i=0; i<o.gallery.length; i++) { %}
+                                        <a href="{%=o.gallery[i]%}" class="owl-lazy" data-src="{%=o.gallery[i]%}" data-src-retina="{%=o.gallery[i]%}"></a>
+                                    {% } %}
+                                    </div>
+                                {% } else { %}
+                                    <img src="{%=o.imgSrc%}" class="bouquet-image" alt="">
+                                {% } %}
+                            </div>
+                            <div class="cell cart">
+                                <!--FirstStep-->
+                                <div class="desc step step1 active">
+                                    <div class="title">{%=o.name%}</div>
+                                    <h2 class="price">{%=o.price%} &#x20bd;</h2>
+                                    <div class="labels">
+                                        {% if (o.label && o.label !== '') { %}
+                                            <span class="type">{%=o.label%}</span>
+                                        {% } %}
+                                        {% if (o.special && o.special !== '') { %}
+                                            <span class="special">8</span>
+                                        {% } %}
+                                    </div>
+                                    <div class="product-info">
+                                    {% if (o.info && o.info !== '') { %}
+                                        {%#o.info%}
+                                    {% } %}
+                                    </div>
+                                    <div class="bottom">
+                                        {% if (o.availableData && o.availableData !== '') { %}
+                                        <div class="available data">
+                                            {%=o.availableData%}
+                                            <button class="btn-image small show-info" data-toggle="show-product-info" data-product-id="{%=o.id %}"></button>
+                                        </div>
+                                        {% } %}
+                                        <div class="button-group one-button">
+                                            <button class="to-basket btn-primary" tabindex="4" data-toggle="to-basket" data-product-id="{%=o.id%}">
+                                                <span class="icon">В корзину</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+            
+                                <!--Step DeliveryDate-->
+                                <div class="desc step step2">
+                                    <div class="title">{%=o.name%}</div>
+                                    <h2 class="price">{%=o.price%} &#x20bd;</h2>
+                                    <div class="labels">
+                                        {% if (o.label && o.label !== '') { %}
+                                            <span class="type">{%=o.label%}</span>
+                                        {% } %}
+                                        {% if (o.special && o.special !== '') { %}
+                                            <span class="special">8</span>
+                                        {% } %}
+                                    </div>
+                                    <h2>Когда доставить?</h2>
+                                    <input value="" name="deliverydate" type="text" id="delivery-date" data-targetdate="selectedDate"/>
+                                    <div class="bottom">
+                                        <div class="button-group two-button">
+                                            <button class="btn-primary" tabindex="6">
+                                                Выбрать
+                                            </button>
+                                            <button class="btn-dismiss popup-close" tabindex="7">
+                                                Отменить
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+            
+                                <!--Step Order -->
+                                <div class="basket step step3">
+                                    <div class="title">
+                                        <strong>Нужно много букетов?</strong><br> Пишите на <a href="mailto:sales@raketa-project.ru?subject=Хочу заказать букеты оптом">sales@raketa-project.ru</a>
+                                    </div>
+                                    <div class=status>
+                                        <img src="img/status_success.png" class="success animate" alt="">
+                                        <div class="title">
+                                            <h4>Букет в корзине</h4>
+                                        </div>
+                                    </div>
+                                    <div class="middle">
+                                        <div class="basket_info">
+                                            <div class="basket_info__image">
+                                                <img src="{%=o.imgSrc%}" class="bouquet-image" alt="">
+                                            </div>
+                                            <div class="basket_info__title">{%=o.name%}</div>
+                                            <div class="basket_info__spinner spinner" data-trigger="spinner">
+                                                <a href="javascript:;" class="spin-down" data-spin="down"></a>
+                                                <input type="text" id="p{%=o.id %}-count" name="p{%=o.id %}-count" value="1" class="form-control" data-rule="quantity">
+                                                <a href="javascript:;" class="spin-up" data-spin="up"></a>
+                                            </div>
+                                        </div>
+                                        <div class="basket_amount" id="in-basket-product-{%=o.id %}">
+                                            <span class="icon-basket"></span>
+                                        </div>
+                                    </div>
+                                    <div class="bottom">
+                                        <div class="row image-list offer">
+                                            <div class="columns four">
+                                                <div class="image">
+                                                    <img src="img/car.png" alt="">
+                                                </div>
+                                                Бесплатная
+                                                доставка
+                                            </div>
+                                            <div class="columns four">
+                                                <div class="image">
+                                                    <img src="img/postcard.png" alt="">
+                                                </div>
+                                                Бесплатная
+                                                открытка
+                                            </div>
+                                            <div class="columns four">
+                                                <div class="image">
+                                                    <img src="img/x3.png" alt="">
+                                                </div>
+                                                Три букета
+                                                бесплатно
+                                            </div>
+                                        </div>
+                                        <div class="button-group two-button">
+                                            <a class="btn-primary" tabindex="6" href="order.html">
+                                                Оформить заказ
+                                            </a>
+                                            <button class="btn-dismiss popup-close" tabindex="7">
+                                                Отменить
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+            
+                        </div>
+                    </div>
+                </div>
+            </script>
+            
+            
+            
+            <ul class="image-list bouquet-list" id="bouquet-list">
+                <!--<li data-bouquet-id="1">-->
+                    <!--<div class="bouquet dark">-->
+                        <!--<img src="img/b1.jpg" alt="">-->
+                        <!--<div class="desc">-->
+                            <!--<div class="title">Летние ночи</div>-->
+                            <!--<div class="labels">-->
+                                <!--<span class="type">summer</span>-->
+                                <!--<span class="special">8</span>-->
+                            <!--</div>-->
+                            <!--<div class="available data">-->
+                                <!--с 28 сентября-->
+                            <!--</div>-->
+                            <!--<div class="price-group">-->
+                                <!--<button class="basket" data-toggle="to-basket" data-product-id="1">-->
+                                    <!--<span class="price">2500 &#x20bd;</span>-->
+                                    <!--<span class="icon">В корзину</span>-->
+                                <!--</button>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</li>-->
+            </ul>
+
+            <div id="ajax-loader"></div>
+        </div>
+    </div>
+
+    <footer id="footer">
+    
+    </footer>
+    <script type="text/x-tmpl" id="tmpl-dialog">
+        <div id="{%=o.id%}" class="modal {% if (o.popupClass) { %}{%=o.popupClass%}{% } else { %}dialog-popup{% } %} mfp-with-anim mfp-hide">
+            {% if (o.title && o.title !== '') { %}
+                <div class="modal-title">
+                    {%=o.title%}
+                </div>
+            {% } %}
+            <div class="modal-content">
+                {%#o.content%}
+            </div>
+            <div class="modal-bottom buttons">
+                {%#o.buttons%}
+            </div>
+        </div>
+    </script>
+    
+    
+    <div id="terms_of_use" class="terms_of_use modal mfp-with-anim mfp-zoom-in mfp-hide">
+        <div class="modal-title">
+            Условия использования
+        </div>
+        <div class="modal-content">
+            Текст соглашения
+            <br>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid at beatae distinctio ducimus ea ex fuga hic ipsam, iste laborum nostrum, quam quasi quibusdam reiciendis rerum, unde vero voluptas voluptatem.</p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias animi at consectetur dolores earum expedita ipsam iusto, labore laborum molestias nihil possimus quam qui quis quos repellat similique tempore vitae!</p>
+        </div>
+    </div>
+    <div class="widget calendar" id="widget-calendar">
+        <button class="close"></button>
+        <form action="/" method="POST">
+        <div class="widget-content">
+            <button class="widget-button cleardate" data-toggle="clear-date" disabled>Очистить</button>
+            <span id="selectedDate">Дата доставки</span>
+            <input name="date" type="text" id="delivery-date" data-targetdate="selectedDate"/>
+    
+            <div class="radio-group">
+                <input type="radio" name="timeofday" id="tod_morning" value="morning" disabled>
+                <label for="tod_morning">Утро</label>
+    
+                <input type="radio" name="timeofday" id="tod_afternoon" value="afternoon" disabled>
+                <label for="tod_afternoon">День</label>
+    
+                <input type="radio" name="timeofday" id="tod_evening" value="evening" disabled>
+                <label for="tod_evening">Вечер</label>
+            </div>
+        </div>
+        <div class="widget-submit">
+            <button type="submit" rel="submit" data-toggle="setDelivaryDate" disabled>Выбрать</button>
+        </div>
+        </form>
+    </div>
+</body>
+</html>

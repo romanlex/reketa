@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Оплата прошла успешно</title>
+
+    
+    <link rel="stylesheet" href="css/vendor.packed.min.css">
+    <link rel="stylesheet" href="css/app.min.css">
+    
+    <link rel="shortcut icon" href="favicon.ico">
+    
+    <link rel="apple-touch-icon" href="img/app-logo.png" />
+    <link rel="apple-touch-icon" sizes="72x72" href="img/app-logo.png" />
+    <link rel="apple-touch-icon" sizes="114x114" href="img/app-logo.png" />
+    <link rel="apple-touch-icon" sizes="144x144" href="img/app-logo.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="img/app-logo.png" />
+    
+    <link rel="icon" sizes="192x192" href="img/app-logo.png">
+    <link rel="icon" sizes="128x128" href="img/app-logo.png">
+    
+    <!-- Tile icon for Win8 (144x144 + tile color) -->
+    <meta name="msapplication-TileImage" content="img/app-logo.png">
+    <meta name="msapplication-TileColor" content="#01BFCE">
+    
+    <meta name="theme-color" content="#01BFCE">
+    
+    <script src="js/jquery.min.js"></script>
+    <script src="js/vendor.packed.min.js"></script>
+    <script src="js/app.min.js"></script>
+</head>
+<body>
+<div id="wrapper" class="container">
+    <header id="header">
+        <div class="container">
+            <div class="menu-toggle">
+                <button class="navbar-toggle" data-toggle="popup" data-target="#sidebar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div class="twelve columns">
+                <a href="/" class="logo"><img src="img/logo.png" alt=""></a>
+            </div>
+            <div class="buttons pull-right">
+                <a href="basket.html" class="btn-image small basket"></a>
+            </div>
+        </div>
+    </header>
+    <div id="sidebar">
+        <button class="popup-close"></button>
+        <div class="sidebar-content">
+            <div class="sidebar-top">
+                <div class="sidemenu">
+                    <ul class="menu">
+                        <li class="active"><a href="index.html">Цветы</a></li>
+                        <li><a href="orders.html">Заказы</a></li>
+                        <li><a href="orders_empty.html">Заказы пусто</a></li>
+                        <li><a href="basket.html">Корзина</a></li>
+                        <li><a href="basket_empty.html">Корзина пусто</a></li>
+                        <li><a href="checkout.html">Оформление заказа</a></li>
+                        <li><a href="reasons.html">Поводы</a></li>
+                        <li><a href="#">Промокод</a></li>
+                        <li><a href="about.html">О Сервисе</a></li>
+                        <li><a href="support.html">Помощь</a></li>
+                        <li><a href="502.html">Ошибка сайта</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="sidebar-bottom">
+                <div class="upcoming-event">
+                    <ul>
+                        <li>
+                            <div class="upevent table" data-upevent-id="1">
+                                <div class="upevent-image cell">
+                                    <span class="label">ДР</span>
+                                </div>
+                                <div class="upevent data cell">
+                                    Константин Константинопольский
+                                    <div class="cause">День рождения <span>через 2 дня</span></div>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="upevent table" data-upevent-id="2">
+                                <div class="upevent-image cell">
+                                    <img src="img/upcoming-photo.png" alt="">
+                                </div>
+                                <div class="upevent data cell">
+                                    Елена Максимова
+                                    <div class="cause">День свадьбы <span>18 сен</span></div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="soon">
+                            <a href="#soon">Скоро еще 3 праздника</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="auth-panel not-authorized">
+                    <a href="/login.html" class="button">Вход</a>
+                </div>
+                <!--<div class="auth-panel">-->
+                   <!--<div class="username">-->
+                       <!--<a href="profile.html">Коля</a>-->
+                   <!--</div>-->
+                    <!--<div class="username-buttons pull-right">-->
+                        <!--<a href="?logout">Выход</a>-->
+                    <!--</div>-->
+                <!--</div>-->
+            </div>
+        </div>
+    </div>
+    <div id="content">
+        <div id="order" class="table layout devided checkout checkout-basket" data-layout="devided">
+            <div class="menu-wrapper cell">
+                <div class="title">
+                    <h1>Заказ 328328734</h1>
+                </div>
+                <div class="price">
+                    3500₽<br>
+                    <span>3 букета</span>
+                </div>
+                <ul class="basket-list">
+                    <li>
+                        <div data-product-id="2" class="order table">
+                            <span class="cell middle image">
+                                <img src="img/shutterstock_285725309.png" alt="">
+                            </span>
+                            <span class="cell middle info">
+                                Желтая дача<br>
+                                2500₽
+                            </span>
+                            <span class="cell middle count">
+                                2
+                            </span>
+                        </div>
+                    </li>
+                    <li>
+                        <div data-product-id="2" class="order table">
+                            <span class="cell middle image">
+                                <img src="img/shutterstock_285725309.png" alt="">
+                            </span>
+                            <span class="cell middle info">
+                                Желтая дача<br>
+                                2500₽
+                            </span>
+                            <span class="cell middle count">
+                                23
+                            </span>
+                        </div>
+                    </li>
+                    <li>
+                        <div data-product-id="2" class="order table">
+                            <span class="cell middle image">
+                                <img src="img/shutterstock_285725309.png" alt="">
+                            </span>
+                            <span class="cell middle info">
+                                Желтая дача<br>
+                                2500₽
+                            </span>
+                            <span class="cell middle count">
+                                1
+                            </span>
+                        </div>
+                    </li>
+                </ul>
+                <div class="bottom">
+                    <a href="/orders.html" class="button">История заказов</a>
+                </div>
+            </div>
+            <div class="content-panel cell middle">
+                <div id="checkout-step" class="checkout-step">
+                    <div data-step="1" class="step step1 active">
+                        <div class="status">
+                            <img src="img/status_success.png" class="success animate" alt="">
+                            <div class="title">
+                                <h4>Спасибо!</h4>
+                                <p>Оплата произведена</p>
+                            </div>
+                            <div class="intime">
+                                Мы позвоним в течении 15 минут<br>
+                                для уточнения деталей
+                            </div>
+                        </div>
+                    </div>
+                    <div data-step="2" class="step step2">
+                        <div class="status">
+                            <img src="img/raketa.png" class="success animate" alt="">
+                            <div class="title">
+                                <h4 style="font-weight: 300; width: 60%; margin: 0 auto;">Дарить цветы приятно
+                                    вдойне, если делать
+                                    это вовремя</h4>
+                            </div>
+                            <div class="intime">
+                                Напомнить вам об этом поводе <br>
+                                в следующий раз?
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div data-to-step="step1" class="bottom show">
+                    <div class="button-group one-button">
+                        <button data-toggle="gotostep" data-to-step="2" class="btn-primary" tabindex="4">Отлично!</button>
+                    </div>
+                </div>
+                <div data-to-step="step2" class="bottom">
+                    <div class="button-group two-button">
+                        <a href="?reminedReason" class="btn-primary" tabindex="5">Напомнить</a>
+                        <a href="/" class="btn-dismiss" tabindex="6">Не нужно</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="ajax-loader"></div>
+    </div>
+</div>
+<script>
+    $(function() {
+        app.layout.init($('#order'));
+        Cookies.set('reketa_ordersuccess__step', 1, { expires: 1, path: '/' });
+
+        $('#order button[data-toggle="gotostep"]').on('click', function() {
+            var step = $(this).data('to-step');
+            Cookies.set('reketa_ordersuccess__step', step, { expires: 1, path: '/' });
+            var checkout = $('#checkout-step');
+            var currentStep = checkout.find('.step.active');
+            currentStep.removeClass('active');
+
+            if(settings.env == 'dev')
+                console.log('[STEP] Go to checkout step #' + step);
+
+            checkout.find('.step.step' + step).addClass('active').trigger('open');
+            checkout.parent().find('.bottom[data-to-step]').removeClass('show');
+            checkout.parent().find('.bottom[data-to-step="step' + step + '"]').addClass('show');
+        });
+
+    })
+</script>
+<footer id="footer">
+
+</footer>
+<script type="text/x-tmpl" id="tmpl-dialog">
+    <div id="{%=o.id%}" class="modal {% if (o.popupClass) { %}{%=o.popupClass%}{% } else { %}dialog-popup{% } %} mfp-with-anim mfp-hide">
+        {% if (o.title && o.title !== '') { %}
+            <div class="modal-title">
+                {%=o.title%}
+            </div>
+        {% } %}
+        <div class="modal-content">
+            {%#o.content%}
+        </div>
+        <div class="modal-bottom buttons">
+            {%#o.buttons%}
+        </div>
+    </div>
+</script>
+
+
+<div id="terms_of_use" class="terms_of_use modal mfp-with-anim mfp-zoom-in mfp-hide">
+    <div class="modal-title">
+        Условия использования
+    </div>
+    <div class="modal-content">
+        Текст соглашения
+        <br>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid at beatae distinctio ducimus ea ex fuga hic ipsam, iste laborum nostrum, quam quasi quibusdam reiciendis rerum, unde vero voluptas voluptatem.</p>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias animi at consectetur dolores earum expedita ipsam iusto, labore laborum molestias nihil possimus quam qui quis quos repellat similique tempore vitae!</p>
+    </div>
+</div>
+<div class="widget calendar" id="widget-calendar">
+    <button class="close"></button>
+    <form action="/" method="POST">
+    <div class="widget-content">
+        <button class="widget-button cleardate" data-toggle="clear-date" disabled>Очистить</button>
+        <span id="selectedDate">Дата доставки</span>
+        <input name="date" type="text" id="delivery-date" data-targetdate="selectedDate"/>
+
+        <div class="radio-group">
+            <input type="radio" name="timeofday" id="tod_morning" value="morning" disabled>
+            <label for="tod_morning">Утро</label>
+
+            <input type="radio" name="timeofday" id="tod_afternoon" value="afternoon" disabled>
+            <label for="tod_afternoon">День</label>
+
+            <input type="radio" name="timeofday" id="tod_evening" value="evening" disabled>
+            <label for="tod_evening">Вечер</label>
+        </div>
+    </div>
+    <div class="widget-submit">
+        <button type="submit" rel="submit" data-toggle="setDelivaryDate" disabled>Выбрать</button>
+    </div>
+    </form>
+</div>
+</body>
+</html>
