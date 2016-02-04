@@ -2836,7 +2836,7 @@ span.icon-basket {
   text-align: center;
 }
 
-.checkout-basket .static div.pricecd {
+.checkout-basket .static div.price {
   margin-bottom: 110px;
 }
 
@@ -2857,7 +2857,7 @@ span.icon-basket {
 
 .checkout-basket button.delete {
   float: right;
-  position: relatived;
+  position: relative;
   vertical-align: middle;
   top: 0;
   margin-top: 0;
