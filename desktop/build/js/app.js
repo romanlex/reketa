@@ -28,7 +28,7 @@ var lang = {
     processPhoneCheck: 'Проверка<br>номера телефона',
     processConfirmCheck: 'Проверка<br>кода',
     processSave: 'Сохранение данных',
-    processAuthorization: 'Пожалуйста подождите',
+    processAuthorization: 'Пожалуйста<br>подождите',
     loading: 'Ожидайте',
     bouquet: 'Букет',
     bouquetNotFound: 'Доступных букетов не найдено',
@@ -1614,7 +1614,7 @@ $(function() {
 					};
 					if(typeof callback === "function")
 						callback(response);
-				}, 20000);
+				}, 1500);
 			},
 			authorizationSubmitHandler: function(form) {
 				$('button[data-to-form="#' + form.attr('id') + '"]').hide();
