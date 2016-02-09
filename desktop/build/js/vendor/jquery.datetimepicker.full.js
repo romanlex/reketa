@@ -2178,7 +2178,9 @@ var DateFormatter;
 						}
 
 						var table =	'',
-							start = new Date(_xdsoft_datetime.currentTime.getFullYear(), _xdsoft_datetime.currentTime.getMonth(), 1, 12, 0, 0),
+							//start = new Date(_xdsoft_datetime.currentTime.getFullYear(), _xdsoft_datetime.currentTime.getMonth(), 1, 12, 0, 0),
+                            //Raketa
+                            start = new Date(new Date - 12096e5), // current day minus 14 days (prev mounth)
 							i = 0,
 							j,
 							today = _xdsoft_datetime.now(),
@@ -2225,9 +2227,8 @@ var DateFormatter;
 							minDate = new Date(minDate.getFullYear(), minDate.getMonth(), minDate.getDate());
 						}
 
-						while (i < _xdsoft_datetime.currentTime.countDaysInMonth() || start.getDay() !== options.dayOfWeekStart || _xdsoft_datetime.currentTime.getMonth() === start.getMonth()) {
-                        // Raketa
-                        //while (i < 60 || start.getDay() !== options.dayOfWeekStart || _xdsoft_datetime.currentTime.getMonth() === start.getMonth()) {
+                        // Raketa - i + 14 days(next month)
+                        while (i < _xdsoft_datetime.currentTime.countDaysInMonth() + 14 || start.getDay() !== options.dayOfWeekStart || _xdsoft_datetime.currentTime.getMonth() === start.getMonth()) {
                             classes = [];
 							i += 1;
 
@@ -2237,6 +2238,7 @@ var DateFormatter;
 							m = start.getMonth();
 							w = _xdsoft_datetime.getWeekOfYear(start);
 							description = '';
+
 
 							classes.push('xdsoft_date');
 
@@ -2259,8 +2261,7 @@ var DateFormatter;
 							}
 
 							if (_xdsoft_datetime.currentTime.getMonth() !== m) {
-                                // Raketa
-								//classes.push('xdsoft_other_month');
+								classes.push('xdsoft_other_month');
 							}
 
 							if ((options.defaultSelect || datetimepicker.data('changed')) && dateHelper.formatDate(_xdsoft_datetime.currentTime, options.formatDate) === dateHelper.formatDate(start, options.formatDate)) {

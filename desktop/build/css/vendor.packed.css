@@ -5578,6 +5578,7 @@
 
 .xdsoft_datetimepicker .xdsoft_mounthpicker {
 	text-align: center;
+	display: none;
 }
 
 .xdsoft_datetimepicker .xdsoft_prev,

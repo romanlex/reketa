@@ -271,11 +271,11 @@
 </div>
 <div class="widget calendar" id="widget-calendar">
     <button class="close"></button>
-    <form action="/" method="POST">
+    <form action="/" id="set-delivery-date" method="POST">
     <div class="widget-content">
         <button class="widget-button cleardate" data-toggle="clear-date" disabled>Очистить</button>
         <span id="selectedDate">Дата доставки</span>
-        <input name="date" type="text" id="delivery-date" data-targetdate="selectedDate"/>
+        <input name="date" type="text" class="datetime-picker delivery-date" autocomplete="off"/>
 
         <div class="radio-group">
             <input type="radio" name="timeofday" id="tod_morning" value="morning" disabled>
@@ -289,7 +289,7 @@
         </div>
     </div>
     <div class="widget-submit">
-        <button type="submit" rel="submit" data-toggle="setDelivaryDate" disabled>Выбрать</button>
+        <button type="submit" data-toggle="setDelivaryDate" data-to-form="#set-delivery-date" data-hide="true" disabled>Выбрать</button>
     </div>
     </form>
 </div>

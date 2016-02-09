@@ -46,11 +46,65 @@ $(function() {
 	    loadBouquets: 6,
 	    imageBouquetsBrightnessThreshold: 110,
 	    timeoutResendConfirmPhoneCode: 60 //seconds
+	};
+	
+	datetimePicker = {
+	    format:'d.m.Y',
+	    value: 0,
+	    timepicker:false,
+	    inline:true,
+	    todayButton: false,
+	    prevButton: false,
+	    nextButton: false,
+	    scrollMonth: false,
+	    dayOfWeekStart: 1,
+	    yearStart: '2016',
+	    yearEnd: '2020',
+	    minDate:new Date(),
+	    maxDate: new Date(+new Date + 12096e5), // magic number is 14 days in ms
+	    onChangeDateTime:function(dp,$input){
+	        var obj = $input.closest('.widget').length ? $input.closest('.widget') : $input.closest('.product-cart');
+	        obj.find('button[type="submit"]').removeAttr('disabled');
+	        obj.find('input[name="timeofday"]').removeAttr('disabled');
+	        obj.find('button[data-toggle="clear-date"]').removeAttr('disabled');
+	        $('#selectedDate').html(app.widgets.calendar.getDateString());
+	        $('input[name="date"].datetime-picker').datetimepicker({value: dp});
+	    },
+	    onGenerate: function(ct) {
+	        var calendar = $(this).find('.xdsoft_calendar');
+	        var _month = 0;
+	        $.each(calendar.find('tbody tr'), function( index, tr ) {
+	            var i = 0;
+	            var $tr = $(tr);
+	            var month = 0;
+	            $.each($tr.find('td'), function (index, td) {
+	                if($(td).hasClass('xdsoft_disabled'))
+	                    i++;
+	
+	                month = $(td).data('month');
+	            });
+	
+	            if(i == 7)
+	                $tr.hide();
+	            else if(_month != month){
+	                var $month = $('<div/>').addClass('month').html(moment(month+1, 'MM').format('MMM'));
+	                $tr.before($month);
+	                _month = month;
+	            }
+	
+	        });
+	
+	        if($('button[data-target="#widget-calendar"]').length > 0 && (!app.widgets.calendar.position.width || !app.widgets.calendar.position.height || !app.widgets.calendar.position.top || !app.widgets.calendar.position.right )) {
+	            app.widgets.calendar.setPosition();
+	        }
+	    }
 	}
 
 	app = {
 		init: function() {
 			moment.locale('ru');
+			$.datetimepicker.setLocale('ru');
+
 			app.device.getInfo();
 			app.layout.initStyle();
 			app.content.initStyle();
@@ -773,16 +827,28 @@ $(function() {
 				if(timeofday)
 					this.delivery.timeofday = timeofday;
 
-				if(app.widgets.calendar && app.widgets.calendar.loaded && timeofday && date) {
-					var obj = $('#widget-calendar');
-					obj.find('.radio-group input[name="timeofday"]:checked').attr('checked', false);
-					obj.find('#tod_' + timeofday).attr('checked', true);
-					$('#delivery-date').datetimepicker({value: date});
-					obj.find('button[type="submit"]').removeAttr('disabled');
-					obj.find('button[data-toggle="clear-date"]').removeAttr('disabled');
-					$('#selectedDate').html(app.widgets.calendar.getDateString());
-					$('button[data-target="#widget-calendar"]').html(app.widgets.calendar.getDateString());
+				if(date && timeofday) {
+					var currentDate = new Date();
+					currentDate = moment(currentDate).format('YYYY-MM-DD');
+					var settedDate = moment(date, "DD.MM.YYYY").format('YYYY-MM-DD');
+
+					if (moment(settedDate).isBefore(currentDate)) {
+						delete app.checkout.delivery;
+						Cookies.remove('raketa_delivary__date', { path: '/' });
+						Cookies.remove('raketa_delivary__timeofday', { path: '/' });
+					} else if (app.widgets.calendar && app.widgets.calendar.loaded) {
+						var obj = $('#widget-calendar');
+						$('.radio-group input[name="timeofday"]').removeAttr('disabled');
+						$('.radio-group input[name="timeofday"]:checked').attr('checked', false);
+						$('.radio-group input[value="' + timeofday + '"]').attr('checked', true);
+						$('input[name="date"].datetime-picker').datetimepicker({value: date});
+						obj.find('button[type="submit"]').removeAttr('disabled');
+						obj.find('button[data-toggle="clear-date"]').removeAttr('disabled');
+						$('#selectedDate').html(app.widgets.calendar.getDateString());
+						$('button[data-target="#widget-calendar"]').html(app.widgets.calendar.getDateString());
+					}
 				}
+
 			},
 			save: function(callback) {
 				console.log('[FOR DELIVERY] Send form data to server:');
@@ -819,19 +885,19 @@ $(function() {
 			calendar: {
 				obj: {},
 				loaded: false,
-				cleared: false,
 				opened: false,
 				position: {},
 				setPosition: function() {
 					var button = $('button[data-target="#widget-calendar"]'); // setting the position relative to the element
+					var obj = $('#widget-calendar');
 					if(button.length) {
-						var _w = this.obj.width();
-						var _h = this.obj.height() ;
+						var _w = obj.width();
+						var _h = obj.height() ;
 						var button_offset = button.offset();
 						var right = device.windowWidth - (button_offset.left + button.outerWidth()) - 20;
-						this.obj.css('top', - (_h + 40) + 'px');// box shadow
-						this.obj.css('right', Math.floor(right) + 'px');
-						this.obj.css('height', _h + 'px');
+						obj.css('top', - (_h + 40) + 'px');// box shadow
+						obj.css('right', Math.floor(right) + 'px');
+						obj.css('height', _h + 'px');
 						this.position.width = _w;
 						this.position.height = _h;
 						this.position.top = - _h;
@@ -839,199 +905,60 @@ $(function() {
 					}
 
 				},
+				localInit: function(obj) {
+					this.obj = obj;
+				},
 				load: function() {
 					this.obj = $("#widget-calendar");
 					var button = $('button[data-target="#widget-calendar"]');
 
 					var _this = this;
 
-					$.datetimepicker.setLocale('ru');
-					$('#delivery-date').datetimepicker({
-						format:'d.m.Y',
-						value: 0,
-						timepicker:false,
-						inline:true,
-						todayButton: false,
-						prevButton: false,
-						nextButton: false,
-						scrollMonth: false,
-						dayOfWeekStart: 1,
-						yearStart: '2016',
-						yearEnd: '2020',
-						minDate:new Date(),
-						maxDate: new Date(+new Date + 12096e5), // magic number is 14 days in ms
-						onChangeDateTime:function(dp,$input){
-							_this.obj.find('button[type="submit"]').removeAttr('disabled');
-							_this.obj.find('input[name="timeofday"]').removeAttr('disabled');
-							var widget = $input.parents('.widget');
-							widget.find('button[data-toggle="clear-date"]').removeAttr('disabled');
-							var label = $input.data('targetdate');
-							$('#'+ label).html(_this.getDateString());
-						},
-						onGenerate: function(ct) {
-							var calendar = $(this).find('.xdsoft_calendar');
-							//if($.isEmptyObject(app.checkout.delivery))
-							//	$(this).find('.xdsoft_current').removeClass('xdsoft_current');
+					$('input[name="date"].datetime-picker').each(function() {
+						$(this).datetimepicker(datetimePicker)
+					});
 
-							//$.each(calendar.find('tbody tr'), function( index, tr ) {
-							//	var i = 0;
-							//	var $tr = $(tr);
-							//	$.each($tr.find('td'), function (index, td) {
-							//		if($(td).hasClass('xdsoft_disabled'))
-							//			i++;
-							//	});
-                            //
-							//	if(i == 7)
-							//		$tr.hide();
-							//});
+					$(document).on('raketa.bouquets.loaded', function() {
+						$('input[name="date"].datetime-picker').each(function() {
+							$(this).datetimepicker('destroy');
+						});
+						$('input[name="date"].datetime-picker').each(function() {
+							$(this).datetimepicker(datetimePicker);
+						});
+					});
 
-							if(button.length > 0 && (!_this.position.width || !_this.position.height || !_this.position.top || !_this.position.right )) {
-								_this.setPosition();
-							}
+					$(document).on('click', 'button[data-toggle="setDelivaryDate"]', function(e) {
+						e.preventDefault();
+						var formTarget = $(this).data('to-form');
+						var form = $(formTarget);
+						_this.process(form);
+						if($(this).data('hide') == true)
+							app.popup.hide();
+
+						// Если виджет productcart загружен, есть открытый объект, popup открыт, то проверяем какой шаг открыть
+						if(app.widgets.productcart
+							&& app.widgets.productcart.openedObj
+							&& app.popup.isOpened())
+						{
+							app.widgets.productcart.step('orderInfo');
+						}
+
+					});
+
+					$(document).on('change', 'input[name="timeofday"]', function() {
+						if(_this.obj && _this.obj.hasClass('widget'))
+						{
+							$('#selectedDate').html(_this.getDateString());
+							if(app.checkout.delivery !== undefined)
+								button.html(_this.getDateString());
+							else
+								button.html(lang.DeliveryDate);
 						}
 					});
-					//$('#delivery-date').appendDtpicker({
-					//	inline: true,
-					//	locale: "ru",
-					//	firstDayOfWeek: 1,
-					//	animation: false,
-					//	todayButton: false,
-					//	closeButton: false,
-					//	dateOnly: true,
-					//	dateFormat: "DD.MM.YYYY",
-					//	futureOnly: true,
-					//	minDate: new Date(),
-					//	maxDate: new Date(+new Date + 12096e5),
-					//	onInit: function() {
-					//		console.log('asdasdsa');
-					//		if(button.length > 0 && (!_this.position.width || !_this.position.height || !_this.position.top || !_this.position.right )) {
-					//			_this.setPosition();
-					//		}
-                    //
-					//		var calendar = $('#widget-calendar').find('.datepicker_table');
-					//		//if($.isEmptyObject(app.checkout.delivery))
-					//		//	$(this).find('.xdsoft_current').removeClass('xdsoft_current');
-                    //
-					//		var prevTrMonth = 0;
-					//		var _prevTrMonth = false;
-					//		$.each(calendar.find('tbody tr'), function( index, tr ) {
-					//			var i = 0;
-					//			var b = 0;
-					//			var $tr = $(tr);
-					//			var trMounth = 12;
-                    //
-					//			$.each($tr.find('td'), function (index, td) {
-					//				var tdMounth = $(td).data('month');
-					//				//if(i==0) {
-					//				//	trMounth = tdMounth;
-					//				//	b++;
-					//				//}
-					//				//else if(i>0 && trMounth == tdMounth){
-					//				//	b++;
-					//				//}
-					//				if(tdMounth < trMounth)
-					//					trMounth = tdMounth;
-                    //
-					//				if($(td).hasClass('out_of_range'))
-					//					i++;
-					//			});
-					//			//console.log(prevTrMonth == trMounth);
-					//			if(index > 0 && prevTrMonth == trMounth) {
-					//				_prevTrMonth = true;
-					//			}
-                    //
-					//			prevTrMonth = trMounth;
-                    //
-					//			if(b==7 && _prevTrMonth)
-					//				$tr.prepend('<div class="month">'+trMounth+'</div>');
-					//			else
-					//				$tr.prepend('<div class="month">'+prevTrMonth+'</div>');
-                    //
-					//			//if(i == 7)
-					//			//	$tr.hide();
-					//		});
-					//	},
-					//	onSelect: function() {
-					//		console.log('asdasdsa');
-					//		if(button.length > 0 && (!_this.position.width || !_this.position.height || !_this.position.top || !_this.position.right )) {
-					//			_this.setPosition();
-					//		}
-                    //
-					//		var calendar = $('#widget-calendar').find('.datepicker_table');
-					//		//if($.isEmptyObject(app.checkout.delivery))
-					//		//	$(this).find('.xdsoft_current').removeClass('xdsoft_current');
-                    //
-					//		var prevTrMonth = 0;
-					//		var _prevTrMonth = false;
-					//		$.each(calendar.find('tbody tr'), function( index, tr ) {
-					//			var i = 0;
-					//			var b = 0;
-					//			var $tr = $(tr);
-					//			var trMounth = 12;
-                    //
-					//			$.each($tr.find('td'), function (index, td) {
-					//				var tdMounth = $(td).data('month');
-					//				//if(i==0) {
-					//				//	trMounth = tdMounth;
-					//				//	b++;
-					//				//}
-					//				//else if(i>0 && trMounth == tdMounth){
-					//				//	b++;
-					//				//}
-					//				if(tdMounth < trMounth)
-					//					trMounth = tdMounth;
-                    //
-					//				if($(td).hasClass('out_of_range'))
-					//					i++;
-					//			});
-					//			//console.log(prevTrMonth == trMounth);
-					//			if(index > 0 && prevTrMonth == trMounth) {
-					//				_prevTrMonth = true;
-					//			}
-                    //
-					//			prevTrMonth = trMounth;
-                    //
-					//			if(b==7 && _prevTrMonth)
-					//				$tr.prepend('<div class="month">'+trMounth+'</div>');
-					//			else
-					//				$tr.prepend('<div class="month">'+prevTrMonth+'</div>');
-                    //
-					//			//if(i == 7)
-					//			//	$tr.hide();
-					//		});
-					//	}
-					//});
 
-					this.obj.find('button[type="submit"]').on('click', function(e) {
-						e.preventDefault();
-						if(!_this.cleared)
-							_this.process();
-						app.popup.hide();
-					});
-
-					this.obj.find('input[name="timeofday"]').on('change', function() {
-						$('#selectedDate').html(_this.getDateString());
-						if(app.checkout.delivery !== undefined)
-							button.html(_this.getDateString());
-						else
-							button.html(lang.DeliveryDate);
-					});
-
-					this.obj.find('button[data-toggle="clear-date"]').on('click', function(e) {
-						_this.obj.find('#delivery-date').val(new Date());
-						_this.obj.find('.xdsoft_current').removeClass('xdsoft_current');
-						$('#delivery-date').datetimepicker({value: new Date()});
-						$('#' + _this.obj.find('#delivery-date').data('targetdate')).html(lang.DeliveryDate);
-						button.html(lang.DeliveryDate);
+					$(document).on('click', 'button[data-toggle="clear-date"]', function(e) {
 						$(this).attr('disabled', 'disabled');
-						_this.obj.find('button[type="submit"]').attr('disabled', 'disabled');
-						_this.obj.find('input[name="timeofday"]:checked').attr('checked', false);
-						_this.obj.find('input[name="timeofday"]').attr('disabled', 'disabled');
-						_this.cleared = true;
-						delete app.checkout.delivery;
-						Cookies.remove('raketa_delivary__date', { path: '/' });
-						Cookies.remove('raketa_delivary__timeofday', { path: '/' });
-						app.popup.hide();
+						_this.clearDate($(this));
 					});
 
 					$(document).on('open', "#widget-calendar", function() {
@@ -1039,7 +966,6 @@ $(function() {
 					});
 					$(document).on('close', "#widget-calendar", function() {
 						_this.close();
-						button
 					});
 
 					this.loaded = true;
@@ -1056,7 +982,23 @@ $(function() {
 					_str = _str.toLowerCase().capitalizeFirstLetter();
 					return _str;
 				},
+				clearDate: function(button) {
+					var form = button.closest('form');
+					form.find('.xdsoft_current').removeClass('xdsoft_current');
+					form.find('input[name="date"].delivery-date').val(new Date());
+					form[0].reset();
+					$('#selectedDate').html(lang.DeliveryDate);
+					$('button[data-target="#widget-calendar"]').html(lang.DeliveryDate);
+					$('button[data-toggle="setDelivaryDate"]').attr('disabled', 'disabled');
+					form.find('input[name="timeofday"]:checked').attr('checked', false);
+					form.find('input[name="timeofday"]').attr('disabled', 'disabled');
+					delete app.checkout.delivery;
+					Cookies.remove('raketa_delivary__date', { path: '/' });
+					Cookies.remove('raketa_delivary__timeofday', { path: '/' });
+					app.popup.hide();
+				},
 				open: function() {
+					this.obj = $("#widget-calendar");
 					if(settings.env == 'dev')
 						console.log('[WIDGET] Open widget @calendar');
 
@@ -1072,8 +1014,6 @@ $(function() {
 						_this.obj.removeClass('animation').addClass('opened');
 					});
 
-
-					_this.cleared = false;
 					_this.opened = true;
 				},
 				close: function() {
@@ -1087,9 +1027,9 @@ $(function() {
 					}});
 
 				},
-				process: function() {
+				process: function(form) {
 					var button = $('button[data-target="#widget-calendar"]');
-					var data = this.obj.find('form').serializeObject();
+					var data = form.serializeObject();
 					app.checkout.delivery = data;
 					if(app.checkout.delivery !== undefined)
 						button.html(this.getDateString());
@@ -1098,14 +1038,13 @@ $(function() {
 
 					console.log(data);
 					// Save to cookie or maybe ajax?
-					Cookies.set('raketa_delivary__date', data.date, { expires: 1, path: '/' });
-					Cookies.set('raketa_delivary__timeofday', data.timeofday, { expires: 1, path: '/' });
+					Cookies.set('raketa_delivary__date', data.date, { expire: 14, path: '/' });
+					Cookies.set('raketa_delivary__timeofday', data.timeofday, { expire: 14, path: '/' });
 
 				}
 			},
 			productcart: {
 				loaded: false,
-				cleared: false,
 				startPosition: {},
 				startTitle: '',
 				hashProcess: function() {
@@ -1147,6 +1086,7 @@ $(function() {
 						_this.close();
 					});
 
+					// Show product info
 					$(document).on('click', '.product-cart button[data-toggle="show-product-info"]', function() {
 						var id = $(this).data('product-id');
 						$(this).toggleClass('active');
@@ -1155,7 +1095,7 @@ $(function() {
 						});
 					});
 
-
+					// Open next/prev product cart
 					$(document).on('click', '.product-cart button.direction', function(e) {
 						var direction = $(this).data('direction');
 						if(settings.env == 'dev')
@@ -1181,6 +1121,7 @@ $(function() {
 
 					});
 
+
 					$(document).on('raketa.bouquets.loaded', function() {
 						var gallery = $('.product-cart').find('.gallery-list');
 						var w = $('.product-cart').width();
@@ -1191,18 +1132,6 @@ $(function() {
 							gallery.find('.owl-lazy').css('width', w/2);
 							gallery.find('.owl-height').css('height', $('.product-cart').height());
 							gallery.css('width', w/2);
-
-							gallery.magnificPopup({
-								delegate: 'a.owl-lazy',
-								type:'image',
-								mainClass: 'mfp-no-margins mfp-zoom-in',
-								closeOnContentClick: true,
-								closeBtnInside: false,
-								fixedContentPos: true,
-								image: {
-									verticalFit: true
-								}
-							});
 
 							var params = {
 								items: 1,
@@ -1223,8 +1152,12 @@ $(function() {
 								var current = element.find('.owl-item').eq(item).find('.item');
 
 							});
+							gallery.find('.owl-lazy').on('click', function() {
+								gallery.trigger('next.owl.carousel');
+							});
 
 							gallery.owlCarousel(params);
+
 						}
 					});
 
@@ -1256,6 +1189,10 @@ $(function() {
 					{
 						if(settings.env == 'dev')
 							console.log('[WIDGET] @productcart go to step 2');
+						app.widgets.calendar.localInit(obj.find('.step2'));
+						if($.isEmptyObject(app.checkout.delivery))
+							obj.find('.xdsoft_current').removeClass('xdsoft_current');
+
 						obj.find('.step').hide().removeClass('active');
 						obj.find('.step2').addClass('active').show();
 					}
@@ -1279,7 +1216,6 @@ $(function() {
 					document.title = lang.bouquet + ' ' + obj.data('title');
 					Hash.add('bouquet', obj.data('product-id'));
 					this.openedObj = obj;
-					this.cleared = false;
 				},
 				close: function() {
 					var obj = this.openedObj;
@@ -1309,9 +1245,7 @@ $(function() {
 							});
 							break;
 						case 'orderInfo':
-							obj.find('.step.active').fadeOut('fast', function() {
-								obj.find('.step.step3').fadeIn('fast');
-							});
+							this.loadStep3(obj, app.basket.productInBasket(obj.data('product-id')));
 							break;
 					}
 				},

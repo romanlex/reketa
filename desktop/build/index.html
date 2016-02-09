@@ -252,7 +252,7 @@
                                 {% if (o.gallery && o.gallery !== '') { %}
                                     <div class="owl-carousel gallery-list">
                                     {% for (var i=0; i<o.gallery.length; i++) { %}
-                                        <a href="{%=o.gallery[i]%}" class="owl-lazy" data-src="{%=o.gallery[i]%}" data-src-retina="{%=o.gallery[i]%}"></a>
+                                        <img class="owl-lazy" data-src="{%=o.gallery[i]%}" data-src-retina="{%=o.gallery[i]%}" />
                                     {% } %}
                                     </div>
                                 {% } else { %}
@@ -304,11 +304,29 @@
                                             <span class="special">8</span>
                                         {% } %}
                                     </div>
-                                    <h2>Когда доставить?</h2>
-                                    <input value="" name="deliverydate" type="text" id="delivery-date" data-targetdate="selectedDate"/>
+                                    <div class="delivery-date-popup">
+                                        <h3>Когда доставить?</h3>
+            
+                                        <form action="/" id="set-delivery-date-popup-{%=o.id %}" method="POST">
+                                            <input name="date" type="text" class="datetime-picker delivery-date" autocomplete="off" />
+            
+                                            <div class="radio-group">
+                                                <input type="radio" name="timeofday" id="tod_morning_popup_{%=o.id %}" value="morning" disabled>
+                                                <label for="tod_morning_popup_{%=o.id %}">Утро</label>
+            
+                                                <input type="radio" name="timeofday" id="tod_afternoon_popup_{%=o.id %}" value="afternoon" disabled>
+                                                <label for="tod_afternoon_popup_{%=o.id %}">День</label>
+            
+                                                <input type="radio" name="timeofday" id="tod_evening_popup_{%=o.id %}" value="evening" disabled>
+                                                <label for="tod_evening_popup_{%=o.id %}">Вечер</label>
+                                            </div>
+                                        </form>
+                                    </div>
+            
+            
                                     <div class="bottom">
                                         <div class="button-group two-button">
-                                            <button class="btn-primary" tabindex="6">
+                                            <button class="btn-primary" type="submit" rel="submit" data-toggle="setDelivaryDate" data-to-form="#set-delivery-date-popup-{%=o.id %}" disabled tabindex="6">
                                                 Выбрать
                                             </button>
                                             <button class="btn-dismiss popup-close" tabindex="7">
@@ -449,11 +467,11 @@
     </div>
     <div class="widget calendar" id="widget-calendar">
         <button class="close"></button>
-        <form action="/" method="POST">
+        <form action="/" id="set-delivery-date" method="POST">
         <div class="widget-content">
             <button class="widget-button cleardate" data-toggle="clear-date" disabled>Очистить</button>
             <span id="selectedDate">Дата доставки</span>
-            <input name="date" type="text" id="delivery-date" data-targetdate="selectedDate"/>
+            <input name="date" type="text" class="datetime-picker delivery-date" autocomplete="off"/>
     
             <div class="radio-group">
                 <input type="radio" name="timeofday" id="tod_morning" value="morning" disabled>
@@ -467,7 +485,7 @@
             </div>
         </div>
         <div class="widget-submit">
-            <button type="submit" rel="submit" data-toggle="setDelivaryDate" disabled>Выбрать</button>
+            <button type="submit" data-toggle="setDelivaryDate" data-to-form="#set-delivery-date" data-hide="true" disabled>Выбрать</button>
         </div>
         </form>
     </div>

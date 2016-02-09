@@ -1114,19 +1114,22 @@ span.icon-basket {
   padding-bottom: 40px;
 }
 
-.widget .widget-content .radio-group {
+.widget .widget-content .radio-group,
+.radio-group {
   width: 100%;
   overflow: hidden;
 }
 
-.widget .widget-content .radio-group input[type=radio] {
+.widget .widget-content .radio-group input[type=radio],
+.radio-group input[type=radio] {
   width: 0;
   height: 0;
   opacity: 0;
   display: none;
 }
 
-.widget .widget-content .radio-group label {
+.widget .widget-content .radio-group label,
+.radio-group label {
   float: left;
   width: 33.3333333%;
   box-sizing: border-box;
@@ -1142,22 +1145,27 @@ span.icon-basket {
   font-weight: 500;
 }
 
-.widget .widget-content .radio-group label:hover {
+.widget .widget-content .radio-group label:hover,
+.radio-group label:hover {
   color: #fff;
   border-color: #fff;
 }
 
-.widget .widget-content .radio-group input[type=radio]:checked + label {
+.widget .widget-content .radio-group input[type=radio]:checked + label,
+.radio-group input[type=radio]:checked + label {
   background: #fff;
   color: #434343;
   border: 1px solid #fff;
 }
 
-.widget .widget-content .radio-group input[type=radio]:disabled + label {
+.widget .widget-content .radio-group input[type=radio]:disabled + label,
+.radio-group input[type=radio]:disabled + label {
+  opacity: 0.4;
   cursor: default;
 }
 
-.widget .widget-content .radio-group input[type=radio]:disabled + label:hover {
+.widget .widget-content .radio-group input[type=radio]:disabled + label:hover,
+.radio-group input[type=radio]:disabled + label:hover {
   color: #999;
   border: 1px solid #999;
 }
@@ -1195,7 +1203,7 @@ span.icon-basket {
 
 .widget.calendar {
   z-index: 200;
-  width: 375px;
+  width: 425px;
   top: -9999em;
   background-color: #434343;
   box-shadow: 0 2px 40px rgba(0,0,0,0.5);
@@ -1207,8 +1215,8 @@ span.icon-basket {
 
 .widget.calendar .widget-content {
   padding-top: 74px;
-  padding-left: 40px;
-  padding-right: 40px;
+  padding-left: 60px;
+  padding-right: 60px;
 }
 
 .widget.calendar .close {
@@ -1245,6 +1253,20 @@ span.icon-basket {
   transition: all 0.3s ease-out;
 }
 
+.xdsoft_calendar tbody tr {
+  position: relative;
+}
+
+.xdsoft_calendar .month {
+  position: absolute;
+  text-transform: uppercase;
+  font-size: 0.53em;
+  margin-top: 12px;
+  left: -40px;
+  width: 30px;
+  text-align: right;
+}
+
 .product-cart {
   position: fixed;
   height: 94%;
@@ -1258,6 +1280,12 @@ span.icon-basket {
   visibility: hidden;
   z-index: 100;
   box-shadow: 0 2px 40px rgba(0,0,0,0.5);
+}
+
+.product-cart h3 {
+  font-size: 1.6em;
+  text-align: center;
+  margin-bottom: 25px;
 }
 
 .product-cart > button {
@@ -1386,6 +1414,14 @@ span.icon-basket {
 .product-cart .content .cart .step.active,
 .checkout-step .step.active {
   display: block;
+}
+
+.product-cart .content .cart .step2 .delivery-date-popup {
+  padding: 100px 70px 0;
+}
+
+.product-cart .content .cart .step2 .radio-group {
+  margin-top: 30px;
 }
 
 .product-cart .content .cart .middle {
