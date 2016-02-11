@@ -989,7 +989,8 @@ span.icon-basket {
   background-image: none;
   padding: 0 14px;
   overflow: inherit;
-  font-size: 1.25em;
+  font-weight: normal;
+  font-size: inherit;
 }
 
 .raketa-select.selectize-control.single > .selectize-input {
@@ -1001,7 +1002,7 @@ span.icon-basket {
 }
 
 .raketa-select.selectize-control.single > .selectize-input > .item {
-  font-size: 1em;
+  font-size: 1.25em;
 }
 
 .raketa-select.selectize-control.single > .selectize-input.dropdown-active:after {
@@ -1033,6 +1034,7 @@ span.icon-basket {
   font-weight: normal;
   border: 0;
   box-shadow: 0;
+  z-index: 51;
 }
 
 .raketa-select .selectize-dropdown .create {
@@ -1402,7 +1404,8 @@ span.icon-basket {
 }
 
 .product-cart .content .cart .step,
-.checkout-step .step {
+.checkout-step .step,
+.reasons-step .step {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -1412,7 +1415,8 @@ span.icon-basket {
 }
 
 .product-cart .content .cart .step.active,
-.checkout-step .step.active {
+.checkout-step .step.active,
+.reasons-step .step.active {
   display: block;
 }
 
@@ -2464,7 +2468,8 @@ span.icon-basket {
 }
 
 .checkout-step .step,
-.authorization .static {
+.authorization .static,
+.reasons-step .step {
   display: none;
   width: auto;
   height: auto;
@@ -2474,13 +2479,16 @@ span.icon-basket {
 
 .checkout-step .step .ajax-loader-local,
 .authorization .static .ajax-loader-local,
+.reasons-step .step .ajax-loader-local,
 .checkout-step .step .form-status,
-.authorization .static .form-status {
+.authorization .static .form-status,
+.reasons-step .step .form-status {
   background: #434343;
 }
 
 .checkout-step .step .form-status,
-.authorization .static .form-status {
+.authorization .static .form-status,
+.reasons-step .step .form-status {
   position: absolute;
   color: #fff;
   font-family: "SF UI Display";
@@ -2496,7 +2504,8 @@ span.icon-basket {
 }
 
 .checkout-step .step .form-status span,
-.authorization .static .form-status span {
+.authorization .static .form-status span,
+.reasons-step .step .form-status span {
   display: block;
   width: 30%;
   margin: 0 auto;
@@ -2506,14 +2515,16 @@ span.icon-basket {
 }
 
 .checkout-step .step .form-status span.error,
-.authorization .static .form-status span.error {
+.authorization .static .form-status span.error,
+.reasons-step .step .form-status span.error {
   background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB0AAAAdCAYAAABWk2cPAAAB3ElEQVRIS8WXPSwEQRTHf4O7YhMaQVziCh+NVqNQ+Eg0GiSupFRoqIQeuYpGoVQiQaOR+CgUCloVipOcONGQbOIOK8/NXtba292cy94k28y8eb95b9/8960ixLCgGRjTTxeQoDj3AmSBO+BIHlWc8x3Kb9WCbmAVmATqg5wBn8A+sKzgtpy9J9SCOJAG5oBYCJjbpABsAosK8u7FP1ALWvRpByqAubdcSJYUPDsXfkE18BLorALQdnEP9DvBJahO6QlQjQi9Ih6xU+2ErgPzVYzQ7WpDwYJM/kB1ld5UWDRhzynF1StVbUN3gamwu/9ht6cgpfTFf/K7hxZwZhgMmiZ1HsQv4NwwGDLNYurKD7nHbQKdBrb9LE8Ng9lEgvHXV9K53C+wABdbWzlsamIrm2XYNIMSMSPQHSDlZ+l07ASXmw+g7gr0CugLOp4bsJbLsaQj9MqAj79rgYpgtwdBZd0GHzQ2kiwUeIjHPVMe4OtRoO8UtTbU+ABGk8kfYEc+z3EmQ0OonSWjfEWRStEIMBOLMfH29qe4wkRak3dak+qtyT2VtiNaRdKCH6321uwro8HRfk81VAQi2s5Bg6Upi65HslUk8m7QAY6273XqpgU9wEokHb5bsKv9L/MNwcnnpIeyNfAAAAAASUVORK5CYII=");
   background-position: bottom center;
   background-repeat: no-repeat;
 }
 
 .checkout-step .step .form-status span.error.inline,
-.authorization .static .form-status span.error.inline {
+.authorization .static .form-status span.error.inline,
+.reasons-step .step .form-status span.error.inline {
   padding-left: 15px;
   width: 60%;
   background-position: left 0;
@@ -2779,14 +2790,18 @@ span.icon-basket {
 .checkout-auth-form .form-group,
 .who-delivery-product .form-group,
 .order-callback-form .form-group,
-.auth-form .form-group {
+.auth-form .form-group,
+.new-reason-form .form-group,
+.edit-reason-form .form-group {
   position: relative;
 }
 
 .checkout-auth-form .form-group i.fa,
 .who-delivery-product .form-group i.fa,
 .order-callback-form .form-group i.fa,
-.auth-form .form-group i.fa {
+.auth-form .form-group i.fa,
+.new-reason-form .form-group i.fa,
+.edit-reason-form .form-group i.fa {
   position: absolute;
   right: 10px;
   top: 50%;
@@ -2800,14 +2815,18 @@ span.icon-basket {
 .checkout-auth-form .form-group i.fa:hover,
 .who-delivery-product .form-group i.fa:hover,
 .order-callback-form .form-group i.fa:hover,
-.auth-form .form-group i.fa:hover {
+.auth-form .form-group i.fa:hover,
+.new-reason-form .form-group i.fa:hover,
+.edit-reason-form .form-group i.fa:hover {
   opacity: 1;
 }
 
 .checkout-auth-form label,
 .who-delivery-product label,
 .order-callback-form label,
-.auth-form label {
+.auth-form label,
+.new-reason-form label,
+.edit-reason-form label {
   color: #999;
   font-family: "SF UI Display";
   font-size: 1em;
@@ -2819,18 +2838,23 @@ span.icon-basket {
 .checkout-auth-form select,
 .who-delivery-product select,
 .order-callback-form select,
-.auth-form select {
+.auth-form select,
+.new-reason-form select,
+.edit-reason-form select {
   color: #000;
 }
 
 .checkout-auth-form input,
 .who-delivery-product input,
 .order-callback-form input,
-.auth-form input {
+.auth-form input,
+.new-reason-form input,
+.edit-reason-form input {
   color: #000;
   border: 0;
   height: 50px;
   font-size: 1.25em;
+  padding: 0 14px;
   line-height: 50px;
   opacity: 0.9;
   -webkit-backface-visibility: hidden;
@@ -2840,7 +2864,9 @@ span.icon-basket {
 .checkout-auth-form input:focus,
 .who-delivery-product input:focus,
 .order-callback-form input:focus,
-.auth-form input:focus {
+.auth-form input:focus,
+.new-reason-form input:focus,
+.edit-reason-form input:focus {
   opacity: 1;
   border: 0;
 }
@@ -2848,7 +2874,9 @@ span.icon-basket {
 .checkout-auth-form .form-group.has-error input.error,
 .who-delivery-product .form-group.has-error input.error,
 .order-callback-form .form-group.has-error input.error,
-.auth-form .form-group.has-error input.error {
+.auth-form .form-group.has-error input.error,
+.new-reason-form .form-group.has-error input.error,
+.edit-reason-form .form-group.has-error input.error {
   border: 0;
   box-shadow: none;
 }
@@ -2856,7 +2884,9 @@ span.icon-basket {
 .checkout-auth-form .form-group.has-error label,
 .who-delivery-product .form-group.has-error label,
 .order-callback-form .form-group.has-error label,
-.auth-form .form-group.has-error label {
+.auth-form .form-group.has-error label,
+.new-reason-form .form-group.has-error label,
+.edit-reason-form .form-group.has-error label {
   color: #f00;
 }
 
@@ -2932,6 +2962,280 @@ span.icon-basket {
   position: absolute;
   left: 0;
   right: 0;
+}
+
+.reasons .menu-wrapper .title {
+  padding-bottom: 25px;
+  border-bottom: 1px solid #535353;
+}
+
+.reasons .menu-wrapper h2 {
+  font-size: 1.2em;
+  padding-top: 8px;
+  float: left;
+  margin: 0;
+  font-weight: normal;
+  display: inline-block;
+}
+
+.reasons .menu-wrapper .btn-image.add {
+  margin-left: 25px;
+  float: left;
+  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAYAAABWzo5XAAAAOUlEQVQ4T2NkIACWL1/+H6QkMjKSEZ9SvJIgjaMGMQznMIJFL6H0REiekWoGEbJpNEEO6wRJregHAGqhRfs5qpl8AAAAAElFTkSuQmCC");
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+
+.reasons .menu-wrapper a {
+  height: 38px;
+  line-height: 38px;
+  padding-left: 12px;
+  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAABN0lEQVRIS+2Vvy8FURCFv9NIVF78aBCR0Eok9GioFDpq9WvVlBJColGoiVZHQa/zFyhINBIaNOTIJFeyid213u7r3iRb7Z3z3TkzOyvbpouhHuAvd8ss2slJFtAHDAFLwHTHAEkhVhq2V4FzoL/oYGEFVQAhansTOKkFsD0LHAAfwIWk4x9B2+PAQ13AInCTERmV9JQqaAEvTQKegQlJUU1YtAGc1gWMAWvAO3Al6TGJr6QmD9QC5CXbjinbAtpAXCA3Kk9RCEr6tbdsDwPXwEweoRLAdrbJ0YM9SbuZSVoGLpsChM4n0JL0lnoRPXhtEhBjOSLpKwEmgfs6gPjQDoEQDKEjSXcZi9aBs44BZQvJ9iBwC0w1DrC9AOwDc/8eU2C7ICnWddx6Pj2lG7f3yyy1J1523aJvyHPNuSo/kJsAAAAASUVORK5CYII=");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 48px;
+  text-decoration: none;
+  color: #fff;
+  float: right;
+}
+
+.reasons .menu-wrapper .reasons-list {
+  margin-top: 94px;
+  padding: 0 30px;
+}
+
+.reasons .menu-wrapper .reasons-list > li {
+  padding: 16px 0;
+  border-bottom: 1px solid #3a3a3a;
+}
+
+.reasons .menu-wrapper .reasons-list > li .reason .photo {
+  width: 72px;
+  text-align: left;
+}
+
+.reasons .menu-wrapper .reasons-list > li .reason .photo img {
+  width: 52px;
+  height: 52px;
+}
+
+.reasons .menu-wrapper .reasons-list > li .reason.soon .name {
+  font-size: 1.33em;
+  line-height: 1.6em;
+}
+
+.reasons .menu-wrapper .reasons-list > li .reason .name {
+  font-size: 1em;
+  line-height: 1em;
+}
+
+.reasons .menu-wrapper .reasons-list > li .reason .when {
+  color: #999;
+}
+
+.reasons .menu-wrapper .reasons-list > li .reason .date {
+  font-size: 1em;
+  font-weight: 400;
+  line-height: 18px;
+}
+
+.reasons .menu-wrapper .reasons-list > li .reason .cell:last-child {
+  width: 95px;
+}
+
+.reasons .menu-wrapper .reasons-list .button {
+  width: auto;
+  height: auto;
+  line-height: 0.9em;
+  font-size: 0.9em;
+  padding: 8px 8px;
+  margin: 0;
+}
+
+.reasons .menu-wrapper .reasons-list .aqua {
+  color: #01bfce;
+}
+
+.reasons-step .title {
+  position: absolute;
+  left: 50px;
+  top: 35px;
+  font-size: 1.2em;
+}
+
+.reasons-step .onboard {
+  height: 100%;
+  color: #000;
+  padding: 0;
+  position: absolute;
+  background-color: #e1f2ff;
+}
+
+.reasons-step .onboard > div {
+  display: block;
+  top: 30%;
+  position: relative;
+  vertical-align: middle;
+  text-align: center;
+}
+
+.reasons-step .onboard > div img {
+  margin-bottom: 20px;
+}
+
+.reasons-step .onboard > div h2 {
+  font-size: 1.86em;
+}
+
+.reasons-step .onboard > div p {
+  width: 60%;
+  margin: 0 auto;
+  font-size: 1.05em;
+}
+
+.reasons-step .newreason,
+.reasons-step .editreason {
+  padding-top: 220px;
+}
+
+.reasons-step .congratulate .congratulations_to {
+  text-align: center;
+}
+
+.reasons-step .congratulate .congratulations_to .photo {
+  padding-bottom: 20px;
+}
+
+.reasons-step .congratulate .congratulations_to .name {
+  color: #fff;
+  font-size: 1.86em;
+  font-weight: 100;
+  line-height: 2.26em;
+}
+
+.reasons-step .congratulate .congratulations_to .when,
+.reasons-step .congratulate .congratulations_to .repeat {
+  color: #999;
+  font-size: 1em;
+}
+
+.reasons-step .congratulate .congratulations_to .when {
+  padding-bottom: 30px;
+}
+
+.reason-datepicker {
+  background: #000;
+  color: #fff !important;
+  margin-top: 12px;
+  width: 100%;
+  padding: 20px;
+}
+
+.reason-datepicker .xdsoft_year {
+  display: none;
+}
+
+.reason-datepicker .xdsoft_mounthpicker {
+  display: block !important;
+  float: left !important;
+}
+
+.reason-datepicker .xdsoft_datepicker {
+  float: none !important;
+}
+
+.reason-datepicker .xdsoft_datepicker .xdsoft_mounthpicker {
+  float: right;
+  width: 40%;
+}
+
+.reason-datepicker .xdsoft_datepicker .xdsoft_mounthpicker > button {
+  display: none;
+}
+
+.reason-datepicker .xdsoft_datepicker .xdsoft_calendar {
+  clear: none;
+  position: relative;
+  float: right;
+}
+
+.reason-datepicker .xdsoft_datepicker .xdsoft_calendar:before {
+  content: "";
+  display: block;
+  position: absolute;
+  left: -12px;
+  width: 1px;
+  background-color: #282828;
+  height: 100%;
+}
+
+.reason-datepicker .xdsoft_datepicker .xdsoft_calendar td.xdsoft_current {
+  background: #fff;
+  color: #000;
+  line-height: 29px;
+}
+
+.reason-datepicker .xdsoft_datepicker .xdsoft_calendar td>div {
+  width: 22px;
+  margin: 0 2px;
+  height: 29px;
+  font-size: 0.8em;
+  line-height: 29px;
+}
+
+.reason-datepicker.xdsoft_datetimepicker {
+  float: right;
+}
+
+.reason-datepicker.xdsoft_datetimepicker .xdsoft_calendar td:hover {
+  color: #000 !important;
+  background: rgba(255,255,255,0.75) !important;
+  box-shadow: none !important;
+}
+
+.reason-datepicker.xdsoft_datetimepicker .xdsoft_select {
+  position: relative;
+  max-height: inherit;
+  display: block !important;
+  text-align: left;
+  overflow: hidden;
+  background: transparent;
+  border: 0;
+  top: 0;
+  padding-top: 10px;
+}
+
+.reason-datepicker.xdsoft_datetimepicker .xdsoft_label {
+  background: none;
+  width: inherit;
+  padding: 0;
+  cursor: default;
+}
+
+.reason-datepicker.xdsoft_datetimepicker .xdsoft_label span,
+.reason-datepicker.xdsoft_datetimepicker .xdsoft_label i.fa {
+  display: none;
+}
+
+.reason-datepicker.xdsoft_datetimepicker .xdsoft_label>.xdsoft_select>div>.xdsoft_option.xdsoft_current {
+  background: #fff;
+  color: #000;
+}
+
+.reason-datepicker.xdsoft_datetimepicker .xdsoft_label>.xdsoft_select>div>.xdsoft_option:hover:hover {
+  color: #000 !important;
+  background: rgba(255,255,255,0.75) !important;
+  box-shadow: none !important;
+}
+
+.reason-datepicker.xdsoft_datetimepicker .xdsoft_scrollbar {
+  display: none;
+}
+
+.reason-datepicker.xdsoft_datetimepicker .xdsoft_option {
+  cursor: pointer;
+  display: inline-block;
+  width: 50%;
 }
 
 .layout {

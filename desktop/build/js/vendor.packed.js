@@ -5396,7 +5396,10 @@ var DateFormatter;
 		beforeShowDay: null,
 
 		enterLikeTab: true,
-        showApplyButton: false
+        showApplyButton: false,
+
+        //Raketa
+        widget: false
 	};
 
 	var dateHelper = null,
@@ -6388,9 +6391,7 @@ var DateFormatter;
 						}
 
 						var table =	'',
-							//start = new Date(_xdsoft_datetime.currentTime.getFullYear(), _xdsoft_datetime.currentTime.getMonth(), 1, 12, 0, 0),
-                            //Raketa
-                            start = new Date(new Date - 12096e5), // current day minus 14 days (prev mounth)
+                            start = new Date(_xdsoft_datetime.currentTime.getFullYear(), _xdsoft_datetime.currentTime.getMonth(), 1, 12, 0, 0),
 							i = 0,
 							j,
 							today = _xdsoft_datetime.now(),
@@ -6409,6 +6410,11 @@ var DateFormatter;
 							h = '',
 							line_time,
 							description;
+
+                        // Raketa
+                        if(options.widget == true)
+                            start = new Date(new Date - 12096e5); // current day minus 14 days (prev mounth)
+
 
 						while (start.getDay() !== options.dayOfWeekStart) {
 							start.setDate(start.getDate() - 1);
@@ -6437,8 +6443,13 @@ var DateFormatter;
 							minDate = new Date(minDate.getFullYear(), minDate.getMonth(), minDate.getDate());
 						}
 
-                        // Raketa - i + 14 days(next month)
-                        while (i < _xdsoft_datetime.currentTime.countDaysInMonth() + 14 || start.getDay() !== options.dayOfWeekStart || _xdsoft_datetime.currentTime.getMonth() === start.getMonth()) {
+                        // Raketa
+                        var currentTimeDaysInMonth = _xdsoft_datetime.currentTime.countDaysInMonth();
+                        if(options.widget == true)
+                            currentTimeDaysInMonth = currentTimeDaysInMonth + 14; // plus 14 days (next mounth)
+
+
+                        while (i < currentTimeDaysInMonth || start.getDay() !== options.dayOfWeekStart || _xdsoft_datetime.currentTime.getMonth() === start.getMonth()) {
                             classes = [];
 							i += 1;
 
@@ -6786,11 +6797,19 @@ var DateFormatter;
 						break;
 					}
 				} while (node.nodeName !== 'HTML');
-				datetimepicker.css({
-					left: left,
-					top: top,
-					position: position
-				});
+                //Raketa
+                if(options.parentID == 'body') {
+                    datetimepicker.css({
+                        left: left,
+                        top: top,
+                        position: position
+                    });
+                } else {
+                    datetimepicker.css({
+                        position: position
+                    });
+                }
+
 			};
 			datetimepicker
 				.on('open.xdsoft', function (event) {

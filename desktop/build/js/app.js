@@ -760,6 +760,7 @@ $(function() {
 				}
 			}
 		},
+		reasons: {},
 		checkout: {
 			basket: [],
 			delivery: {},
@@ -2901,7 +2902,251 @@ $(function() {
 	};
 	
 	$.extend( app.checkout, _checkout );
-
+	// full trash // It's last spagetty code! because of the small amount of time for the project
+	var _reasons = {
+	    init: function() {
+	        var _this = this;
+	        this.defaultStep = 'congratulate';
+	
+	        $('#reasons .content-panel .bottom button[type="submit"]').on('click', function(e) {
+	            var targetForm = $(this).data('to-form');
+	
+	            if(settings.env == 'dev')
+	                console.log('Click bottom button with target form ' + targetForm);
+	            if(!targetForm || $(targetForm).length == 0)
+	                return;
+	
+	            var form = $(targetForm);
+	            form.trigger('submit');
+	            return false;
+	        });
+	
+	        $('#reasons-step form').on('submit', function(e) {
+	            var data = $(this).serializeObject();
+	        });
+	
+	        $('#reasons .content-panel .bottom button[type="edit"]').on('click', function(e) {
+	            _this.goToStep('editreason', e);
+	            return false;
+	        })
+	
+	        $('#reasons .content-panel .bottom button[type="dismiss"]').on('click', function(e) {
+	            _this.goToStep(_this.defaultStep);
+	            $('#reasons-step form.edit-reason-form')[0].reset();
+	            return false;
+	        });
+	
+	        $('#reasons button[data-toggle="gotostep"]').on('click', function(e) {
+	            var step = $(this).data('to-step');
+	            if(_this.currentStep.data('step') == 'onboard') {
+	                Cookies.set('reketa_reasons__board', true, { expire: 365, path: '/' });
+	                _this.currentStep.find('img').removeClass('zoomIn').addClass('zoomOutDown');
+	                _this.currentStep.find('img').one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function() {
+	                    _this.goToStep(step);
+	                });
+	            } else {
+	                _this.goToStep(step, e);
+	            }
+	
+	        });
+	
+	
+	        var hash = Hash.get();
+	        var board = Cookies.get('reketa_reasons__board');
+	        if(board) {
+	            if (hash.anchor) {
+	                window.location.hash = hash.anchor;
+	                this.goToStep(hash.anchor);
+	            } else {
+	                this.goToStep(this.defaultStep);
+	            }
+	        } else {
+	            this.goToStep('onboard');
+	        }
+	    },
+	
+	    goToStep: function(step, e) {
+	
+	        var reasons = $('#reasons-step');
+	        var $currentStep = this.currentStep = reasons.find('.step[data-step="'+ step +'"]');
+	        var openedStep = reasons.find('.step.active');
+	
+	        if(step != 'congratulate' && $currentStep.data('step') == openedStep.data('step'))
+	            return;
+	
+	        if(step != 'onboard')
+	            Hash.add('step', step);
+	
+	        if(settings.env == 'dev')
+	            console.log('[STEP] Go to reasons step #' + step);
+	
+	        reasons.parent().find('.bottom[data-to-step]').removeClass('show');
+	
+	        openedStep.removeClass('active');
+	        openedStep.trigger('step-close');
+	
+	        this.currentStep.addClass('active').trigger('step-open');
+	        reasons.parent().find('.bottom[data-to-step="' + step + '"]').addClass('show');
+	
+	        if(this.step[step]
+	            && !this.step[step].loaded
+	            && (typeof this.step[step].load === "function")
+	        )
+	            this.step[step].load(e);
+	
+	        if(this.step[step]
+	            && this.step[step].loaded
+	            && (typeof this.step[step].init === "function")
+	        )
+	            this.step[step].init(e);
+	    },
+	    getCurrentStep: function() {
+	        return this.currentStep;
+	    },
+	    step: {
+	        newreason: {
+	            load: function() {
+	                var form = $('#reasons-step form');
+	                form.find('input.datetimepicker').each(function() {
+	                    var _this = $(this);
+	                   $(this).datetimepicker({
+	                       timepicker:false,
+	                       todayButton: false,
+	                       yearStart: '2016',
+	                       yearEnd: '2035',
+	                       dayOfWeekStart: 1,
+	                       scrollMonth: false,
+	                       prevButton: false,
+	                       nextButton: false,
+	                       className: 'reason-datepicker',
+	                       parentID: _this.parent(),
+	                       minDate:new Date(),
+	                       format:'d.m.Y'
+	                   });
+	                });
+	
+	
+	                var date = new Date();
+	                var stringTitle = 'К примеру: вы выбрали ' + moment(date).format('DD.MM.YYYY') + '<br>' +
+	                        'Каждую неделю - поздравлять каждый ' + moment(date).format('dddd').toLowerCase() + '<br>' +
+	                        'Каждый месяц - каждый месяц ' + moment(date).format('DD') + ' числа<br>' +
+	                        'Каждую год - каждый год ' + moment(date).format('MMMM Do');
+	
+	                form.find('select[name="repeat"]').selectize({
+	                    allowEmptyOption: false,
+	                    create: false,
+	                    plugins: {
+	                        'dropdown_footer': {
+	                            title: stringTitle
+	                        }
+	                    },
+	                });
+	
+	                form.find('select[name="who"]').selectize({
+	                    allowEmptyOption: false,
+	                    create: false,
+	                });
+	
+	                form.find('select[name="reason"]').selectize({
+	                    allowEmptyOption: false,
+	                    create: true,
+	                    plugins: {
+	                        'restore_on_backspace' : {},
+	                        'dropdown_footer': {
+	                            title: 'Вы можете выбрать уже существущий повод и отредактировать его(клавиша Backspace) или добавить новый повод просто указав название'
+	                        }
+	                    }
+	                });
+	
+	                form.find('input').on('keyup', function() {
+	                    var buttons = $('#reasons .content-panel .bottom[data-to-step*="reason"]');
+	                    buttons.find('button').removeAttr('disabled');
+	                    buttons.find('button[type="submit"]').removeClass('btn-bordered').addClass('btn-primary');
+	                });
+	
+	                form.find('select').on('change', function() {
+	                    var buttons = $('#reasons .content-panel .bottom[data-to-step*="reason"]');
+	                    buttons.find('button').removeAttr('disabled');
+	                    buttons.find('button[type="submit"]').removeClass('btn-bordered').addClass('btn-primary');
+	                });
+	
+	                this.loaded = true;
+	            },
+	        },
+	        congratulate: {
+	            load: function() {
+	                $('#reasons-step div[data-step="congratulate"]').on('step-close', function() {
+	                    $('#reasons-step').parent().removeClass('middle');
+	                });
+	                this.loaded = true;
+	            },
+	            init: function(e) {
+	                $('#reasons-step').parent().addClass('middle');
+	                if(e && $(e.currentTarget)) {
+	                    var id = $(e.currentTarget).closest('li').data('id');
+	                    var buttons = $('#reasons-step').parent().find('.bottom[data-to-step="congratulate"]');
+	                    buttons.find('button[type="edit"]').data('id', id).attr('data-id', id); // its fucking shit...save id to data attr for further editing
+	                    buttons.removeClass('show');
+	                    ajaxloader.local({
+	                        element: $('#reasons-step div[data-step="congratulate"]')
+	                    });
+	                    var data = this.getData(id, function(response) {
+	                        ajaxloader.finish();
+	                        buttons.addClass('show');
+	                        var template = tmpl(
+	                            document.getElementById("tmpl-congratulations-to").innerHTML,
+	                            response
+	                        );
+	                        $('#reasons-step div[data-step="congratulate"]').html(template);
+	
+	                    })
+	                }
+	            },
+	            getData: function(id, callback) {
+	                // Ajax simulation
+	                setTimeout(function() {
+	                    if(id == 1) {
+	                        var response = {
+	                            photo: 'img/reason-1b.png',
+	                            name: 'Маша Петрова',
+	                            reason: 'День рождения',
+	                            repeat: 'Напоминать каждый год',
+	                        };
+	                    } else {
+	                        var response = {
+	                            name: 'Международный женский день',
+	                            reason: 'Праздники',
+	                            repeat: 'Напоминать каждый год',
+	                        };
+	                    }
+	
+	                    if(typeof callback === "function")
+	                        callback(response);
+	                }, 1000);
+	            }
+	        },
+	        editreason: {
+	            load: function() {
+	                if(!app.reasons.step.newreason.loaded)
+	                    app.reasons.step.newreason.load();
+	
+	
+	                this.loaded = true;
+	            },
+	            init: function(e) {
+	                var form = $('#edit-reason-form');
+	                form[0].reset();
+	                form.find('select').each(function() {
+	                    $(this)[0].selectize.clear();
+	                });
+	                form.find('input[name="reasonId"]').val($(e.currentTarget).data('id'));
+	            }
+	        }
+	    }
+	};
+	
+	
+	$.extend( app.reasons, _reasons );
 
 	$w.scroll(function () {
 		app.scroll();

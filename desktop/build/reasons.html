@@ -113,63 +113,234 @@
         </div>
     </div>
     <div id="content">
-        <div id="support" class="table layout devided-slider" data-layout="devided-slider">
-            <div class="menu-wrapper cell middle">
-                Поводы
-            </div>
-            <div class="content-panel cell middle">
-                <div id="slider-content" class="owl-carousel">
-                    <div class="item" data-hash="faq">
-                        <h2>Как дела?</h2>
-                        <p>Сибирская угольная энергетическая компания — самый крупный в стране производитель и поставщик угля, который обеспечивает почти треть российской добычи. Каждый год СУЭК публикует отчеты о результатах своей деятельности на русском и английском языках.</p>
-                        <p>В студии созданы иллюстрации, разбавляющие официальные тексты со множеством статистических показателей и понятно объясняющие, как устроены сложные технические процессы.</p>
-                        <h2>Как дела?</h2>
-                        <p>В студии созданы иллюстрации, разбавляющие официальные тексты со множеством статистических показателей и понятно объясняющие, как устроены сложные технические процессы.</p>
-                    </div>
-                    <div class="item" data-hash="call">
-                        <h2>Контакты</h2>
-                        <p>Skype:</p>
-                        <p>Telegramm:</p>
-                        <p>Номер телефона:</p>
-                        <p>Мобильный номер:</p>
-                        <p>Служба доставки:</p>
-                    </div>
-                    <div class="item" data-hash="callback">
-                        <div id="callback-order-success">
-                            <div class="timer"></div>
-                            <img src="img/callback_status_success.png" class="success animate" alt="">
-                            <div class="title">
-                                <h4>Спасибо!</h4>
-                                <p>Звонок заказан</p>
+        <div id="reasons" class="table layout devided reasons" data-layout="devided">
+            <div class="menu-wrapper cell">
+                <div class="title">
+                    <h2>Поводы</h2> <button class="btn-image small add" data-toggle="gotostep" data-to-step="newreason" title="Добавить повод"></button>
+                    <a href="#" class="btn-image bigs">Загрузить дни рождения</a>
+                </div>
+                <ul class="reasons-list">
+                    <li data-id="1">
+                        <div class="table reason soon">
+                            <div class="cell middle photo">
+                                <img src="img/reason-1.png" alt="">
                             </div>
-                            <div class="intime">
-                                Мы позвоним в течении 15 минут
+                            <div class="cell middle for">
+                                <div class="name">Маша Петрова</div>
+                                <div class="when">День рождения</div>
+                                <div class="date aqua">7 марта</div>
+                            </div>
+                            <div class="cell middle">
+                                <button class="button aqua" data-toggle="gotostep" data-to-step="congratulate">Поздравить</button>
                             </div>
                         </div>
-                        <form action="/" id="order-callback" method="POST" class="order-callback-form">
+                    </li>
+                    <li data-id="2">
+                        <div class="table reason soon">
+                            <div class="cell middle photo">
+                                <img src="img/birthday.png" alt="">
+                            </div>
+                            <div class="cell middle for">
+                                <div class="name">Международный ж...</div>
+                                <div class="when">Праздники</div>
+                                <div class="date aqua">8 марта</div>
+                            </div>
+                            <div class="cell middle">
+                                <button class="button aqua" data-toggle="gotostep" data-to-step="congratulate">Поздравить</button>
+                            </div>
+                        </div>
+                    </li>
+                    <li data-id="3">
+                        <div class="table reason">
+                            <div class="cell middle photo">
+                                <img src="img/9maya.png" alt="">
+                            </div>
+                            <div class="cell middle for">
+                                <div class="name">День победы</div>
+                                <div class="when">Праздники</div>
+                                <div class="date aqua">9 мая</div>
+                            </div>
+                            <div class="cell middle">
+                            </div>
+                        </div>
+                    </li>
+                    <li data-id="4">
+                        <div class="table reason">
+                            <div class="cell middle photo">
+                                <img src="img/reason-2.png" alt="">
+                            </div>
+                            <div class="cell middle for">
+                                <div class="name">Николай Константинопольский</div>
+                                <div class="when">День рождения</div>
+                                <div class="date aqua">6 июня</div>
+                            </div>
+                            <div class="cell middle">
+                            </div>
+                        </div>
+                    </li>
+                    <li data-id="5">
+                        <div class="table reason">
+                            <div class="cell middle photo">
+                                <img src="img/kosmonavtika.png" alt="">
+                            </div>
+                            <div class="cell middle for">
+                                <div class="name">День космонавтики</div>
+                                <div class="when">Праздники</div>
+                                <div class="date aqua">12 июня</div>
+                            </div>
+                            <div class="cell middle">
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="content-panel cell">
+                <div id="reasons-step" class="reasons-step">
+                    <div data-step="onboard" class="step onboard">
+                        <div>
+                            <img src="img/raketa-gray.png" alt="Ракета" class="animated zoomIn">
+                            <h2>Как мы поздравим?</h2>
+                            <p>Выбирайте букет, оформляйте доставку, а мы предложим подходящий повод и открытку!</p>
+                        </div>
+                    </div>
+                    <div data-step="newreason" class="step newreason">
+                        <div class="title">Новый повод</div>
+                        <form action="/" method="POST" id="new-reason-form" class="new-reason-form">
                             <input type="hidden" name="csrf" value="">
                             <div class="form-group">
-                                <label for="name">Имя</label>
-                                <input type="text" id="name" value="Никита" name="name">
+                                <select id="reason" name="reason" class="raketa-select" placeholder="Повод...">
+                                    <option value="">Повод...</option>
+                                    <option value="simply">Просто так</option>
+                                    <option value="birthday">День рождения</option>
+                                    <option value="1maya">День труда 1 Мая</option>
+                                </select>
                             </div>
                             <div class="form-group">
-                                <label for="phone">Номер телефона</label>
-                                <input type="text" id="phone" value="+7 882 323-43-76" name="phone">
+                                <input class="datetimepicker" type="text" name="date" placeholder="Дата..." autocomplete="off">
+                            </div>
+                            <div class="form-group">
+                                <select id="repeat" name="repeat" class="raketa-select" placeholder="Повторять...">
+                                    <option value="">Повторять...</option>
+                                    <option value="everyWeek">Каждую неделю</option>
+                                    <option value="everyMonth">Каждый месяц</option>
+                                    <option value="everyYear">Каждый год</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                            <select id="who" name="who" class="raketa-select" placeholder="Имя...">
+                                <option value="">Имя...</option>
+                                <option value="1">Валентина Петровна</option>
+                                <option value="2">Георгий Валерьевич</option>
+                                <option value="3">Мария Владимировна</option>
+                                <option value="4">Гульнар Батрудинова</option>
+                                <option value="5">Директор</option>
+                            </select>
                             </div>
                         </form>
                     </div>
-                    <div class="item" data-hash="email">
-                        <h2>Почта</h2>
-                        <p>Вы можете написать нам на почту. Мы ответим в кротчайшее время.</p>
+                    <div data-step="congratulate" class="step congratulate">
+                        <!-- По дефолту видимо самое ближайшее событие -->
+                        <div class="congratulations_to">
+                            <div class="photo">
+                                <img src="img/reason-1b.png" alt="">
+                            </div>
+                            <div class="name">
+                                Маша Петрова
+                            </div>
+                            <div class="when">
+                                День рождения
+                            </div>
+                            <div class="repeat">
+                                Напоминать каждый год
+                            </div>
+                        </div>
+                    </div>
+                    <div data-step="editreason" class="step editreason">
+                        <div class="title">Редактирование</div>
+                        <form action="/" method="POST" id="edit-reason-form" class="edit-reason-form">
+                            <input type="hidden" name="csrf" value="">
+                            <input type="hidden" name="reasonId" value="">
+                            <div class="form-group">
+                                <select name="reason" class="raketa-select" placeholder="Повод...">
+                                    <option value="">Повод...</option>
+                                    <option value="simply">Просто так</option>
+                                    <option value="birthday">День рождения</option>
+                                    <option value="1maya">День труда 1 Мая</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <input class="datetimepicker" type="text" name="date" placeholder="Дата..." autocomplete="off">
+                            </div>
+                            <div class="form-group">
+                                <select name="repeat" class="raketa-select" placeholder="Повторять...">
+                                    <option value="">Повторять...</option>
+                                    <option value="everyWeek">Каждую неделю</option>
+                                    <option value="everyMonth">Каждый месяц</option>
+                                    <option value="everyYear">Каждый год</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <select name="who" class="raketa-select" placeholder="Имя...">
+                                    <option value="">Имя...</option>
+                                    <option value="1">Валентина Петровна</option>
+                                    <option value="2">Георгий Валерьевич</option>
+                                    <option value="3">Мария Владимировна</option>
+                                    <option value="4">Гульнар Батрудинова</option>
+                                    <option value="5">Директор</option>
+                                </select>
+                            </div>
+                        </form>
                     </div>
                 </div>
-                <button data-to-slide="callback" type="submit" class="bottom primary">Заказать</button>
+                <div data-to-step="onboard" class="bottom">
+                    <div class="button-group one-button">
+                        <button data-toggle="gotostep" data-to-step="newreason" class="btn-primary">Понятно</button>
+                    </div>
+                </div>
+                <div data-to-step="newreason" class="bottom">
+                    <div class="button-group two-button">
+                        <button type="dismiss"  class="btn-dismiss" disabled>Отменить</button>
+                        <button type="submit" data-to-form="#new-reason-form" class="btn-bordered" disabled>Сохранить</button>
+                    </div>
+                </div>
+                <div data-to-step="congratulate" class="bottom">
+                    <div class="button-group two-button">
+                        <!-- По дефолту id ближайшего события в атрибуте -->
+                        <button type="edit" data-id="1" class="btn-bordered">Редактировать</button>
+                        <a href="?congratulate&4" class="btn-primary">Поздравить</a>
+                    </div>
+                </div>
+                <div data-to-step="editreason" class="bottom">
+                    <div class="button-group two-button">
+                        <button type="dismiss"  class="btn-dismiss" disabled>Отменить</button>
+                        <button type="submit" data-to-form="#edit-reason-form" class="btn-bordered" disabled>Сохранить</button>
+                    </div>
+                </div>
             </div>
         </div>
         <script>
             $(function() {
-                app.layout.init($('#support'));
+                app.layout.init();
+                app.reasons.init();
             })
+        </script>
+        <script type="text/x-tmpl" id="tmpl-congratulations-to">
+            <div class="congratulations_to">
+                {% if (o.photo && o.photo !== '') { %}
+                <div class="photo">
+                    <img src="{%=o.photo %}" alt="">
+                </div>
+                {% } %}
+                <div class="name">
+                    {%=o.name %}
+                </div>
+                <div class="when">
+                    {%=o.reason %}
+                </div>
+                <div class="repeat">
+                    {%=o.repeat %}
+                </div>
+            </div>
         </script>
 
         <div id="ajax-loader"></div>
