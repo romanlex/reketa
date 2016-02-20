@@ -5,6 +5,8 @@
     <title>Заказ №123123 исполнен</title>
 
     
+    <meta name="viewport" content="width=device-width; initial-scale=1.0">
+    
     <link rel="stylesheet" href="css/vendor.packed.min.css">
     <link rel="stylesheet" href="css/app.min.css">
     
@@ -264,6 +266,10 @@
     </div>
 </div>
 <div class="widget calendar" id="widget-calendar">
+    <div class="warning hidden">
+        <p>Изменяя дату доставки, вы изменяете дату доставки для находящихся в корзине букетов</p>
+        <span>Для доставки букетов в разные дни, нужно оформить несколько заказов</span>
+    </div>
     <button class="close"></button>
     <form action="/" id="set-delivery-date" method="POST">
     <div class="widget-content">

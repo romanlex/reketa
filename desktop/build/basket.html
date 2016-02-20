@@ -5,6 +5,8 @@
     <title>Корзина</title>
 
     
+    <meta name="viewport" content="width=device-width; initial-scale=1.0">
+    
     <link rel="stylesheet" href="css/vendor.packed.min.css">
     <link rel="stylesheet" href="css/app.min.css">
     
@@ -113,7 +115,7 @@
         </div>
     </div>
     <div id="content">
-        <div class="table layout devided checkout checkout-basket" data-layout="devided">
+        <div class="table layout devided checkout checkout-basket warning" data-layout="devided">
             <div class="menu-wrapper cell">
                 <div class="title">
                     <h3>Корзина</h3>
@@ -146,7 +148,7 @@
                                 <img src="img/shutterstock_285725309.png" alt="">
                             </span>
                             <span class="cell middle info">
-                                Желтая дача<br>
+                                <span class="alert">Желтая дача</span><br>
                                 2500₽
                             </span>
                             <span class="cell middle count">
@@ -183,6 +185,35 @@
                         </div>
                     </li>
                 </ul>
+                <div class="row mobile image-list offer">
+                    <div class="columns four">
+                        <div class="image">
+                            <img src="img/car.png" alt="">
+                        </div>
+                        Бесплатная
+                        доставка
+                    </div>
+                    <div class="columns four">
+                        <div class="image">
+                            <img src="img/postcard.png" alt="">
+                        </div>
+                        Бесплатная
+                        открытка
+                    </div>
+                    <div class="columns four">
+                        <div class="image">
+                            <img src="img/x3.png" alt="">
+                        </div>
+                        Три букета
+                        бесплатно
+                    </div>
+                </div>
+                <div class="bottom mobile show">
+                    <div class="button-group one-button">
+                        <a href="checkout.html" class="btn-primary" tabindex="4">Оформить заказ</a>
+                        <!--<button class="btn-bordered" tabindex="4" disabled>Оформить заказ</button>-->
+                    </div>
+                </div>
             </div>
             <div class="content-panel cell middle">
                 <a href="#" class="top-right-link"><img src="img/time.png" alt=""></a>
@@ -191,6 +222,8 @@
                         <span class="price">3500₽</span>
                         <span class="count">3 букета</span>
                     </div>
+                    <div class="message alert">Не все букеты доступны для доставки 12 октября</div>
+                    <div class="text">Для доставки букетов в разные дни, нужно оформить несколько заказов</div>
                     <button class="btn-image big calendar" data-toggle="popup" data-target="#widget-calendar">Дата доставки</button>
 
                     <div class="row image-list offer">
@@ -220,6 +253,7 @@
                 <div class="bottom show">
                     <div class="button-group one-button">
                         <a href="checkout.html" class="btn-primary" tabindex="4">Оформить заказ</a>
+                        <!--<button class="btn-bordered" tabindex="4" disabled>Оформить заказ</button>-->
                     </div>
                 </div>
             </div>
@@ -230,6 +264,18 @@
 <script>
     $(function() {
         app.layout.init();
+        $('ul.basket-list li').on('click', function(e) {
+            if(device.type != 'smallmobile' && device.type != 'mobile')
+                return;
+
+            var $target = $(e.target);
+
+            if($target.is('.spin-up') || $target.is('.spin-down') || $target.is('.form-control'))
+                return;
+
+            $('ul.basket-list li').not(this).removeClass('mobile-delete');
+            $(this).toggleClass('mobile-delete');
+        });
         $('button[type="delete-from-basket"]').on('click', function() {
             var pid = $(this).data('product-id');
             console.log(pid);
@@ -296,6 +342,10 @@
     </div>
 </div>
 <div class="widget calendar" id="widget-calendar">
+    <div class="warning hidden">
+        <p>Изменяя дату доставки, вы изменяете дату доставки для находящихся в корзине букетов</p>
+        <span>Для доставки букетов в разные дни, нужно оформить несколько заказов</span>
+    </div>
     <button class="close"></button>
     <form action="/" id="set-delivery-date" method="POST">
     <div class="widget-content">

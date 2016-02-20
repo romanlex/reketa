@@ -59,6 +59,7 @@ $(function() {
 	    scrollMonth: false,
 	    dayOfWeekStart: 1,
 	    yearStart: '2016',
+	    defaultSelect: false,
 	    yearEnd: '2020',
 	    minDate:new Date(),
 	    maxDate: new Date(+new Date + 12096e5), // magic number is 14 days in ms
@@ -69,6 +70,11 @@ $(function() {
 	        obj.find('button[data-toggle="clear-date"]').removeAttr('disabled');
 	        $('#selectedDate').html(app.widgets.calendar.getDateString());
 	        $('input[name="date"].datetime-picker').datetimepicker({value: dp});
+	
+	        if(app.checkout.delivery !== undefined && device.type == 'smallmobile')
+	            obj.find('.warning').hide().removeClass('hidden').show().addClass('opened');
+	
+	
 	    },
 	    onGenerate: function(ct) {
 	        var calendar = $(this).find('.xdsoft_calendar');
@@ -157,7 +163,7 @@ $(function() {
 					device.type = 'planshet';
 				if(width < 768)
 					device.type = 'mobile';
-				if(width <= 320)
+				if(width < 320)
 					device.type = 'smallmobile';
 
 				device.windowHeight = height;
@@ -896,12 +902,22 @@ $(function() {
 						var _h = obj.height() ;
 						var button_offset = button.offset();
 						var right = device.windowWidth - (button_offset.left + button.outerWidth()) - 20;
-						obj.css('top', - (_h + 40) + 'px');// box shadow
-						obj.css('right', Math.floor(right) + 'px');
-						obj.css('height', _h + 'px');
+
+						if(device.type == 'smallmobile' || device.type == 'mobile') {
+							obj.css('top', 'auto');
+							obj.css('bottom', - (_h + 40) + 'px');// box shadow
+							obj.css('height', _h + 'px');
+						} else {
+							obj.css('top', - (_h + 40) + 'px');// box shadow
+							obj.css('right', Math.floor(right) + 'px');
+							obj.css('height', _h + 'px');
+						}
 						this.position.width = _w;
 						this.position.height = _h;
-						this.position.top = - _h;
+						if(device.type == 'smallmobile' || device.type == 'mobile')
+							this.position.bottom = 0;
+						else
+							this.position.top = - _h;
 						this.position.right = - right;
 					}
 
@@ -1006,9 +1022,13 @@ $(function() {
 					if($.isEmptyObject(app.checkout.delivery))
 						this.obj.find('.xdsoft_current').removeClass('xdsoft_current');
 
-
 					this.obj.addClass('animation');
-					this.obj.transition({ y: Math.floor(this.obj.height() + 40) }); //box shadow
+
+					var pos = this.obj.height() + 40;
+					if(device.type == 'smallmobile' || device.type == 'mobile')
+						pos = - this.obj.height() - 40;
+
+					this.obj.transition({ y: Math.floor(pos) }); //box shadow
 
 					var _this = this;
 					this.obj.one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend', function(e) {
@@ -1021,9 +1041,11 @@ $(function() {
 					if(settings.env == 'dev')
 						console.log('[WIDGET] Close widget @calendar');
 
-
 					this.obj.removeClass('opened').addClass('animation');
-					this.obj.transition({ y: this.position.top, complete: function() {
+					var pos = this.position.top;
+					if(device.type == 'smallmobile' || device.type == 'mobile')
+						pos = this.position.bottom;
+					this.obj.transition({ y: pos, complete: function() {
 						this.opened = false;
 					}});
 
@@ -1171,11 +1193,23 @@ $(function() {
 
 					$('#bouquet-list li[data-bouquet-id="' + obj.data('product-id') + '"] > div[data-toggle="popup"]').data('order', false);
 
+					if(device.type == 'smallmobile' || device.type == 'mobile')
+						$('#header button[data-target="#widget-calendar"]').slideUp(200);
+
 					//var height = ($w.height() - $('#header').height()) - 50;
+
 					var height = obj.height();
 					var width = obj.width();
-					obj.css('top', -height).css('visibility', 'visible');
-					this.startPosition.top = -height;
+
+					if(device.type == 'smallmobile' || device.type == 'mobile') {
+						obj.css('top', 'auto');
+						obj.css('bottom', -height).css('visibility', 'visible');
+						this.startPosition.bottom = 0;
+						obj.find('.product-info').show();
+					} else {
+						obj.css('top', -height).css('visibility', 'visible');
+						this.startPosition.top = -height;
+					}
 
 					// Если этот товар в корзине и указана дата доставки, то шаг 3
 					var index;
@@ -1205,6 +1239,8 @@ $(function() {
 
 					if(device.type == 'desktop' && (device.subtype == 'fullhd' || device.subtype == 'hd'))
 						obj.transition({ y: Math.floor(device.windowHeight - (device.windowHeight - height)/2) });
+					else if (device.type == 'smallmobile' || device.type == 'mobile')
+						obj.transition({ y: Math.floor(- height)});
 					else
 						obj.transition({ y: Math.floor(height + $('#header').height())});
 
@@ -1223,8 +1259,16 @@ $(function() {
 					if(settings.env == 'dev')
 						console.log('[WIDGET] Close widget @productcart');
 
+					if(device.type == 'smallmobile' || device.type == 'mobile') {
+						$('#header button[data-target="#widget-calendar"]').slideDown(200);
+						$('#content .mobile.notify').removeClass('open');
+					}
+
 					obj.removeClass('opened').addClass('animation');
-					obj.transition({ y: this.startPosition.top });
+					var pos = this.startPosition.top;
+					if(device.type == 'smallmobile' || device.type == 'mobile')
+						pos = this.startPosition.bottom;
+					obj.transition({ y: pos });
 					window.location.hash = '';
 					history.pushState('', document.title, window.location.pathname);
 					document.title = this.startTitle;
@@ -1253,7 +1297,7 @@ $(function() {
 				loadStep3: function(obj, index) {
 					obj.find('.step').hide().removeClass('active');
 					obj.find('.step3').addClass('active').show();
-					console.log(index);
+					$('#content .mobile.notify').addClass('open');
 					var inBasket = app.basket.getProductFromBasket(obj.data('product-id'));
 
 					var _str = lang.bouquetInBasketPopupCart;
@@ -1320,6 +1364,8 @@ $(function() {
 				this.loadLayout(layout, container, callback);
 			},
 			setStyleLayout: function(layout, container) {
+				if(device.type == 'smallmobile' || device.type == 'mobile')
+					return;
 				var currentH = container.outerHeight();
 				var newH = ($w.height() - $('#header').height()) - 50;
 				container.css('height', newH + 'px');

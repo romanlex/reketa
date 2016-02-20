@@ -5,6 +5,8 @@
     <title>Document</title>
 
     
+    <meta name="viewport" content="width=device-width; initial-scale=1.0">
+    
     <link rel="stylesheet" href="css/vendor.packed.min.css">
     <link rel="stylesheet" href="css/app.min.css">
     
@@ -388,7 +390,7 @@
                                             </div>
                                         </div>
                                         <div class="button-group two-button">
-                                            <a class="btn-primary" tabindex="6" href="order.html">
+                                            <a class="btn-primary" tabindex="6" href="basket.html">
                                                 Оформить заказ
                                             </a>
                                             <button class="btn-dismiss popup-close" tabindex="7">
@@ -405,7 +407,11 @@
             </script>
             
             
-            
+            <div class="mobile notify">
+                <div>
+                    <strong>Нужно много букетов?</strong><br> Пишите на <a href="mailto:sales@raketa-project.ru?subject=Хочу заказать букеты оптом">sales@raketa-project.ru</a>
+                </div>
+            </div>
             <ul class="image-list bouquet-list" id="bouquet-list">
                 <!--<li data-bouquet-id="1">-->
                     <!--<div class="bouquet dark">-->
@@ -466,6 +472,10 @@
         </div>
     </div>
     <div class="widget calendar" id="widget-calendar">
+        <div class="warning hidden">
+            <p>Изменяя дату доставки, вы изменяете дату доставки для находящихся в корзине букетов</p>
+            <span>Для доставки букетов в разные дни, нужно оформить несколько заказов</span>
+        </div>
         <button class="close"></button>
         <form action="/" id="set-delivery-date" method="POST">
         <div class="widget-content">

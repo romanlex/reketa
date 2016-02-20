@@ -6412,7 +6412,7 @@ var DateFormatter;
 							description;
 
                         // Raketa
-                        if(options.widget == true)
+                        //if(options.widget == true)
                             start = new Date(new Date - 12096e5); // current day minus 14 days (prev mounth)
 
 
