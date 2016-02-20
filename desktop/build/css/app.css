@@ -4318,6 +4318,69 @@ span.icon-basket {
   .modal.dialog-popup {
     width: 100%;
   }
+
+  #orders {
+    background-color: transparent;
+  }
+
+  #orders h1 {
+    padding: 15px 20px;
+  }
+
+  #orders ul.order-list {
+    padding: 0;
+  }
+
+  #orders ul.order-list li:before {
+    background: #242424;
+  }
+
+  #orders ul.order-list li >a {
+    padding: 16px 0;
+  }
+
+  #orders ul.order-list li >a:after {
+    top: 26px !important;
+    right: 4px !important;
+  }
+
+  #orders ul.order-list li >a .image {
+    width: 70px;
+  }
+
+  #orders ul.order-list li >a span.status.mobile {
+    font-size: 0.8em;
+    width: auto;
+  }
+
+  #orders ul.order-list li >a .cell.status {
+    display: block;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    width: 100%;
+    bottom: 0;
+    z-index: -1;
+    text-indent: -9999px;
+  }
+
+  #orders ul.order-list li >a .cell.status.error {
+    background-color: rgba(255,0,0,0.05);
+  }
+
+  #orders ul.order-list li >a .cell.status.success {
+    background-color: rgba(0,255,0,0.05);
+  }
+
+  #orders ul.order-list li >a .price {
+    display: block;
+    position: absolute;
+    right: 0;
+    vertical-align: top;
+    padding-right: 20px;
+    font-size: 1em;
+  }
 }
 
 @media screen and (min-width: 768px) and (max-width: 1024px) {
