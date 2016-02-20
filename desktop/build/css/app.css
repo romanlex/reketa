@@ -3875,12 +3875,22 @@ span.icon-basket {
   }
 
   #header .logo {
-    padding-top: 20px;
-    width: 70px;
+    display: none;
   }
 
-  #header .logo img {
-    height: 30px;
+  #header .title {
+    text-align: center;
+    height: 64px;
+    line-height: 64px;
+  }
+
+  #header .title h1 {
+    height: 64px;
+    line-height: 64px;
+    margin: 0;
+    font-size: 1.2em;
+    font-weight: 400;
+    letter-spacing: 0;
   }
 
   #header .buttons .calendar {
@@ -4321,6 +4331,7 @@ span.icon-basket {
 
   #orders {
     background-color: transparent;
+    width: auto;
   }
 
   #orders h1 {
@@ -4329,6 +4340,10 @@ span.icon-basket {
 
   #orders ul.order-list {
     padding: 0;
+  }
+
+  #orders ul.order-list.basket-list {
+    padding: 0 20px;
   }
 
   #orders ul.order-list li:before {
@@ -4380,6 +4395,57 @@ span.icon-basket {
     vertical-align: top;
     padding-right: 20px;
     font-size: 1em;
+  }
+
+  #orders .inlinetitle:not(.mobile) {
+    display: none;
+  }
+
+  #orders .inlinetitle.mobile {
+    padding: 15px 20px;
+  }
+
+  #orders .bottom a {
+    margin-top: 0;
+  }
+
+  .order-info {
+    padding: 0 20px;
+  }
+
+  .order-info .price {
+    display: none;
+  }
+
+  .order-info .status-order {
+    border-top: 1px solid #3a3a3a;
+    border-bottom: 1px solid #3a3a3a;
+    margin-bottom: 15px;
+  }
+
+  .order-info .title {
+    padding: 15px 0px;
+  }
+
+  .order-info .information {
+    padding: 0;
+    font-size: 0.8em;
+  }
+
+  .order-info .information table {
+    margin: 0;
+  }
+
+  .order-info .information table .mobile {
+    display: table-row;
+  }
+
+  .order-info .information table tr>td {
+    padding: 4px 8px;
+  }
+
+  .order-info .information table tr>td:first-child {
+    text-align: right;
   }
 }
 
