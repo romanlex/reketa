@@ -71,7 +71,7 @@ $(function() {
 	        $('#selectedDate').html(app.widgets.calendar.getDateString());
 	        $('input[name="date"].datetime-picker').datetimepicker({value: dp});
 	
-	        if(app.checkout.delivery !== undefined && device.type == 'smallmobile')
+	        if(app.checkout.delivery !== undefined && (device.type == 'smallmobile' || device.type == 'mobile'))
 	            obj.find('.warning').hide().removeClass('hidden').show().addClass('opened');
 	
 	
@@ -100,8 +100,10 @@ $(function() {
 	
 	        });
 	
-	        if($('button[data-target="#widget-calendar"]').length > 0 && (!app.widgets.calendar.position.width || !app.widgets.calendar.position.height || !app.widgets.calendar.position.top || !app.widgets.calendar.position.right )) {
-	            app.widgets.calendar.setPosition();
+	        if(
+	            $('button[data-target="#widget-calendar"]').length > 0
+	            && app.widgets.calendar.calendarInitialized == false ) {
+	            $(document).trigger('init.xdsoft');
 	        }
 	    }
 	}
@@ -385,10 +387,10 @@ $(function() {
 				}
 				sidebar.find('.sidebar-bottom').css({position: posB});
 			},
-            open: function() {
-                if(settings.env == 'dev')
-                    console.log('[SIDEBAR] Open navbar');
-                var sidebar = $('#sidebar');
+			open: function() {
+				if(settings.env == 'dev')
+					console.log('[SIDEBAR] Open navbar');
+				var sidebar = $('#sidebar');
 
 				try {
 					sidebar.addClass('open');
@@ -404,10 +406,10 @@ $(function() {
 						$(this).removeClass('closing');
 				});
 				this.opened = true;
-            },
-            close: function() {
-                if(settings.env == 'dev')
-                    console.log('[SIDEBAR] Close navbar')
+			},
+			close: function() {
+				if(settings.env == 'dev')
+					console.log('[SIDEBAR] Close navbar')
 				var sidebar = $('#sidebar');
 				sidebar.removeClass('open');
 
@@ -418,7 +420,7 @@ $(function() {
 				});
 				$('button[data-toggle="sidebar"]').removeClass('opened');
 				this.opened = false;
-            }
+			}
 		},
 		popup: {
 			isOpened: function() {
@@ -583,7 +585,7 @@ $(function() {
 					// callback function After
 					self.options.after.call(self, response); // callback
 					app.bouquets.buildListHtml(bouquetsList);
-                    $("#ajax-loader").delay(500).fadeOut(300, function() {
+					$("#ajax-loader").delay(500).fadeOut(300, function() {
 
 					});
 
@@ -804,20 +806,20 @@ $(function() {
 							composition: 'Роза свитнесс, Гербера мини, Салал, Эвкалипт Бэби Блю, Хлопок, Лента',
 							info: 'Диаметр: 60см<br>Высота: 30см<hr><p>Роза свитнесс, Гербера мини, Салал, Эвкалипт Бэби Блю, Хлопок, Лента</p>'
 						},
-						{
-							id: 3,
-							count: 1,
-							imgSrc: 'img/b3.jpg',
-							price: 1900,
-							name: 'Свет добра',
-							availableData: 'с 14 марта',
-							size: {
-								dia: '60 см',
-								height: '30 см'
-							},
-							composition: 'Роза свитнесс, Гербера мини, Салал, Эвкалипт Бэби Блю, Хлопок, Лента',
-							info: 'Диаметр: 60см<br>Высота: 30см<hr><p>Роза свитнесс, Гербера мини, Салал, Эвкалипт Бэби Блю, Хлопок, Лента</p>'
-						}];
+							{
+								id: 3,
+								count: 1,
+								imgSrc: 'img/b3.jpg',
+								price: 1900,
+								name: 'Свет добра',
+								availableData: 'с 14 марта',
+								size: {
+									dia: '60 см',
+									height: '30 см'
+								},
+								composition: 'Роза свитнесс, Гербера мини, Салал, Эвкалипт Бэби Блю, Хлопок, Лента',
+								info: 'Диаметр: 60см<br>Высота: 30см<hr><p>Роза свитнесс, Гербера мини, Салал, Эвкалипт Бэби Блю, Хлопок, Лента</p>'
+							}];
 						app.checkout.basket = response;
 						app.basket.updateHtml();
 						$(document).trigger('raketa.basket.get-data');
@@ -893,6 +895,7 @@ $(function() {
 				obj: {},
 				loaded: false,
 				opened: false,
+				calendarInitialized: false,
 				position: {},
 				setPosition: function() {
 					var button = $('button[data-target="#widget-calendar"]'); // setting the position relative to the element
@@ -900,18 +903,18 @@ $(function() {
 					if(button.length) {
 						var _w = obj.width();
 						var _h = obj.height() ;
+						console.log(_h);
 						var button_offset = button.offset();
 						var right = device.windowWidth - (button_offset.left + button.outerWidth()) - 20;
 
 						if(device.type == 'smallmobile' || device.type == 'mobile') {
 							obj.css('top', 'auto');
 							obj.css('bottom', - (_h + 40) + 'px');// box shadow
-							obj.css('height', _h + 'px');
 						} else {
 							obj.css('top', - (_h + 40) + 'px');// box shadow
 							obj.css('right', Math.floor(right) + 'px');
-							obj.css('height', _h + 'px');
 						}
+						//obj.css('height', _h + 'px');
 						this.position.width = _w;
 						this.position.height = _h;
 						if(device.type == 'smallmobile' || device.type == 'mobile')
@@ -985,6 +988,11 @@ $(function() {
 						_this.close();
 					});
 
+					$(document).on('init.xdsoft', function() {
+						_this.setPosition();
+						_this.calendarInitialized = true;
+					});
+
 					this.loaded = true;
 				},
 				getDateString: function() {
@@ -1045,6 +1053,9 @@ $(function() {
 					var pos = this.position.top;
 					if(device.type == 'smallmobile' || device.type == 'mobile')
 						pos = this.position.bottom;
+
+					this.obj.find('.warning').removeClass('opened');
+
 					this.obj.transition({ y: pos, complete: function() {
 						this.opened = false;
 					}});
@@ -1364,29 +1375,46 @@ $(function() {
 				this.loadLayout(layout, container, callback);
 			},
 			setStyleLayout: function(layout, container) {
-				if(device.type == 'smallmobile' || device.type == 'mobile')
+				if(layout != 'devided-slider' && (device.type == 'smallmobile' || device.type == 'mobile'))
 					return;
 				var currentH = container.outerHeight();
 				var newH = ($w.height() - $('#header').height()) - 50;
+				if(device.type == 'smallmobile' || device.type == 'mobile')
+					newH += 50;
+
 				container.css('height', newH + 'px');
+
+				if(device.type == 'smallmobile' || device.type == 'mobile') {
+					container.find('.menu-wrapper').css('height', newH + 'px');
+					container.find('.content-panel').css('min-height', newH + 'px');
+					container.css('min-height', newH + 'px');
+				}
+				else {
+					container.css('height', newH + 'px');
+				}
 			},
 			loadLayout: function(layout, container, callback) {
 				switch (layout) {
 					case 'devided-slider':
 						this.setStyleLayout(layout, container);
+						if(device.type == 'smallmobile' || device.type == 'mobile'){
+							$('.layout-menu li.active').removeClass('active');
+						}
 
 						var w = $("#content").width();
 						var owl = $('#slider-content');
-						owl.css('width', w/2);
+						if(device.type != 'smallmobile' && device.type != 'mobile')
+							owl.css('width', w/2);
 
 						owl.on('initialized.owl.carousel', function(event) {
 							var element = $(event.target);
 							var item = event.item.index;
 							var current = element.find('.owl-item').eq(item).find('.item');
 							var hash = current.data('hash');
-							container.find('.layout-menu li.active').removeClass('active');
-							container.find('.layout-menu a[href="#' + hash + '"]').parent().addClass('active');
-
+							if(device.type != 'smallmobile' && device.type != 'mobile') {
+								container.find('.layout-menu li.active').removeClass('active');
+								container.find('.layout-menu a[href="#' + hash + '"]').parent().addClass('active');
+							}
 							if(settings.env == 'dev')
 								console.log('[OWL Carousel] Event initialized.owl.carousel');
 
@@ -1398,8 +1426,10 @@ $(function() {
 							var item = event.item.index;
 							var current = element.find('.owl-item').eq(item).find('.item');
 							var hash = current.data('hash');
-							container.find('.layout-menu li.active').removeClass('active');
-							container.find('.layout-menu a[href="#' + hash + '"]').parent().addClass('active');
+							if(device.type != 'smallmobile' && device.type != 'mobile') {
+								container.find('.layout-menu li.active').removeClass('active');
+								container.find('.layout-menu a[href="#' + hash + '"]').parent().addClass('active');
+							}
 							if(hash)
 								window.location.hash = hash;
 							if(settings.env == 'dev')
@@ -1426,6 +1456,15 @@ $(function() {
 								$(this).parents('.layout-menu').find('li.active').removeClass('active');
 								$(this).parent().addClass('active');
 							}
+							if(device.type == 'smallmobile' || device.type == 'mobile'){
+								$('.layout.devided-slider').css('overflow', 'auto');
+								$('.layout.devided-slider .menu-wrapper').transition({ x: -320, complete: function() {
+								}});
+								$('#header .navbar-toggle').hide();
+								$('#header .back').show();
+								var title = $(this).text();
+								$('#header .mobile.title').html(title);
+							}
 						});
 
 						owl.find('button,input,select').addClass('not-draggable').on("touchstart mousedown", function(e) {
@@ -1437,6 +1476,33 @@ $(function() {
 							var slide = owl.find('.item[data-hash="' + $(this).data('to-slide') +'"]');
 							slide.find('form').trigger('submit');
 						});
+
+						if(device.type == 'smallmobile' || device.type == 'mobile') {
+							var hash = window.location.hash;
+							if(hash){
+								$('.layout.devided-slider').css('overflow', 'auto');
+								$('.layout.devided-slider .menu-wrapper').transition({ x: -320, complete: function() {
+									$(window).scrollTop();
+								}});
+								$('#header .navbar-toggle').hide();
+								$('#header .back').show();
+
+								var title = $('#content ul.layout-menu a[href="'+hash+'"]').text();
+								$('#header .mobile.title').html(title);
+							}
+
+							$('button[data-toggle="devided-slider-back"]').on('click', function() {
+								window.location.hash = '';
+								$('.layout.devided-slider').height($(window).height() - 65);
+								$('.layout.devided-slider').css('overflow', 'hidden');
+								$('.layout.devided-slider .menu-wrapper').transition({ x: 0, complete: function() {
+									$(window).scrollTop();
+								}});
+								$('#header .back').hide();
+								$('#header .mobile.title').html($('title').text());
+								$('#header .navbar-toggle').show();
+							});
+						}
 
 						break;
 
@@ -2644,8 +2710,8 @@ $(function() {
 	                    allowEmptyOption: false,
 	                    create: false,
 	                    plugins: {
-	                        'dropdown_footer': {
-	                            title: 'Мы можем доставить цветы вам, или поздравить кого-нибудь от вас'
+	                        dropdown_footer: {
+	                            title: 'Мы можем доставить цветы вам или поздравить кого-нибудь от вас'
 	                        }
 	                    },
 	                });
@@ -2653,7 +2719,7 @@ $(function() {
 	                    allowEmptyOption: false,
 	                    create: false,
 	                    plugins: {
-	                        'dropdown_footer': {
+	                        dropdown_footer: {
 	                            title: 'Вы можете изменить или добавить новые поводы <a href="reasons.html">здесь</a>'
 	                        }
 	                    }

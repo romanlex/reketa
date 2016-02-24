@@ -1142,7 +1142,7 @@ var DateFormatter;
 		onChangeMonth: function () {},
 		onChangeYear: function () {},
 		onChangeDateTime: function () {},
-		onShow: function () {},
+        onShow: function () {},
 		onClose: function () {},
 		onGenerate: function () {},
 
@@ -1710,10 +1710,12 @@ var DateFormatter;
 					input.trigger('open.xdsoft');
 				}
 
+
 				if (options.inline) {
 					triggerAfterOpen = true;
 					datetimepicker.addClass('xdsoft_inline');
 					input.after(datetimepicker).hide();
+
 				}
 
 				if (options.inverseButton) {
@@ -2548,6 +2550,7 @@ var DateFormatter;
 					if (options.onGenerate && $.isFunction(options.onGenerate)) {
 						options.onGenerate.call(datetimepicker, _xdsoft_datetime.currentTime, datetimepicker.data('input'));
 					}
+
 					if (triggerAfterOpen) {
 						datetimepicker.trigger('afterOpen.xdsoft');
 						triggerAfterOpen = false;
