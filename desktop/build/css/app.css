@@ -4815,6 +4815,52 @@ span.icon-basket {
   .layout.devided.authorization > div.content-panel .static .btn {
     background: #434343;
   }
+
+  .layout.devided-slider.profile > div.menu-wrapper .title {
+    display: none;
+  }
+
+  .layout.devided-slider.profile > div.menu-wrapper .menu {
+    padding: 0;
+  }
+
+  .layout.devided-slider.profile .layout-menu > li > a {
+    padding-left: 15px;
+  }
+
+  .layout.devided-slider.profile .creditcard-list {
+    padding: 5px;
+  }
+
+  .layout.devided-slider.profile .owl-carousel.owl-loaded {
+    padding-bottom: 50px;
+  }
+
+  .layout.devided-slider.profile .creditcard {
+    width: auto;
+    min-height: 100px;
+    max-height: 122px;
+  }
+
+  .layout.devided-slider.profile .owl-item > .item[data-hash="delivery"] {
+    padding: 0 !important;
+  }
+
+  .layout.devided-slider.profile .delivery-list > li {
+    padding-left: 15px;
+  }
+
+  .modal.add-card-popup .cardname input {
+    width: 100%;
+  }
+
+  .modal.add-card-popup .modal-content {
+    padding: 12px;
+  }
+
+  .modal.add-card-popup .creditcard {
+    width: auto;
+  }
 }
 
 @media screen and (min-width: 768px) and (max-width: 1024px) {
