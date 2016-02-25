@@ -149,6 +149,14 @@ li {
   display: inline-block;
 }
 
+#header .buttons > button.add,
+#header .buttons > a.add {
+  float: none;
+  margin-right: 10px;
+  display: none;
+  margin-left: 0;
+}
+
 #header .buttons > button.basket,
 #header .buttons > a.basket {
   background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAARCAYAAADUryzEAAABfUlEQVQ4T5XSP0hXURTA8e83LBJsCgqCBqFocdAGa6s9ijAkksClISmsQekPBIVSQQ4VFQ2OUoSIQ3ODQxgtLS2B4SAoCA6hCBV04sR98Wj49Xt3etx77uecd88RICK6gEvAEWBH7rVYv4AvwLS6ZQEuAvn9Rv3R6nZE7ALOZ151pgJuA6/V5f9k/3McEd3ABfV+BTwAptSNiMhfmFQT/bsiIqv8qi5GxF5gTL1VAc+B6+rPArxQL/8DDANL6vuI2Ak8Vq8YEZ3AQ/VaKS8raAmUuCfAzQT2A1fVO1XGiJgCJtRvtb1M8E79XIAJ4FkCh4Gz6qNa8CCwD5gBtoFjwCngrvq9AOPAfAJHgX71ZQ3oAAbKxd35eKVLa7WYfKOPCZwEDqiv2mlhDRgCVhM4U4bibUPgdA5fAtnfFXWhIXACOJjACPBB/dQQ6AOOJ3ADmFOXGgKHgHMJTAJP1fWGQLZ5NIF7wGw1IO0iEdEDDCbQC+RD7mn3conbzEH7DfY6vmPUXJ34AAAAAElFTkSuQmCC");
@@ -3069,7 +3077,8 @@ span.icon-basket {
   display: inline-block;
 }
 
-.reasons .menu-wrapper .btn-image.add {
+.reasons .menu-wrapper .btn-image.add,
+#header .btn-image.add {
   margin-left: 25px;
   float: left;
   background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAYAAABWzo5XAAAAOUlEQVQ4T2NkIACWL1/+H6QkMjKSEZ9SvJIgjaMGMQznMIJFL6H0REiekWoGEbJpNEEO6wRJregHAGqhRfs5qpl8AAAAAElFTkSuQmCC");
@@ -4157,7 +4166,7 @@ span.icon-basket {
     padding: 0;
   }
 
-  .layout.devided > div.content-panel .bottom.show {
+  .layout.devided > div.content-panel .bottom.show.desktop {
     display: none;
   }
 
@@ -4562,6 +4571,236 @@ span.icon-basket {
   #callback-order-error .intime,
   #callback-order-success .intime {
     bottom: 10%;
+  }
+
+  .reasons .ajax-loader-local {
+    top: auto;
+  }
+
+  .reasons .ajax-loader-local .icon:after {
+    top: 42%;
+  }
+
+  .reasons .content-panel {
+    position: static !important;
+    display: block !important;
+    width: 100% !important;
+  }
+
+  .reasons .content-panel .bottom.show[data-to-step="onboard"] {
+    position: fixed;
+    display: block !important;
+    bottom: 40px;
+    left: 20px;
+    right: 20px;
+    z-index: 201;
+    width: auto;
+  }
+
+  .reasons .content-panel .bottom[data-to-step="congratulate"] .two-button {
+    height: 50px;
+  }
+
+  .reasons .content-panel .bottom[data-to-step="congratulate"] button[type="edit"] {
+    display: none;
+  }
+
+  .reasons .menu-wrapper {
+    display: block !important;
+    width: 100% !important;
+    z-index: 51 !important;
+    position: fixed !important;
+    background: #242424 !important;
+    overflow-y: scroll;
+  }
+
+  .reasons .menu-wrapper .title {
+    border: 0;
+    width: auto;
+    left: 0 !important;
+    right: 0 !important;
+    top: 0 !important;
+    padding: 10px 0;
+    text-align: center;
+    position: relative !important;
+  }
+
+  .reasons .menu-wrapper .title h2 {
+    display: none;
+  }
+
+  .reasons .menu-wrapper .title button {
+    display: none;
+  }
+
+  .reasons .menu-wrapper .title .btn-image.bigs {
+    display: inline-block;
+    border: 1px solid #3a3a3a;
+    float: none;
+  }
+
+  .reasons .menu-wrapper .reasons-list {
+    padding: 0;
+    margin-top: 0;
+  }
+
+  .reasons .menu-wrapper .reasons-list .button {
+    font-size: 0.8em;
+    float: right;
+  }
+
+  .reasons .menu-wrapper .reasons-list > li {
+    padding: 0;
+    position: relative;
+  }
+
+  .reasons .menu-wrapper .reasons-list > li.mobile-menu .reason {
+    -webkit-transform: translateX(-160px);
+    -ms-transform: translateX(-160px);
+    transform: translateX(-160px);
+  }
+
+  .reasons .menu-wrapper .reasons-list > li .mobile.menu {
+    position: absolute;
+    right: 0;
+    top: 0;
+    padding: 0;
+    bottom: 0;
+    overflow: hidden;
+    width: 160px;
+    z-index: 9;
+  }
+
+  .reasons .menu-wrapper .reasons-list > li .mobile.menu a,
+  .reasons .menu-wrapper .reasons-list > li .mobile.menu button {
+    display: block;
+    float: left;
+    border: 0;
+    outline: 0;
+    width: 80px;
+    min-height: 72px;
+    height: 100%;
+    padding: 0;
+    background-repeat: no-repeat;
+    background-position: center center;
+    margin: 0;
+  }
+
+  .reasons .menu-wrapper .reasons-list > li .mobile.menu a.edit,
+  .reasons .menu-wrapper .reasons-list > li .mobile.menu button.edit {
+    color: #fff;
+    background-color: #565656;
+  }
+
+  .reasons .menu-wrapper .reasons-list > li .mobile.menu a.delete,
+  .reasons .menu-wrapper .reasons-list > li .mobile.menu button.delete {
+    background-color: #f00;
+    background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAAVCAYAAACkCdXRAAAAaklEQVQ4T2NkwAL+////H5s4shgjIyMjuhoMAZACsg0jRiMhV8LksbqMWM04vUmJC2HhB3cZyDBsgUrIlcj66GMYso242LCYJ+jNUcNQYp2o2BwNs+EUZoQyOEyeqKRBsWHEGoBRKELrAwBlORAhEDh0uAAAAABJRU5ErkJggg==");
+  }
+
+  .reasons .menu-wrapper .reasons-list > li .reason {
+    z-index: 10;
+    padding: 8px 0;
+    background: #242424;
+    width: 100%;
+    position: relative;
+    -webkit-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+  }
+
+  .reasons .menu-wrapper .reasons-list > li .reason .photo {
+    width: 48px;
+    padding-left: 12px;
+    padding-right: 10px;
+  }
+
+  .reasons .menu-wrapper .reasons-list > li .reason .photo img {
+    width: 48px;
+    height: 48px;
+  }
+
+  .reasons .menu-wrapper .reasons-list > li .reason .cell.middle:last-child {
+    padding-right: 12px;
+  }
+
+  .reasons .menu-wrapper .reasons-list > li .reason .for .name {
+    font-size: 1em;
+  }
+
+  .reasons .menu-wrapper .reasons-list > li .reason .for .when,
+  .reasons .menu-wrapper .reasons-list > li .reason .for .date {
+    font-size: 0.8em;
+  }
+
+  .reasons-step .step {
+    padding: 10px;
+  }
+
+  .reasons-step .step.newreason {
+    padding-top: 20px;
+  }
+
+  .reasons-step .step .title {
+    display: none;
+  }
+
+  .reasons-step .onboard {
+    position: fixed;
+    z-index: 200;
+    height: auto;
+    top: 40px;
+    left: 20px;
+    right: 20px;
+    bottom: 40px;
+  }
+
+  .reasons-step .onboard > div {
+    position: absolute;
+    top: 15%;
+  }
+
+  .reasons-step .onboard > div p {
+    width: 80%;
+  }
+
+  .reasons-step .onboard.overlay {
+    content: "";
+    position: fixed;
+    z-index: 200;
+    top: 0;
+    left: 0;
+    background: rgba(0,0,0,0.65);
+    width: 100%;
+    height: 100%;
+  }
+
+  .raketa-select .selectize-dropdown-footer {
+    padding: 15px 25px;
+  }
+
+  .reason-datepicker {
+    padding: 8px;
+  }
+
+  .reason-datepicker .xdsoft_datepicker .xdsoft_calendar {
+    padding: 40px 0;
+  }
+
+  .reason-datepicker .xdsoft_datepicker .xdsoft_calendar:before {
+    top: 0;
+  }
+
+  .reason-datepicker .xdsoft_datepicker .xdsoft_mounthpicker {
+    width: 26%;
+  }
+
+  .reason-datepicker.xdsoft_datetimepicker .xdsoft_select {
+    padding-top: 0;
+  }
+
+  .reason-datepicker.xdsoft_datetimepicker .xdsoft_option {
+    width: 100%;
+    font-size: 0.9em;
   }
 }
 

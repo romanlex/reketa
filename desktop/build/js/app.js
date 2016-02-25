@@ -32,7 +32,8 @@ var lang = {
     loading: 'Ожидайте',
     bouquet: 'Букет',
     bouquetNotFound: 'Доступных букетов не найдено',
-    bouquetInBasketPopupCart: 'В корзине {1} на {2}'
+    bouquetInBasketPopupCart: 'В корзине {1} на {2}',
+    reasonquestdelete: 'Вы уверены что хотите удалить повод?'
 };
 var app;
 var ajaxloader;
@@ -1375,8 +1376,8 @@ $(function() {
 				this.loadLayout(layout, container, callback);
 			},
 			setStyleLayout: function(layout, container) {
-				if(layout != 'devided-slider' && (device.type == 'smallmobile' || device.type == 'mobile'))
-					return;
+				//if(layout != 'devided-slider' && (device.type == 'smallmobile' || device.type == 'mobile'))
+				//	return;
 				var currentH = container.outerHeight();
 				var newH = ($w.height() - $('#header').height()) - 50;
 				if(device.type == 'smallmobile' || device.type == 'mobile')
@@ -1493,8 +1494,8 @@ $(function() {
 
 							$('button[data-toggle="devided-slider-back"]').on('click', function() {
 								window.location.hash = '';
-								$('.layout.devided-slider').height($(window).height() - 65);
-								$('.layout.devided-slider').css('overflow', 'hidden');
+								container.height($(window).height() - 65)
+									.css('overflow', 'hidden');
 								$('.layout.devided-slider .menu-wrapper').transition({ x: 0, complete: function() {
 									$(window).scrollTop();
 								}});
@@ -1514,6 +1515,21 @@ $(function() {
 					case 'devided':
 						this.setStyleLayout(layout, container);
 
+						if(device.type == 'smallmobile' || device.type == 'mobile' && container.hasClass('reasons')){
+
+							$('button[data-toggle="devided-slider-back"]').on('click', function(e) {
+								Hash.clear();
+								container.height($(window).height() - 65)
+									.css('overflow', 'hidden');
+								container.find('.menu-wrapper').transition({ x: 0, complete: function() {
+									$(window).scrollTop();
+								}});
+								$('#header .back').hide();
+								$('#header .mobile.title').html($('title').text());
+								$('#header .navbar-toggle').show();
+							});
+
+						}
 						break;
 				}
 
@@ -1543,7 +1559,7 @@ $(function() {
 							$('#callback-order-success').fadeOut(200, function() {
 								form[0].reset();
 								form.fadeIn(200);
-								$('#slider-content .owl-height').css('height', form.outerHeight());
+								$('#slider-content .owl-height').css('height', form.outerHeght());
 								$('button[data-to-form="#' + form.attr('id') + '"]').show();
 							});
 
@@ -2966,7 +2982,7 @@ $(function() {
 	        }
 	    },
 	    loadLastStep: function() {
-	        var step = Cookies.get('reketa_checkout__step');
+	        var step = Cookies.get('raketa_checkout__step');
 	        if(step)
 	        {
 	            this.goToStep(step);
@@ -2978,7 +2994,7 @@ $(function() {
 	        return this.currentStep;
 	    },
 	    goToStep: function(step) {
-	        Cookies.set('reketa_checkout__step', step, { expires: 365, path: '/' });
+	        Cookies.set('raketa_checkout__step', step, { expires: 365, path: '/' });
 	        var checkout = $('#checkout-step');
 	        var currentStep = checkout.find('.step.active');
 	        if(currentStep.length)
@@ -3016,9 +3032,16 @@ $(function() {
 	$.extend( app.checkout, _checkout );
 	// full trash // It's last spagetty code! because of the small amount of time for the project
 	var _reasons = {
+	    onboardClosed: false,
 	    init: function() {
 	        var _this = this;
 	        this.defaultStep = 'congratulate';
+	
+	        if(device.type == 'smallmobile' || device.type == 'mobile') {
+	            $('#header .basket').hide();
+	            $('#header .mobile.add-reason').show();
+	
+	        }
 	
 	        $('#reasons .content-panel .bottom button[type="submit"]').on('click', function(e) {
 	            var targetForm = $(this).data('to-form');
@@ -3035,12 +3058,51 @@ $(function() {
 	
 	        $('#reasons-step form').on('submit', function(e) {
 	            var data = $(this).serializeObject();
+	            // Ajax?
 	        });
 	
-	        $('#reasons .content-panel .bottom button[type="edit"]').on('click', function(e) {
+	        $('button[type="edit"]').on('click', function(e) {
+	
 	            _this.goToStep('editreason', e);
+	            if(device.type == 'smallmobile' || device.type == 'mobile') {
+	                $('#reasons').css('overflow', 'auto');
+	                $('#reasons').find('.menu-wrapper').transition({
+	                    x: -320, complete: function () {
+	                    }
+	                });
+	                $('#header .navbar-toggle').hide();
+	                $('#header .back').show();
+	                var title = $('#reasons-step div.step.active .title').text();
+	                $('#header .mobile.title').html(title);
+	            }
 	            return false;
-	        })
+	        });
+	
+	        $('button[type="delete"]').on('click', function(e) {
+	            var id = $(this).data('id');
+	            if(id) {
+	                app.modal.dialog({
+	                    content: lang.reasonquestdelete,
+	                    buttons: {
+	                        yes: {
+	                            title: lang.dialogDeleteButton,
+	                            class: 'delete',
+	                            action: function(){
+	                                if(settings.env == 'dev') console.log('[Dialog] Confirmed');
+	                                window.location = window.location + '?action=delete&id='+ id;
+	                            }
+	                        },
+	                        no: {
+	                            title: lang.dialogDismissButton,
+	                            class: 'dismiss',
+	                            action: function(){ if(settings.env == 'dev') console.log('[Dialog] Not confirmed'); }
+	                        }
+	                    }
+	                });
+	            }
+	
+	            return false;
+	        });
 	
 	        $('#reasons .content-panel .bottom button[type="dismiss"]').on('click', function(e) {
 	            _this.goToStep(_this.defaultStep);
@@ -3048,10 +3110,45 @@ $(function() {
 	            return false;
 	        });
 	
-	        $('#reasons button[data-toggle="gotostep"]').on('click', function(e) {
+	        if(device.type == 'smallmobile' || device.type == 'mobile') {
+	            $('#reasons .reasons-list li').on('click', function(e) {
+	                var $target = $(e.target);
+	                if($target.is('button[data-toggle="gotostep"]'))
+	                    return;
+	                $('#reasons .reasons-list li').not(this).removeClass('mobile-menu');
+	                $(this).toggleClass('mobile-menu');
+	            });
+	        }
+	
+	        $('button[data-toggle="gotostep"]').on('click', function(e) {
 	            var step = $(this).data('to-step');
-	            if(_this.currentStep.data('step') == 'onboard') {
-	                Cookies.set('reketa_reasons__board', true, { expire: 365, path: '/' });
+	            var parentStep = $(this).closest('.bottom');
+	
+	            if(device.type == 'smallmobile' || device.type == 'mobile' && parentStep.data('to-step') != 'onboard') {
+	                $('#reasons').css('overflow', 'auto');
+	                $('#reasons').find('.menu-wrapper').transition({
+	                    x: -320, complete: function () {
+	                    }
+	                });
+	                $('#header .navbar-toggle').hide();
+	                $('#header .back').show();
+	                var title = $('#reasons-step div[data-step="' + step + '"] .title').text();
+	                $('#header .mobile.title').html(title);
+	            } else if(device.type == 'smallmobile' || device.type == 'mobile' && parentStep.data('to-step') == 'onboard') {
+	                Cookies.set('raketa_reasons__board', false, { expire: 365, path: '/' });
+	                app.reasons.onboardClosed = true;
+	                $('#reasons-step').find('div[data-step="onboard"]').fadeOut(200, function() {
+	                    $(this).removeClass('overlayed');
+	                    $('#reasons-step').find('.onboard.overlay').remove();
+	                });
+	                $('#reasons').find('.bottom[data-to-step="onboard"]').removeClass('show');
+	                return;
+	            }
+	
+	
+	
+	            if(_this.currentStep && _this.currentStep.data('step') == 'onboard') {
+	                Cookies.set('raketa_reasons__board', false, { expire: 365, path: '/' });
 	                _this.currentStep.find('img').removeClass('zoomIn').addClass('zoomOutDown');
 	                _this.currentStep.find('img').one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function() {
 	                    _this.goToStep(step);
@@ -3063,18 +3160,22 @@ $(function() {
 	        });
 	
 	
-	        var hash = Hash.get();
-	        var board = Cookies.get('reketa_reasons__board');
-	        if(board) {
-	            if (hash.anchor) {
-	                window.location.hash = hash.anchor;
-	                this.goToStep(hash.anchor);
+	        if(device.type != 'smallmobile' && device.type != 'mobile')
+	        {
+	            var hash = Hash.get();
+	            var board = Cookies.get('raketa_reasons__board');
+	            console.log(board);
+	            if(board) {
+	                if (hash.step) {
+	                    this.goToStep(hash.step);
+	                } else {
+	                    this.goToStep(this.defaultStep);
+	                }
 	            } else {
-	                this.goToStep(this.defaultStep);
+	                this.goToStep('onboard');
 	            }
-	        } else {
-	            this.goToStep('onboard');
 	        }
+	
 	    },
 	
 	    goToStep: function(step, e) {
@@ -3083,11 +3184,43 @@ $(function() {
 	        var $currentStep = this.currentStep = reasons.find('.step[data-step="'+ step +'"]');
 	        var openedStep = reasons.find('.step.active');
 	
-	        if(step != 'congratulate' && $currentStep.data('step') == openedStep.data('step'))
+	        if(step != 'congratulate' && $currentStep.data('step') == openedStep.data('step') && (device.type != 'smallmobile'&& device.type != 'mobile'))
 	            return;
 	
-	        if(step != 'onboard')
-	            Hash.add('step', step);
+	        var hash = Hash.get();
+	
+	        switch (step) {
+	            case 'editreason':
+	                if(hash.id)
+	                    Hash.add('id', hash.id);
+	                else
+	                    Hash.add('id', $(e.currentTarget).data('id'));
+	                break;
+	            case 'congratulate':
+	                if(device.type == 'smallmobile' || device.type == 'mobile')
+	                {
+	                    var board = Cookies.get('raketa_reasons__board');
+	
+	                    $(document).on('raketa_reason__loaded', function() {
+	                        if(!board && !app.reasons.onboardClosed) {
+	                            setTimeout(function(){
+	                                reasons.find('div[data-step="onboard"]').before($('<div />').addClass('onboard overlay'));
+	                                reasons.find('div[data-step="onboard"]').fadeIn(200, function() {
+	                                    $(this).addClass('overlayed');
+	                                });
+	                                $('#reasons').find('.bottom[data-to-step="onboard"]').addClass('show');
+	                            },600);
+	                        }
+	                    });
+	
+	                }
+	                break;
+	            default:
+	                Hash.remove('id');
+	                break;
+	        }
+	
+	        Hash.add('step', step);
 	
 	        if(settings.env == 'dev')
 	            console.log('[STEP] Go to reasons step #' + step);
@@ -3199,9 +3332,19 @@ $(function() {
 	                    var buttons = $('#reasons-step').parent().find('.bottom[data-to-step="congratulate"]');
 	                    buttons.find('button[type="edit"]').data('id', id).attr('data-id', id); // its fucking shit...save id to data attr for further editing
 	                    buttons.removeClass('show');
-	                    ajaxloader.local({
-	                        element: $('#reasons-step div[data-step="congratulate"]')
-	                    });
+	                    if(device.type != 'smallmobile' && device.type != 'mobile')
+	                    {
+	                        ajaxloader.local({
+	                            element: $('#reasons-step div[data-step="congratulate"]')
+	                        });
+	                    }
+	                    else
+	                    {
+	                        ajaxloader.local({
+	                            element: $('#reasons-step').parent()
+	                        });
+	
+	                    }
 	                    var data = this.getData(id, function(response) {
 	                        ajaxloader.finish();
 	                        buttons.addClass('show');
@@ -3209,6 +3352,7 @@ $(function() {
 	                            document.getElementById("tmpl-congratulations-to").innerHTML,
 	                            response
 	                        );
+	                        $(document).trigger('raketa_reason__loaded');
 	                        $('#reasons-step div[data-step="congratulate"]').html(template);
 	
 	                    })
@@ -3238,10 +3382,15 @@ $(function() {
 	            }
 	        },
 	        editreason: {
+	            model: {
+	                id: 1
+	            },
 	            load: function() {
 	                if(!app.reasons.step.newreason.loaded)
-	                    app.reasons.step.newreason.load();
+	                    app.reasons.step.newreason.load(); // bind selectize in form
 	
+	                // Ajax get object of reason, save to this.model
+	                // bind data to form
 	
 	                this.loaded = true;
 	            },
@@ -3251,7 +3400,7 @@ $(function() {
 	                form.find('select').each(function() {
 	                    $(this)[0].selectize.clear();
 	                });
-	                form.find('input[name="reasonId"]').val($(e.currentTarget).data('id'));
+	                form.find('input[name="reasonId"]').val(this.model.id);
 	            }
 	        }
 	    }
