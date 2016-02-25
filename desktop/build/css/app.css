@@ -3338,6 +3338,46 @@ span.icon-basket {
   width: 50%;
 }
 
+.promocodes .content-panel .static {
+  position: relative;
+}
+
+.promocodes .content-panel .static p {
+  margin: 0;
+  padding-bottom: 25px;
+}
+
+.promocodes .content-panel .static form {
+  margin: 0;
+}
+
+.promocodes .menu-wrapper {
+  padding-top: 80px;
+}
+
+.promocodes ul.promocodes-list {
+  padding: 0 30px;
+}
+
+.promocodes ul.promocodes-list li {
+  padding: 8px 12px;
+  border-top: 1px solid rgba(255,255,255,0.05);
+  position: relative;
+}
+
+.promocodes ul.promocodes-list li:last-child {
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.promocodes ul.promocodes-list li.notfound {
+  color: #999;
+}
+
+.promocodes ul.promocodes-list li .period {
+  color: #999;
+  font-size: 0.8em;
+}
+
 .layout {
   min-height: 600px;
 }
@@ -4848,6 +4888,38 @@ span.icon-basket {
 
   .layout.devided-slider.profile .delivery-list > li {
     padding-left: 15px;
+  }
+
+  .layout.devided.promocodes > div.menu-wrapper {
+    display: block;
+    position: fixed;
+    overflow: auto;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    width: auto;
+    background: #242424;
+  }
+
+  .layout.devided.promocodes > div.content-panel {
+    display: table-cell;
+    width: 100%;
+  }
+
+  .layout.devided.promocodes > div.content-panel .static {
+    padding: 15px;
+  }
+
+  .layout.devided.promocodes > div.content-panel .static .ajax-loader-local {
+    background: #242424;
+  }
+
+  .layout.devided.promocodes .promocodes-list {
+    padding: 0;
+  }
+
+  .layout.devided.promocodes .promocodes-list > li:first-child {
+    border-top: 0;
   }
 
   .modal.add-card-popup .cardname input {

@@ -560,7 +560,8 @@ $(function() {
 		},
 		content: {
 			initStyle: function() {
-				$("#content").css('height', ($w.height() - $('#header').height()) + 'px');
+				if(device.type != 'smallmobile' && device.type != 'mobile')
+					$("#content").css('height', ($w.height() - $('#header').height()) + 'px');
 			}
 		},
 		bouquets: {
@@ -1379,11 +1380,9 @@ $(function() {
 				//if(layout != 'devided-slider' && (device.type == 'smallmobile' || device.type == 'mobile'))
 				//	return;
 				var currentH = container.outerHeight();
-				var newH = ($w.height() - $('#header').height()) - 50;
+				var newH = Math.ceil(($w.height() - $('#header').outerHeight()) - 50);
 				if(device.type == 'smallmobile' || device.type == 'mobile')
 					newH += 50;
-
-				container.css('height', newH + 'px');
 
 				if(device.type == 'smallmobile' || device.type == 'mobile') {
 					container.find('.menu-wrapper').css('height', newH + 'px');
@@ -1461,6 +1460,7 @@ $(function() {
 								$('.layout.devided-slider').css('overflow', 'auto');
 								$('.layout.devided-slider .menu-wrapper').transition({ x: -320, complete: function() {
 								}});
+								$('body').css('overflow', 'auto');
 								$('#header .navbar-toggle').hide();
 								$('#header .back').show();
 								var title = $(this).text();
@@ -1483,7 +1483,8 @@ $(function() {
 							if(hash){
 								$('.layout.devided-slider').css('overflow', 'auto');
 								$('.layout.devided-slider .menu-wrapper').transition({ x: -320, complete: function() {
-									$(window).scrollTop();
+									$(window).scrollTop(0);
+									$('body').css('overflow', 'auto');
 								}});
 								$('#header .navbar-toggle').hide();
 								$('#header .back').show();
@@ -1494,10 +1495,10 @@ $(function() {
 
 							$('button[data-toggle="devided-slider-back"]').on('click', function() {
 								window.location.hash = '';
-								container.height($(window).height() - 65)
-									.css('overflow', 'hidden');
+								container.css('overflow', 'hidden');
+								$('body').css('overflow', 'hidden');
 								$('.layout.devided-slider .menu-wrapper').transition({ x: 0, complete: function() {
-									$(window).scrollTop();
+									$(window).scrollTop(0);
 								}});
 								$('#header .back').hide();
 								$('#header .mobile.title').html($('title').text());
@@ -1515,14 +1516,14 @@ $(function() {
 					case 'devided':
 						this.setStyleLayout(layout, container);
 
-						if(device.type == 'smallmobile' || device.type == 'mobile' && container.hasClass('reasons')){
+						if(device.type == 'smallmobile' || device.type == 'mobile' && container.hasClass('reasons') || container.hasClass('promocodes')){
 
 							$('button[data-toggle="devided-slider-back"]').on('click', function(e) {
 								Hash.clear();
-								container.height($(window).height() - 65)
-									.css('overflow', 'hidden');
+								container.css('overflow', 'hidden');
+								$('body').css('overflow', 'hidden');
 								container.find('.menu-wrapper').transition({ x: 0, complete: function() {
-									$(window).scrollTop();
+									$(window).scrollTop(0);
 								}});
 								$('#header .back').hide();
 								$('#header .mobile.title').html($('title').text());
@@ -1765,12 +1766,14 @@ $(function() {
 			ajaxloader.fadeIn(200);
 			this.ajaxloader = ajaxloader;
 		},
-		finish: function() {
+		finish: function(callback) {
 			if(!this.ajaxloader)
 				return
 			var _this = this;
 			this.ajaxloader.fadeOut(200, function() {
 				_this.ajaxloader.remove();
+				if(typeof callback === "function")
+					callback();
 			});
 
 		}
@@ -3408,6 +3411,137 @@ $(function() {
 	
 	
 	$.extend( app.reasons, _reasons );
+	app.promocode = {
+	    init: function() {
+	
+	        if(device.type == 'smallmobile' || device.type == 'mobile') {
+	            $('#header .basket').hide();
+	            $('#header .mobile.add-promocode').show();
+	
+	            $('body').css('overflow', 'hidden');
+	
+	            $('button[data-toggle="new-promocode"]').on('click', function(e) {
+	                $('#promocodes').css('overflow', 'auto');
+	                $('#promocodes').find('.menu-wrapper').transition({
+	                    x: -320, complete: function () {
+	                        $(window).scrollTop(0);
+	                    }
+	                });
+	                $('body').css('overflow', 'auto');
+	                $('#header .navbar-toggle').hide();
+	                $('#header .back').show();
+	            });
+	        }
+	
+	
+	
+	        $('ul.basket-list li').on('click', function(e) {
+	            if(device.type != 'smallmobile' && device.type != 'mobile')
+	                return;
+	
+	            var $target = $(e.target);
+	
+	            if($target.is('.spin-up') || $target.is('.spin-down') || $target.is('.form-control'))
+	                return;
+	
+	            $('ul.basket-list li').not(this).removeClass('mobile-delete');
+	            $(this).toggleClass('mobile-delete');
+	        });
+	
+	
+	        $('#promocodes .content-panel .bottom button[type="submit"]').on('click', function(e) {
+	            var targetForm = $(this).data('to-form');
+	
+	            if(settings.env == 'dev')
+	                console.log('Click bottom button with target form ' + targetForm);
+	
+	            if(!targetForm || $(targetForm).length == 0)
+	                return;
+	
+	            var form = $(targetForm);
+	            form.trigger('submit');
+	            return false;
+	        });
+	
+	        $('#promocode-add input').on('keyup', function() {
+	            if($(this).val())
+	                $('button[data-to-form="#promocode-add"]').addClass('btn-primary').removeClass('btn-bordered').removeAttr('disabled');
+	            else
+	                $('button[data-to-form="#promocode-add"]').addClass('btn-bordered').removeClass('btn-primary').attr('disabled', 'disabled');
+	        });
+	
+	
+	        $('#promocode-add').submit(function(e) {
+	            e.preventDefault();
+	            app.promocode.add($(this));
+	            return false;
+	        });
+	    },
+	    add: function(form) {
+	        $('button[data-to-form="#' + form.attr('id') + '"]').hide();
+	        var data = form.serializeArray();
+	        ajaxloader.local({
+	            element: form,
+	            to: '#promocodes .content-panel .static',
+	            title: lang.processConfirmCheck
+	        });
+	        var _h = $('#promocodes .content-panel .static').outerHeight();
+	        this.process(data, function(response) {
+	            $('#promocodes .content-panel .static').css('height', $('#promocodes').height());
+	            form.hide();
+	            ajaxloader.finish();
+	
+	            var status = 'error';
+	
+	            if(response.status) {
+	                status = 'success';
+	                var promo = tmpl(
+	                    document.getElementById("tmpl-promocode").innerHTML,
+	                    response.promocode
+	                );
+	                var list = $("#promocodes-list");
+	
+	                if(list.find('li.notfound').length > 0)
+	                    list.find('li.notfound').remove();
+	                list.append(promo);
+	
+	            }
+	
+	            $('#callback-order-' + status).css('height', $('#promocodes').height()).fadeIn(200);
+	
+	            countDown({
+	                time: 5, // in seconds
+	                display:  $('#callback-order-' + status + ' .timer'),
+	                afterFinish: function() {
+	                    $('#callback-order-' + status).fadeOut(200, function() {
+	                        form[0].reset();
+	                        $('#promocodes .content-panel .static').css('height', _h);
+	                        form.fadeIn(200);
+	                        $('button[data-to-form="#promocode-add"]').addClass('btn-bordered').removeClass('btn-primary').attr('disabled', 'disabled');
+	                        $('button[data-to-form="#' + form.attr('id') + '"]').show();
+	                    });
+	
+	                }
+	            });
+	
+	        });
+	
+	    },
+	    process: function(data, callback) {
+	        // Ajax simulation
+	        setTimeout(function() {
+	            var response = {
+	                status: true,
+	                promocode: {
+	                    name: 'Скидка 500₽ на первый заказ',
+	                    period: 'до 31 декабря 2016'
+	                }
+	            };
+	            if(typeof callback === "function")
+	                callback(response);
+	        }, 1000);
+	    }
+	};
 
 	$w.scroll(function () {
 		app.scroll();
