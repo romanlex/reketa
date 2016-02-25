@@ -4802,6 +4802,19 @@ span.icon-basket {
     width: 100%;
     font-size: 0.9em;
   }
+
+  .layout.devided.authorization > div.menu-wrapper {
+    position: absolute;
+    bottom: 0;
+    opacity: 0.4;
+    left: 0;
+    width: 100%;
+    z-index: -1;
+  }
+
+  .layout.devided.authorization > div.content-panel .static .btn {
+    background: #434343;
+  }
 }
 
 @media screen and (min-width: 768px) and (max-width: 1024px) {
