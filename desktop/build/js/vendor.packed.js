@@ -22641,6 +22641,7 @@ Demo: http://www.toolitup.com/JRate.html
 			isRequired       : $input.is('[required]'),
 			isInvalid        : false,
 			isLocked         : false,
+			isDropUp         : false,
 			isFocused        : false,
 			isInputHidden    : false,
 			isSetup          : false,
@@ -22689,6 +22690,8 @@ Demo: http://www.toolitup.com/JRate.html
 	
 		// option-dependent defaults
 		self.settings.mode = self.settings.mode || (self.settings.maxItems === 1 ? 'single' : 'multi');
+		// Raketa
+		self.settings.dropdownDirection = -1 < ['up', 'down', 'auto'].indexOf(self.settings.dropdownDirection) ? self.settings.dropdownDirection : 'auto';
 		if (typeof self.settings.hideSelected !== 'boolean') {
 			self.settings.hideSelected = self.settings.mode === 'multi';
 		}
@@ -24344,7 +24347,27 @@ Demo: http://www.toolitup.com/JRate.html
 		positionDropdown: function() {
 			var $control = this.$control;
 			var offset = this.settings.dropdownParent === 'body' ? $control.offset() : $control.position();
-			offset.top += $control.outerHeight(true);
+
+			//offset.top += $control.outerHeight(true);
+
+			//Raketa
+			var controlHeight = $control.outerHeight(true);
+			var dropdownHeight = this.$dropdown.outerHeight(true);
+
+			var optDirection = this.settings.dropdownDirection;
+			if (optDirection === 'auto') {
+				var dropdownBottom = $control.offset().top + controlHeight + dropdownHeight;
+				var windowBottom = $(window).height();
+				optDirection = dropdownBottom < windowBottom ? 'down' : 'up';
+			}
+
+			if (optDirection === 'down') {
+				offset.top += controlHeight;
+				self.isDropUp = false;
+			} else if (optDirection === 'up') {
+				offset.top -= dropdownHeight;
+				self.isDropUp = true;
+			}
 	
 			this.$dropdown.css({
 				width : $control.outerWidth(),

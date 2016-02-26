@@ -127,10 +127,10 @@
                     <h3>Оформление заказа</h3>
                 </div>
                 <div class="price">
-                    <span class="price">3500₽</span>
+                    <span class="price">7500₽</span>
                     <span class="count">3 букета</span>
                 </div>
-                <ul class="basket-list">
+                <ul class="basket-list" data-total-count="3" data-total-price="7500">
                     <li>
                         <div data-product-id="2" class="order table">
                             <span class="cell middle image">
@@ -141,7 +141,7 @@
                                 2500₽
                             </span>
                             <span class="cell middle count">
-                                2
+                                1
                             </span>
                         </div>
                     </li>
@@ -155,7 +155,7 @@
                                 2500₽
                             </span>
                             <span class="cell middle count">
-                                23
+                                1
                             </span>
                         </div>
                     </li>
@@ -176,6 +176,9 @@
                 </ul>
                 <div class="bottom">
                     <a href="/" class="button">Отменить</a>
+                </div>
+                <div class="mobile">
+                    <a href="basket.html" class="btn btn-bordered basket">Корзина<br><span>2 букета</span><br>7500₽</a>
                 </div>
             </div>
             <div class="content-panel cell middle">
@@ -219,6 +222,7 @@
                         </div>
                     </div>
                     <div data-step="3" class="step step3">
+                        <div class="mobile hide mobtitle">Адрес доставки</div>
                         <!--Адрес доставки-->
                         <script src="http://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
                         <div id="map">
@@ -246,6 +250,7 @@
                     </div>
                     <div data-step="4" class="step step4">
                         <!--Кому привезти-->
+                        <div class="mobile hide mobtitle">Кому привезти</div>
                         <div class="title">
                             <h2>Кому привезти</h2>
 
@@ -283,15 +288,18 @@
 
                     </div>
                     <div data-step="5" class="step step5">
+                        <div class="mobile hide mobtitle">Дата доставки</div>
                         <!--Дата доставки-->
                     </div>
                     <div data-step="6" class="step step6">
+                        <div class="mobile hide mobtitle">Открытка</div>
                         <!--Открытка-->
                     </div>
                     <div data-step="7" class="step step7">
+                        <div class="mobile hide mobtitle">Карта</div>
                         <!--Карта-->
                         <ul class="creditcard-list">
-                            <li data-card-id="1">
+                            <li data-card-id="1" data-card-lastdiggit="4454"  data-card-type="mastercard">
                                 <div class="creditcard">
                                     <div class="creditcard-name">Карта #1</div>
                                     <div class="creditcard-type mastercard"></div>
@@ -307,7 +315,7 @@
                                     </div>
                                 </div>
                             </li>
-                            <li data-card-id="2">
+                            <li data-card-id="2" data-card-lastdiggit="4454" data-card-type="visa">
                                 <div class="creditcard waiting">
                                     <div class="creditcard-name">Карта #2</div>
                                     <div class="creditcard-type visa"></div>
@@ -324,7 +332,7 @@
                                     </div>
                                 </div>
                             </li>
-                            <li data-card-id="3">
+                            <li data-card-id="3" data-card-lastdiggit="4454" data-card-type="maestro">
                                 <div class="creditcard error">
                                     <div class="creditcard-name">Карта #3</div>
                                     <div class="creditcard-type maestro"></div>
@@ -356,7 +364,8 @@
                                 </li>
                                 <li class="delivery-date">
                                     <span>Дата доставки</span>
-                                    <button class="btn" data-toggle="gotostep" data-to-step="5">Изменить</button>
+                                    <button class="btn" data-toggle="popup" data-target="#widget-calendar" data-label-to="#result li.delivery-date span" data-thischange="false">Изменить</button>
+                                    <!--<button class="btn" data-toggle="gotostep" data-to-step="5">Изменить</button>-->
                                 </li>
                                 <li class="postcard">
                                     <span>Добавить открытку</span>
@@ -404,8 +413,9 @@
                     </div>
                 </div>
                 <div data-to-step="step7" class="bottom">
-                    <div class="button-group one-button">
+                    <div class="button-group two-button">
                         <button type="dismiss"  class="btn-dismiss" tabindex="4">Отменить</button>
+                        <button data-toggle="setcard" class="btn-primary" tabindex="4">Выбрать карту</button>
                     </div>
                 </div>
                 <div data-to-step="step8" class="bottom">

@@ -33,7 +33,8 @@ var lang = {
     bouquet: 'Букет',
     bouquetNotFound: 'Доступных букетов не найдено',
     bouquetInBasketPopupCart: 'В корзине {1} на {2}',
-    reasonquestdelete: 'Вы уверены что хотите удалить повод?'
+    reasonquestdelete: 'Вы уверены что хотите удалить повод?',
+    cardNotApprovedStatus: 'Карта которую вы выбрали не активна. Выберите другую карту.'
 };
 var app;
 var ajaxloader;
@@ -856,7 +857,10 @@ $(function() {
 						obj.find('button[type="submit"]').removeAttr('disabled');
 						obj.find('button[data-toggle="clear-date"]').removeAttr('disabled');
 						$('#selectedDate').html(app.widgets.calendar.getDateString());
-						$('button[data-target="#widget-calendar"]').html(app.widgets.calendar.getDateString());
+						var button = $('button[data-target="#widget-calendar"]');
+						if(button.data('label-to'))
+							button = $(button.data('label-to'));
+						button.html(app.widgets.calendar.getDateString());
 					}
 				}
 
@@ -971,10 +975,13 @@ $(function() {
 						if(_this.obj && _this.obj.hasClass('widget'))
 						{
 							$('#selectedDate').html(_this.getDateString());
-							if(app.checkout.delivery !== undefined)
-								button.html(_this.getDateString());
-							else
-								button.html(lang.DeliveryDate);
+							if(button.data('thischange') === undefined || button.data('thischange') == true) {
+								if(app.checkout.delivery !== undefined)
+									button.html(_this.getDateString());
+								else
+									button.html(lang.DeliveryDate);
+							}
+
 						}
 					});
 
@@ -1015,7 +1022,11 @@ $(function() {
 					form.find('input[name="date"].delivery-date').val(new Date());
 					form[0].reset();
 					$('#selectedDate').html(lang.DeliveryDate);
-					$('button[data-target="#widget-calendar"]').html(lang.DeliveryDate);
+					var but = $('button[data-target="#widget-calendar"]');
+
+					if(!but.data('thischange'))
+						but.html(lang.DeliveryDate);
+
 					$('button[data-toggle="setDelivaryDate"]').attr('disabled', 'disabled');
 					form.find('input[name="timeofday"]:checked').attr('checked', false);
 					form.find('input[name="timeofday"]').attr('disabled', 'disabled');
@@ -1067,6 +1078,9 @@ $(function() {
 					var button = $('button[data-target="#widget-calendar"]');
 					var data = form.serializeObject();
 					app.checkout.delivery = data;
+					if(button.data('label-to'))
+						button = $(button.data('label-to'));
+
 					if(app.checkout.delivery !== undefined)
 						button.html(this.getDateString());
 					else
@@ -2148,10 +2162,21 @@ $(function() {
 	        });
 	
 	        if(device.type == 'smallmobile' || device.type == 'mobile') {
-	            $('#checkout-step #result ul > li').on('click', function () {
-	                var step = $(this).find('button[data-toggle="gotostep"]').data('to-step');
-	                if(step)
-	                    _this.goToStep(step);
+	            $('#checkout-step #result ul > li').on('click', function (e) {
+	                var target = $(e.target);
+	                if(!target.is('button')) {
+	                    var step = $(this).find('button[data-toggle="gotostep"]').data('to-step');
+	                    if(step)
+	                        _this.goToStep(step);
+	                    else
+	                        $(this).find('button[data-toggle!="gotostep"]').trigger('click');
+	                }
+	
+	
+	            });
+	
+	            $('button[data-toggle="devided-slider-back"]').on('click', function() {
+	                _this.goToStep(8);
 	            });
 	        }
 	
@@ -2922,7 +2947,66 @@ $(function() {
 	        },
 	        7: {
 	            loaded: false,
+	            load: function() {
+	                this.step = $('#checkout-step > div[data-step="7"]');
+	                var list = this.step.find('.creditcard-list li');
+	                var _this = this;
+	                list.on('click', function() {
+	
+	                    var card = {
+	                        id: $(this).data('card-id'),
+	                        lastdiggit: $(this).data('card-lastdiggit'),
+	                        type: $(this).data('card-type')
+	                    };
+	                    list.not(this).removeClass('active');
+	                    $(this).toggleClass('active');
+	                    if(card && $(this).hasClass('active'))
+	                        _this.checkedCardId = card;
+	                    else
+	                        _this.checkedCardId = 0;
+	
+	                });
+	
+	                $('button[data-toggle="setcard"]').on('click', function() {
+	                    console.log(_this.checkedCardId);
+	                    if(_this.checkedCardId)
+	                        _this.cardProcess(_this.checkedCardId);
+	                });
+	                this.loaded = true;
+	            },
 	            init: function() {
+	
+	            },
+	            cardProcess: function(card) {
+	                console.log('User set card #' + card.id);
+	                $('#ajax-loader').fadeIn(100);
+	                // Object {id: 2, lastdiggit: 4454, type: "visa"}
+	                //Save card to session
+	                //Ajax
+	                setTimeout(function() {
+	                    var response = {
+	                        status: true
+	                    };
+	                    if(response.status) {
+	                       // Card approved
+	                       app.checkout.card = card;
+	                       $(document).trigger('raketa.checkout.update');
+	                       app.checkout.goToStep(8);
+	                    } else {
+	                        // card not approved  - not save
+	                        app.modal.dialog({
+	                            content: lang.cardNotApprovedStatus,
+	                            buttons: {
+	                                no: {
+	                                    title: 'OK',
+	                                    class: 'dismiss',
+	                                    action: function(){ if(settings.env == 'dev') console.log('[Dialog] Not confirmed'); }
+	                                }
+	                            }
+	                        });
+	                    }
+	                    $('#ajax-loader').fadeOut(100);
+	                }, 1000);
 	
 	            }
 	        },
@@ -2955,18 +3039,23 @@ $(function() {
 	                this.loaded = true;
 	            },
 	            init: function() {
+	                $('.layout.devided.checkout>div.menu-wrapper').css('height', 'auto').show();
+	
 	                if(
 	                    app.checkout.basket.length &&
 	                    app.checkout.delivery.address &&
 	                    app.checkout.delivery.timeofday &&
 	                    app.checkout.delivery.date &&
-	                    app.checkout.for
+	                    app.checkout.for &&
+	                    app.checkout.card
 	                )
 	                {
 	                    $('button[type="checkout"]').removeAttr('disabled');
 	                } else {
 	                    $('button[type="checkout"]').attr('disabled', 'disabled');
 	                }
+	
+	
 	
 	
 	                this.updateHtml();
@@ -3016,6 +3105,13 @@ $(function() {
 	                    var timeofday = lang[app.checkout.delivery.timeofday];
 	                    result.find('li.delivery-date span').html(timeofday + ' '+date);
 	                }
+	
+	                if(app.checkout.card) {
+	                    var row = result.find('li.credit');
+	                    row.removeClass('error');
+	                    row.find('span').html('Карта <b>' + app.checkout.card.lastdiggit + '</b>');
+	                    row.find('.creditcard-type').addClass(app.checkout.card.type);
+	                }
 	            }
 	        }
 	    },
@@ -3033,6 +3129,7 @@ $(function() {
 	    },
 	    goToStep: function(step) {
 	        Cookies.set('raketa_checkout__step', step, { expires: 365, path: '/' });
+	
 	        var checkout = $('#checkout-step');
 	        var currentStep = checkout.find('.step.active');
 	        if(currentStep.length)
@@ -3064,6 +3161,22 @@ $(function() {
 	            && (typeof this.step[step].init === "function")
 	        )
 	            this.step[step].init()
+	
+	        if(device.type == 'smallmobile' || device.type == 'mobile') {
+	            console.log(step);
+	            if(step == 8) {
+	                $('#header .navbar-toggle').show();
+	                $('#header .back').hide();
+	            } else if(step != 1 && step != 2) {
+	                $('#header .navbar-toggle').hide();
+	                $('#header .back').show();
+	            }
+	            var title = checkout.find('.step.step' + step + ' .mobile.hide.mobtitle').text();
+	            if(title)
+	                $('#header .mobile.title').html(title);
+	            else
+	                $('#header .mobile.title').html($('title').text());
+	        }
 	    },
 	};
 	
