@@ -4599,7 +4599,7 @@ span.icon-basket {
     font-size: 0.9em;
   }
 
-  #slider-content .owl-item>.item {
+  #slider-content .owl-item > .item {
     padding: 15px;
   }
 
@@ -4933,6 +4933,51 @@ span.icon-basket {
   .modal.add-card-popup .creditcard {
     width: auto;
   }
+
+  .layout.devided.checkout > div.content-panel,
+  .layout.devided.checkout > div.menu-wrapper {
+    display: block;
+    width: 100%;
+  }
+
+  .layout.devided.checkout > div.menu-wrapper {
+    display: none;
+  }
+
+  .layout.devided.checkout .checkout-step .step1 {
+    padding: 15px;
+  }
+
+  .layout.devided.checkout .checkout-step .step3 .panel-map .title {
+    padding: 12px;
+  }
+
+  .layout.devided.checkout .checkout-step .step.step8 {
+    padding: 0;
+  }
+
+  .layout.devided.checkout .checkout-step .step.step8 ul li {
+    padding: 12px 12px;
+    padding-left: 36px;
+    background-position: 5px center;
+  }
+
+  .layout.devided.checkout .checkout-step .step.step8 ul li button {
+    display: none;
+  }
+
+  .layout.devided.checkout .checkout-step .step.step8 ul li:after {
+    position: absolute;
+    content: "";
+    background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAANCAYAAACUwi84AAAAlElEQVQYV32QvQ4BURBGz4nEC+i0Cp2emkTiZTciGlF7EttIVBqFjNx1/dxlTTfznXzzzRgRQ2AObNQzrTL1ETECpkClXj6ZBsjQBBgDa/X6nL+ADM2AAbBVb2nWBlKf8gSwV6MAsksPWAEn9fAFZKgPLIFjF5BOXwC7XyveotbtkIVYXJE/+rDVuvhDl9g4/BMTcAdboEBVR4DTgAAAAABJRU5ErkJggg==");
+    background-repeat: no-repeat;
+    background-position: center center;
+    width: 6px;
+    height: 13px;
+    right: 6px;
+    top: 50%;
+    margin-top: -7px;
+  }
 }
 
 @media screen and (min-width: 768px) and (max-width: 1024px) {
@@ -4960,17 +5005,17 @@ span.icon-basket {
     margin-right: -32px;
   }
 
-  #orders ul.order-list>li>a .status,
-  #orders ul.order-list>li>div .status,
-  #checkout ul.basket-list>li>a .status,
-  #checkout ul.basket-list>li>div .status {
+  #orders ul.order-list > li > a .status,
+  #orders ul.order-list > li > div .status,
+  #checkout ul.basket-list > li > a .status,
+  #checkout ul.basket-list > li > div .status {
     width: 25%;
   }
 
-  #orders ul.order-list>li>a .price,
-  #orders ul.order-list>li>div .price,
-  #checkout ul.basket-list>li>a .price,
-  #checkout ul.basket-list>li>div .price {
+  #orders ul.order-list > li > a .price,
+  #orders ul.order-list > li > div .price,
+  #checkout ul.basket-list > li > a .price,
+  #checkout ul.basket-list > li > div .price {
     width: 20%;
   }
 
@@ -4979,13 +5024,13 @@ span.icon-basket {
     height: 120px;
   }
 
-  .layout.devided-slider>div.content-panel .item,
-  .layout.devided>div.content-panel .item {
+  .layout.devided-slider > div.content-panel .item,
+  .layout.devided > div.content-panel .item {
     padding: 0 40px;
   }
 
-  .bouquet-list>li>.bouquet,
-  .bouquet-list>li>.bouquet>.desc {
+  .bouquet-list > li > .bouquet,
+  .bouquet-list > li > .bouquet > .desc {
     width: 246px;
     max-height: 366px;
   }
@@ -4996,7 +5041,7 @@ span.icon-basket {
   }
 
   .product-cart > button.product_next,
-  .product-cart >button.popup-close {
+  .product-cart > button.popup-close {
     right: -13%;
   }
 
@@ -5143,14 +5188,14 @@ span.icon-basket {
     width: 600px;
   }
 
-  #header .buttons>a.basket>span {
+  #header .buttons > a.basket > span {
     width: 28px;
     height: 28px;
     line-height: 30px;
   }
 
-  #header .buttons>a.calendar,
-  #header .buttons>button.calendar {
+  #header .buttons > a.calendar,
+  #header .buttons > button.calendar {
     height: 64px;
   }
 
@@ -5186,7 +5231,7 @@ span.icon-basket {
     min-height: 800px;
   }
 
-  .widget .widget-submit>button {
+  .widget .widget-submit > button {
     height: 80px;
     line-height: 80px;
   }
@@ -5208,46 +5253,46 @@ span.icon-basket {
     top: 42px;
   }
 
-  .bouquet-list>li {
+  .bouquet-list > li {
     width: 33.33333333%;
     margin-bottom: 10px;
   }
 
-  .bouquet-list>li >.bouquet {
+  .bouquet-list > li > .bouquet {
     width: 534px;
     height: 800px;
   }
 
-  .bouquet-list>li >.bouquet >.desc {
+  .bouquet-list > li > .bouquet > .desc {
     width: 534px;
     height: 800px;
   }
 
-  .bouquet-list>li >.bouquet >.desc >.labels,
+  .bouquet-list > li > .bouquet > .desc > .labels,
   .product-cart .labels {
     width: 64px;
   }
 
-  .bouquet-list>li >.bouquet >.desc >.labels >span,
-  .product-cart .labels >span {
+  .bouquet-list > li > .bouquet > .desc > .labels > span,
+  .product-cart .labels > span {
     width: 64px;
     height: 64px;
   }
 
-  .bouquet-list>li >.bouquet >.desc >.labels >span.type,
-  .product-cart .labels >span.type {
+  .bouquet-list > li > .bouquet > .desc > .labels > span.type,
+  .product-cart .labels > span.type {
     line-height: 1em;
     padding: 13px 8px;
   }
 
-  .bouquet-list>li >.bouquet >.desc >.labels >span.special,
-  .product-cart .labels >span.special {
+  .bouquet-list > li > .bouquet > .desc > .labels > span.special,
+  .product-cart .labels > span.special {
     width: 64px;
     line-height: 64px;
   }
 
-  .bouquet-list>li >.bouquet >.desc >.labels >span.special:before,
-  .product-cart .labels >span.special:before {
+  .bouquet-list > li > .bouquet > .desc > .labels > span.special:before,
+  .product-cart .labels > span.special:before {
     width: 45.254833995939045px;
     height: 45.254833995939045px;
     line-height: 45.254833995939045px;
@@ -5255,29 +5300,29 @@ span.icon-basket {
     margin-top: -22.627416997969522px;
   }
 
-  .bouquet-list>li >.bouquet >.desc >.available.data {
+  .bouquet-list > li > .bouquet > .desc > .available.data {
     height: 40px;
     line-height: 40px;
     padding: 0 16px;
   }
 
-  .bouquet-list>li >.bouquet >.desc >.price-group {
+  .bouquet-list > li > .bouquet > .desc > .price-group {
     height: 40px;
     line-height: 40px;
   }
 
-  .bouquet-list>li >.bouquet >.desc >.price-group >button.basket {
+  .bouquet-list > li > .bouquet > .desc > .price-group > button.basket {
     height: 40px;
     line-height: 40px;
   }
 
-  .bouquet-list>li >.bouquet >.desc >.price-group >button.basket >span.price {
+  .bouquet-list > li > .bouquet > .desc > .price-group > button.basket > span.price {
     height: 40px;
     line-height: 40px;
     padding: 0 50px 0 32px;
   }
 
-  .bouquet-list>li >.bouquet >.desc >.price-group >button.basket >span.icon {
+  .bouquet-list > li > .bouquet > .desc > .price-group > button.basket > span.icon {
     margin-left: -40px;
     padding-left: 40px;
     background-position: top 50% left 14px;
@@ -5313,10 +5358,10 @@ span.icon-basket {
     height: 240px;
   }
 
-  .layout .content-panel .bottom>.button-group a,
-  .layout .content-panel .bottom>.button-group button,
-  .product-cart .content .cart .bottom>.button-group a,
-  .product-cart .content .cart .bottom>.button-group button {
+  .layout .content-panel .bottom > .button-group a,
+  .layout .content-panel .bottom > .button-group button,
+  .product-cart .content .cart .bottom > .button-group a,
+  .product-cart .content .cart .bottom > .button-group button {
     height: 80px;
     line-height: 80px;
   }
@@ -5356,8 +5401,8 @@ span.icon-basket {
     padding: 0 80px;
   }
 
-  .layout.devided-slider>div.menu-wrapper .title,
-  .layout.devided>div.menu-wrapper .title {
+  .layout.devided-slider > div.menu-wrapper .title,
+  .layout.devided > div.menu-wrapper .title {
     top: 60px;
     left: 60px;
   }
@@ -5366,18 +5411,18 @@ span.icon-basket {
     padding: 0 60px;
   }
 
-  #checkout .menu-wrapper>.price,
+  #checkout .menu-wrapper > .price,
   .order-info .price {
     margin-bottom: 80px;
   }
 
-  .layout.devided-slider>div.menu-wrapper .menu,
-  .layout.devided>div.menu-wrapper .menu {
+  .layout.devided-slider > div.menu-wrapper .menu,
+  .layout.devided > div.menu-wrapper .menu {
     padding: 0 60px;
   }
 
-  .layout.devided-slider>div.menu-wrapper .bottom,
-  .layout.devided>div.menu-wrapper .bottom {
+  .layout.devided-slider > div.menu-wrapper .bottom,
+  .layout.devided > div.menu-wrapper .bottom {
     left: 60px;
     right: 60px;
     bottom: 60px;
@@ -5392,7 +5437,7 @@ span.icon-basket {
     width: 40%;
   }
 
-  .modal>.modal-content {
+  .modal > .modal-content {
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
   }

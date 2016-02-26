@@ -2143,8 +2143,17 @@ $(function() {
 	
 	        $('#checkout-step button[data-toggle="gotostep"]').on('click', function() {
 	            var step = $(this).data('to-step');
-	            _this.goToStep(step);
+	            if(step)
+	                _this.goToStep(step);
 	        });
+	
+	        if(device.type == 'smallmobile' || device.type == 'mobile') {
+	            $('#checkout-step #result ul > li').on('click', function () {
+	                var step = $(this).find('button[data-toggle="gotostep"]').data('to-step');
+	                if(step)
+	                    _this.goToStep(step);
+	            });
+	        }
 	
 	        if(!app.checkout.loadLastStep())
 	            app.checkout.goToStep(1);
@@ -2303,7 +2312,34 @@ $(function() {
 	                    return false;
 	                });
 	
+	                $(document).on('click', 'button[data-toggle="resendConfirmCode"]', function() {
+	                   _this.resendCode();
+	                });
+	
 	                this.loaded = true;
+	            },
+	            resendCode: function() {
+	                // Ajax simulation
+	                console.log('Resend activation code');
+	                $('#timeout').fadeOut(200, function() {
+	                    $('#timein').fadeIn(200);
+	                });
+	                countDown({
+	                    time: settings.timeoutResendConfirmPhoneCode, // in seconds
+	                    display:  $('#timein span'),
+	                    showMinutes: true,
+	                    afterFinish: function() {
+	                        $('#timein').fadeOut(200, function() {
+	                            $('#timeout').fadeIn(200);
+	                        })
+	                    }
+	                });
+	                setTimeout(function() {
+	                    var response = {
+	                        message: 'Отправить новый код',
+	                        status: true, // example code error
+	                    };
+	                }, 2000);
 	            },
 	            init: function() {
 	                countDown({
@@ -2316,7 +2352,6 @@ $(function() {
 	                        })
 	                    }
 	                });
-	
 	            },
 	            confirmProcess: function(data, callback) {
 	                console.log('[CONFIRM] Send form data to server:');
@@ -3525,6 +3560,7 @@ $(function() {
 	            });
 	
 	        });
+	
 	
 	    },
 	    process: function(data, callback) {
