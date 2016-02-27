@@ -481,7 +481,7 @@ li {
 }
 
 .bouquet-list > li {
-  margin-bottom: 10px;
+  margin-bottom: 5px;
 }
 
 .bouquet-list > li:nth-child(3n - 1) > .bouquet {
