@@ -5228,10 +5228,6 @@ span.icon-basket {
 }
 
 @media screen and (min-width: 1281px) and (max-width: 1440px) {
-  #header .container {
-    padding-left: 250px;
-  }
-
   .navbar-toggle,
   #sidebar > button.close {
     display: none;
@@ -5255,10 +5251,6 @@ span.icon-basket {
 }
 
 @media screen and (min-width: 1441px) and (max-width: 1920px) {
-  #header .container {
-    padding-left: 250px;
-  }
-
   .navbar-toggle,
   #sidebar > button.close {
     display: none;
