@@ -20498,9 +20498,16 @@ Demo: http://www.toolitup.com/JRate.html
 	 * Updates the view.
 	 */
 	AutoHeight.prototype.update = function() {
-		this._core.$stage.parent()
-			.height(this._core.$stage.children().eq(this._core.current()).height())
-			.addClass(this._core.settings.autoHeightClass);
+		// Raketa
+		var _this = this;
+		setTimeout(function() {
+			_this._core.$stage.parent()
+				.height(_this._core.$stage.children().eq(_this._core.current()).height())
+				.addClass(_this._core.settings.autoHeightClass);
+		}, 200)
+		//this._core.$stage.parent()
+		//	.height(this._core.$stage.children().eq(this._core.current()).height())
+		//	.addClass(this._core.settings.autoHeightClass);
 	};
 
 	AutoHeight.prototype.destroy = function() {

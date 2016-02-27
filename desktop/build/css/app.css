@@ -3668,8 +3668,6 @@ span.icon-basket {
 }
 
 .layout.default {
-  -webkit-transition: all 0.3s ease-in-out;
-  transition: all 0.3s ease-in-out;
   background-color: #434343;
 }
 
@@ -3700,7 +3698,7 @@ span.icon-basket {
 }
 
 #slider-content .owl-item > .item {
-  padding: 0 50px;
+  padding: 30px 50px;
 }
 
 .support-menu > li.phone-icon:after {

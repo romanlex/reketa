@@ -562,7 +562,7 @@ $(function() {
 		content: {
 			initStyle: function() {
 				if(device.type != 'smallmobile' && device.type != 'mobile')
-					$("#content").css('height', ($w.height() - $('#header').height()) + 'px');
+					$("#content").css('min-height', ($w.height() - $('#header').height()) + 'px');
 			}
 		},
 		bouquets: {
@@ -1401,11 +1401,10 @@ $(function() {
 				if(device.type == 'smallmobile' || device.type == 'mobile') {
 					container.find('.menu-wrapper').css('height', newH + 'px');
 					container.find('.content-panel').css('min-height', newH + 'px');
-					container.css('min-height', newH + 'px');
 				}
-				else {
-					container.css('height', newH + 'px');
-				}
+
+				container.css('min-height', newH + 'px');
+
 			},
 			loadLayout: function(layout, container, callback) {
 				switch (layout) {
@@ -1419,6 +1418,8 @@ $(function() {
 						var owl = $('#slider-content');
 						if(device.type != 'smallmobile' && device.type != 'mobile')
 							owl.css('width', w/2);
+
+
 
 						owl.on('initialized.owl.carousel', function(event) {
 							var element = $(event.target);
@@ -1434,6 +1435,7 @@ $(function() {
 
 							container.find('.content-panel > .bottom').hide();
 							container.find('.content-panel > .bottom[data-to-slide="'+ hash +'"]').fadeIn(200);
+							console.log(current.height());
 						});
 						owl.on('changed.owl.carousel', function(event) {
 							var element = $(event.target);
