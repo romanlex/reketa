@@ -1,31 +1,27 @@
 @font-face {
   font-family: 'SF UI Display';
-  src: url("../fonts/san_francisco_display_bold.eot");
-  src: url("../fonts/san_francisco_display_bold.eot?#iefix") format('embedded-opentype'), url("../fonts/san_francisco_display_bold.woff2") format('woff2'), url("../fonts/san_francisco_display_bold.woff") format('woff'), url("../fonts/san_francisco_display_bold.ttf") format('truetype');
+  src: url("../fonts/SFUIDisplay-Bold.eot?#iefix") format('embedded-opentype'), url("../fonts/SFUIDisplay-Bold.otf") format('opentype'), url("../fonts/SFUIDisplay-Bold.woff") format('woff'), url("../fonts/SFUIDisplay-Bold.ttf") format('truetype'), url("../fonts/SFUIDisplay-Bold.svg#SFUIDisplay-Bold") format('svg');
   font-weight: 700;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'SF UI Display';
-  src: url("../fonts/san_francisco_display_ultralight.eot");
-  src: url("../fonts/san_francisco_display_ultralight.eot?#iefix") format('embedded-opentype'), url("../fonts/san_francisco_display_ultralight.woff2") format('woff2'), url("../fonts/san_francisco_display_ultralight.woff") format('woff'), url("../fonts/san_francisco_display_ultralight.ttf") format('truetype');
+  src: url("../fonts/SFUIDisplay-Ultralight.eot?#iefix") format('embedded-opentype'), url("../fonts/SFUIDisplay-Ultralight.otf") format('opentype'), url("../fonts/SFUIDisplay-Ultralight.woff") format('woff'), url("../fonts/SFUIDisplay-Ultralight.ttf") format('truetype'), url("../fonts/SFUIDisplay-Ultralight.svg#SFUIDisplay-Bold") format('svg');
   font-weight: 100;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'SF UI Display';
-  src: url("../fonts/san_francisco_display_thin.eot");
-  src: url("../fonts/san_francisco_display_thin.eot?#iefix") format('embedded-opentype'), url("../fonts/san_francisco_display_thin.woff2") format('woff2'), url("../fonts/san_francisco_display_thin.woff") format('woff'), url("../fonts/san_francisco_display_thin.ttf") format('truetype');
+  src: url("../fonts/SFUIDisplay-Thin.eot?#iefix") format('embedded-opentype'), url("../fonts/SFUIDisplay-Thin.otf") format('opentype'), url("../fonts/SFUIDisplay-Thin.woff") format('woff'), url("../fonts/SFUIDisplay-Thin.ttf") format('truetype'), url("../fonts/SFUIDisplay-Thin.svg#SFUIDisplay-Bold") format('svg');
   font-weight: 300;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'SF UI Display';
-  src: url("../fonts/san_francisco_display_regular.eot");
-  src: url("../fonts/san_francisco_display_regular.eot?#iefix") format('embedded-opentype'), url("../fonts/san_francisco_display_regular.woff2") format('woff2'), url("../fonts/san_francisco_display_regular.woff") format('woff'), url("../fonts/san_francisco_display_regular.ttf") format('truetype');
+  src: url("../fonts/SFUIDisplay-Regular.eot?#iefix") format('embedded-opentype'), url("../fonts/SFUIDisplay-Regular.otf") format('opentype'), url("../fonts/SFUIDisplay-Regular.woff") format('woff'), url("../fonts/SFUIDisplay-Regular.ttf") format('truetype'), url("../fonts/SFUIDisplay-Regular.svg#SFUIDisplay-Bold") format('svg');
   font-weight: normal;
   font-style: normal;
 }
