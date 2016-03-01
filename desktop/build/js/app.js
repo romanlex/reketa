@@ -1446,6 +1446,12 @@ $(function() {
 								container.find('.layout-menu li.active').removeClass('active');
 								container.find('.layout-menu a[href="#' + hash + '"]').parent().addClass('active');
 							}
+
+							if(device.type != 'smallmobile' || device.type != 'mobile') {
+								var title = container.find('.layout-menu li a[href="#' + hash + '"]').text();
+								$('#header .mobile.title').html(title);
+							}
+
 							if(hash)
 								window.location.hash = hash;
 							if(settings.env == 'dev')
