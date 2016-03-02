@@ -3903,7 +3903,7 @@ span.icon-basket {
     margin-left: 0;
     padding-left: 0;
     padding-right: 0;
-    padding-top: 64px;
+    padding-top: 0;
   }
 
   #ajax-loader {
@@ -3919,7 +3919,7 @@ span.icon-basket {
   }
 
   #header {
-    border-bottom: 1px solid #fff;
+    position: relative;
     overflow: visible;
     height: 64px;
   }
@@ -4950,7 +4950,7 @@ span.icon-basket {
   }
 
   .layout.devided.checkout:not(.checkout-basket) > div.menu-wrapper {
-    display: none;
+    display: none !important;
     position: fixed;
     bottom: 50px;
   }
@@ -4971,7 +4971,31 @@ span.icon-basket {
     display: none;
   }
 
-  .layout.devided.checkout:not(.checkout-basket) > div.menu-wrapper .basket {
+  .layout.devided.checkout:not(.checkout-basket) .bottom {
+    bottom: 1px;
+  }
+
+  .layout.devided.checkout:not(.checkout-basket) .bottom[data-to-step="step8"] {
+    height: 135px;
+  }
+
+  .layout.devided.checkout:not(.checkout-basket) .bottom[data-to-step="step8"] .button-group {
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+  }
+
+  .layout.devided.checkout:not(.checkout-basket) .bottom[data-to-step="step8"] .button-group button {
+    box-sizing: border-box;
+  }
+
+  .layout.devided.checkout:not(.checkout-basket) .bottom[data-to-step="step8"] .basket.mobile {
+    position: absolute;
+    bottom: 50px;
+    width: 100%;
+  }
+
+  .layout.devided.checkout:not(.checkout-basket) .bottom[data-to-step="step8"] .basket.mobile a {
     display: block;
     font-size: 1em;
     width: auto;
@@ -4982,7 +5006,7 @@ span.icon-basket {
     position: relative;
   }
 
-  .layout.devided.checkout:not(.checkout-basket) > div.menu-wrapper .basket:after {
+  .layout.devided.checkout:not(.checkout-basket) .bottom[data-to-step="step8"] .basket.mobile a:after {
     position: absolute;
     content: "";
     background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAANCAYAAACUwi84AAAAlElEQVQYV32QvQ4BURBGz4nEC+i0Cp2emkTiZTciGlF7EttIVBqFjNx1/dxlTTfznXzzzRgRQ2AObNQzrTL1ETECpkClXj6ZBsjQBBgDa/X6nL+ADM2AAbBVb2nWBlKf8gSwV6MAsksPWAEn9fAFZKgPLIFjF5BOXwC7XyveotbtkIVYXJE/+rDVuvhDl9g4/BMTcAdboEBVR4DTgAAAAABJRU5ErkJggg==");
@@ -4995,7 +5019,7 @@ span.icon-basket {
     margin-top: -7px;
   }
 
-  .layout.devided.checkout:not(.checkout-basket) > div.menu-wrapper .basket span {
+  .layout.devided.checkout:not(.checkout-basket) .bottom[data-to-step="step8"] .basket.mobile a span {
     color: #999;
     font-size: 0.8em;
     display: inline-block;

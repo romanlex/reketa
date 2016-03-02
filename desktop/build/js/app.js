@@ -1399,11 +1399,27 @@ $(function() {
 					newH += 50;
 
 				if(device.type == 'smallmobile' || device.type == 'mobile') {
-					container.find('.menu-wrapper').css('height', newH + 'px');
-					container.find('.content-panel').css('min-height', newH + 'px');
+					var visible = container.find('.content-panel *:visible');
+					var visibleHeight = 0;
+					visible.each(function() {
+						if($(this).is('div.step'))
+							visibleHeight += $(this).height();
+
+						if($(this).is('div.bottom.show'))
+							visibleHeight += $(this).height();
+					});
+					//console.log(visible);
+					//console.log(visibleHeight);
+
+					if(visibleHeight < (device.windowHeight - 64) )
+					{
+						container.find('.menu-wrapper').css('height', newH + 'px');
+						container.find('.content-panel').css('height', newH + 'px');
+					}
+
 				}
 
-				container.css('min-height', newH + 'px');
+				container.css('height', newH + 'px');
 
 			},
 			loadLayout: function(layout, container, callback) {
@@ -1480,7 +1496,7 @@ $(function() {
 							}
 							if(device.type == 'smallmobile' || device.type == 'mobile'){
 								$('.layout.devided-slider').css('overflow', 'auto');
-								$('.layout.devided-slider .menu-wrapper').transition({ x: -320, complete: function() {
+								$('.layout.devided-slider .menu-wrapper').transition({ x: -device.windowWidth, complete: function() {
 								}});
 								$('body').css('overflow', 'auto');
 								$('#header .navbar-toggle').hide();
@@ -1504,7 +1520,7 @@ $(function() {
 							var hash = window.location.hash;
 							if(hash){
 								$('.layout.devided-slider').css('overflow', 'auto');
-								$('.layout.devided-slider .menu-wrapper').transition({ x: -320, complete: function() {
+								$('.layout.devided-slider .menu-wrapper').transition({ x: -device.windowWidth, complete: function() {
 									$(window).scrollTop(0);
 									$('body').css('overflow', 'auto');
 								}});
@@ -3579,7 +3595,7 @@ $(function() {
 	            $('button[data-toggle="new-promocode"]').on('click', function(e) {
 	                $('#promocodes').css('overflow', 'auto');
 	                $('#promocodes').find('.menu-wrapper').transition({
-	                    x: -320, complete: function () {
+	                    x: -device.windowWidth, complete: function () {
 	                        $(window).scrollTop(0);
 	                    }
 	                });

@@ -375,19 +375,13 @@ hr {
 
 
 /* Mobile */
-@media screen and (max-width: 400px){
+@media screen and (min-width: 320px) and (max-width: 767px) {
   .container {
     width: 100%;
   }
 }
-/* Tablet */
-@media screen and (min-width: 401px) and (max-width: 767px) {
-  .container {
-    width: 80%;
-  }
-}
 
-/* Desktop Small */
+/* Tablet */
 @media screen and (min-width: 768px) and (max-width: 1024px) {
   .container {
     width: 768px;
