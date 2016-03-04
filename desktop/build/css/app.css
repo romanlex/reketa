@@ -3882,6 +3882,10 @@ span.icon-basket {
 }
 
 @media screen and (max-width: 767px) {
+  body {
+    -webkit-overflow-scrolling: touch;
+  }
+
   .mobile {
     visibility: visible;
     display: block;
@@ -4024,7 +4028,7 @@ span.icon-basket {
   }
 
   .bouquet-list {
-    padding-bottom: 0;
+    padding-bottom: 40px;
   }
 
   .bouquet-list > li {
@@ -4199,64 +4203,6 @@ span.icon-basket {
 
   .product-cart .content .desc .product-info {
     margin: 0;
-  }
-
-  .layout {
-    min-height: auto;
-  }
-
-  .layout.devided > div.content-panel {
-    display: table-header-group;
-    background-color: transparent;
-  }
-
-  .layout.devided > div.content-panel .static {
-    padding: 0;
-  }
-
-  .layout.devided > div.content-panel .bottom.show.desktop {
-    display: none;
-  }
-
-  .layout.devided > div.menu-wrapper {
-    display: table-footer-group;
-    background-color: transparent;
-  }
-
-  .layout.devided > div.menu-wrapper .bottom.mobile {
-    position: relative;
-    left: 0;
-    right: 0;
-    bottom: 0;
-  }
-
-  .layout.devided > div.menu-wrapper .bottom.mobile button:focus {
-    color: inherit;
-  }
-
-  .layout.devided-slider {
-    display: block;
-    width: 100%;
-    position: relative;
-    overflow-x: hidden;
-  }
-
-  .layout.devided-slider > .cell {
-    display: block;
-    width: 100%;
-  }
-
-  .layout.devided-slider > .cell.menu-wrapper {
-    left: 0;
-    right: 0;
-    bottom: 0;
-    width: auto;
-    position: fixed;
-    z-index: 50;
-  }
-
-  .layout.devided-slider > .cell.content-panel {
-    width: 100%;
   }
 
   .checkout-basket .static div.price {
@@ -4535,6 +4481,70 @@ span.icon-basket {
     text-align: right;
   }
 
+  .layout {
+    min-height: auto;
+  }
+
+  .layout.devided-slider {
+    display: block;
+    width: 100%;
+    position: relative;
+  }
+
+  .layout.devided-slider > div.menu-wrapper {
+    display: block;
+    z-index: 50;
+    width: 100%;
+    -webkit-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
+  }
+
+  .layout.devided-slider > div.content-panel {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 0;
+    width: 100%;
+  }
+
+  .layout.devided > div.menu-wrapper {
+    display: block;
+    background: #242424;
+    z-index: 51;
+    padding-top: 0;
+    width: 100%;
+    -webkit-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
+  }
+
+  .layout.devided > div.menu-wrapper .bottom.mobile {
+    position: relative;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+
+  .layout.devided > div.menu-wrapper .bottom.mobile button:focus {
+    color: inherit;
+  }
+
+  .layout.devided > div.content-panel {
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 50;
+    width: 100%;
+  }
+
+  .layout.devided > div.content-panel .static {
+    padding: 0;
+  }
+
+  .layout.devided > div.content-panel .bottom.show.desktop {
+    display: none;
+  }
+
   .layout.about,
   .layout.support {
     overflow-x: hidden;
@@ -4607,6 +4617,11 @@ span.icon-basket {
     font-size: 0.9em;
   }
 
+  #slider-content .owl-item {
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+  }
+
   #slider-content .owl-item > .item {
     padding: 15px;
   }
@@ -4629,12 +4644,6 @@ span.icon-basket {
     top: 42%;
   }
 
-  .reasons .content-panel {
-    position: static !important;
-    display: block !important;
-    width: 100% !important;
-  }
-
   .reasons .content-panel .bottom.show[data-to-step="onboard"] {
     position: fixed;
     display: block !important;
@@ -4654,12 +4663,7 @@ span.icon-basket {
   }
 
   .reasons .menu-wrapper {
-    display: block !important;
-    width: 100% !important;
-    z-index: 51 !important;
-    position: fixed !important;
-    background: #242424 !important;
-    overflow-y: scroll;
+    display: block;
   }
 
   .reasons .menu-wrapper .title {
@@ -4852,12 +4856,16 @@ span.icon-basket {
   }
 
   .layout.devided.authorization > div.menu-wrapper {
-    position: absolute;
-    bottom: 0;
-    opacity: 0.4;
-    left: 0;
+    position: relative;
     width: 100%;
-    z-index: -1;
+  }
+
+  .layout.devided.authorization > div.content-panel {
+    position: relative;
+  }
+
+  .layout.devided.authorization > div.content-panel .title {
+    display: none;
   }
 
   .layout.devided.authorization > div.content-panel .static .btn {
@@ -4878,9 +4886,6 @@ span.icon-basket {
 
   .layout.devided-slider.profile .creditcard-list {
     padding: 5px;
-  }
-
-  .layout.devided-slider.profile .owl-carousel.owl-loaded {
     padding-bottom: 50px;
   }
 
@@ -4899,20 +4904,12 @@ span.icon-basket {
     padding-left: 15px;
   }
 
-  .layout.devided.promocodes > div.menu-wrapper {
-    display: block;
-    position: fixed;
-    overflow: auto;
-    bottom: 0;
-    right: 0;
-    left: 0;
-    width: auto;
-    background: #242424;
+  .layout.devided-slider.profile .bottom {
+    background: #434343;
   }
 
-  .layout.devided.promocodes > div.content-panel {
-    display: table-cell;
-    width: 100%;
+  .layout.devided.promocodes > div.menu-wrapper .title {
+    display: none;
   }
 
   .layout.devided.promocodes > div.content-panel .static {
@@ -4931,16 +4928,15 @@ span.icon-basket {
     border-top: 0;
   }
 
-  .modal.add-card-popup .cardname input {
-    width: 100%;
+  .layout.devided.checkout-basket > div.content-panel {
+    position: relative;
+    display: table-header-group;
+    background: transparent;
   }
 
-  .modal.add-card-popup .modal-content {
-    padding: 12px;
-  }
-
-  .modal.add-card-popup .creditcard {
-    width: auto;
+  .layout.devided.checkout-basket > div.menu-wrapper {
+    position: relative;
+    display: table-footer-group;
   }
 
   .layout.devided.checkout:not(.checkout-basket) > div.content-panel,
@@ -5114,7 +5110,7 @@ span.icon-basket {
   }
 
   .layout.devided.checkout:not(.checkout-basket) .checkout-step .step.step8 ul li button {
-    display: none;
+    visibility: hidden;
   }
 
   .layout.devided.checkout:not(.checkout-basket) .checkout-step .step.step8 ul li:after {
@@ -5128,6 +5124,43 @@ span.icon-basket {
     right: 6px;
     top: 50%;
     margin-top: -7px;
+  }
+
+  .product-cart .content .cart {
+    position: static;
+  }
+
+  .product-cart .content .cart .bottom {
+    z-index: 1;
+  }
+
+  .order-info .title .btn {
+    display: none;
+  }
+
+  .modal.add-card-popup .cardname input {
+    width: 100%;
+  }
+
+  .modal.add-card-popup .modal-content {
+    padding: 12px;
+  }
+
+  .modal.add-card-popup .creditcard {
+    width: auto;
+  }
+
+  .modal.terms_of_use {
+    width: 100%;
+  }
+
+  .modal.terms_of_use > .modal-content {
+    height: 300px;
+    overflow-y: scroll;
+  }
+
+  .widget.calendar {
+    z-index: 210;
   }
 }
 

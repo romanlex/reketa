@@ -208,16 +208,17 @@ $(function() {
 						app.popup.hide();   // esc
 				});
 				$('body').swipe( {
-					swipeRight:function(event, direction, distance, duration, fingerCount) {
+					swipeRight:function(event, direction, distance, duration, fingerCount, fingerData) {
 						if(settings.env == 'dev')
 							console.log('TouchSwipe Right Event');
 
 						var target = $(event.target);
+						console.log((device.type == 'desktop' && device.subtype == 'small') || device.type != 'desktop');
 						if( (device.type == 'desktop' && device.subtype == 'small') || device.type != 'desktop') {
-							//console.log(target);
-							//console.log(!target.is('body'));
-							//console.log(target.closest('div[class^="owl-item"]').length == 0);
-							//console.log((target.closest('div[class^="modal"]').length == 0 && !target.hasClass('modal')));
+							console.log(target);
+							console.log(!target.is('body'));
+							console.log(target.closest('div[class^="owl-item"]').length == 0);
+							console.log((target.closest('div[class^="modal"]').length == 0 && !target.hasClass('modal')));
 							if (
 								!target.is('body') &&
 								target.closest('div[class^="owl-item"]').length == 0 &&
@@ -232,7 +233,9 @@ $(function() {
 							console.log('TouchSwipe Left Event');
 						if(app.sidebar.isOpened())
 							app.popup.hide();
-					}
+					},
+					allowPageScroll: 'vertical',
+					preventDefaultEvents: false
 				});
 
 				$('.tooltip').tooltipster({
@@ -241,30 +244,30 @@ $(function() {
 
 
 				// Popup
-				$(document).on('click', '*[data-toggle="popup"]', function(e) {
+				$(document).on('click tap', '*[data-toggle="popup"]', function(e) {
 					var order = $(this).data('order') ? $(this).data('order') : false;
 					app.popup.show($(this).data('target'), order);
 				});
-				$(document).on('click', '#popup-bg', function() {
+				$(document).on('click tap', '#popup-bg', function() {
 					app.popup.hide();
 				});
-				$(document).on('click', 'button.popup-close', function() {
+				$(document).on('click tap', 'button.popup-close', function() {
 					app.popup.hide();
 				});
 
 				// Modal
-				$(document).on('click', 'button.modal-close', function(e) {
+				$(document).on('click tap', 'button.modal-close', function(e) {
 					if($.magnificPopup)
 						$.magnificPopup.close();
 				});
 
 				// Basket
-				$(document).on('click', 'button[data-toggle="to-basket"]', function(e) {
+				$(document).on('click tap', 'button[data-toggle="to-basket"]', function(e) {
 					event.preventDefault();
 					e.stopPropagation();
 					app.basket.add(e);
 				});
-				$(document).on('click', 'button[data-toggle="clear-basket"]', function() {
+				$(document).on('click tap', 'button[data-toggle="clear-basket"]', function() {
 					app.basket.clear();
 				});
 
@@ -274,7 +277,7 @@ $(function() {
 
 			},
 			buttons: function() {
-				$('button[data-toggle="modal"]').on('click', function() {
+				$('button[data-toggle="modal"]').on('click tap', function() {
 					$.magnificPopup.open({
 						type:'inline',
 						items: {
@@ -291,7 +294,7 @@ $(function() {
 					});
 				})
 
-				$('button[data-toggle="dialog"]').on('click', function() {
+				$('button[data-toggle="dialog"]').on('click tap', function() {
 					var title = ($(this).data('title')?$(this).data('title'):'');
 					var content = ($(this).data('content')?$(this).data('content'):'');
 					app.modal.dialog({
@@ -333,7 +336,7 @@ $(function() {
 				sidebar.on('close', function() {
 					_this.close();
 				});
-				$('button[data-toggle="close-sidebar"]').on('click', function() {
+				$('button[data-toggle="close-sidebar"]').on('click tap', function() {
 					$(this).addClass('closing');
 					$(this).one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function(e) {
 
@@ -511,7 +514,7 @@ $(function() {
 						i = 0;
 
 					$.each(_buttons, function(name,obj) {
-						buttons.eq(i++).on('click', function(){
+						buttons.eq(i++).on('click tap', function(){
 							if(params.type == 'form') {
 								var form = $('#' + tmpId).find('form');
 								if(obj.beforeAction && typeof obj.beforeAction === "function" ) {
@@ -953,8 +956,8 @@ $(function() {
 						});
 					});
 
-					$(document).on('click', 'button[data-toggle="setDelivaryDate"]', function(e) {
-						e.preventDefault();
+					$(document).on('click tap', 'button[data-toggle="setDelivaryDate"]', function(e) {
+						e.stopPropagation();
 						var formTarget = $(this).data('to-form');
 						var form = $(formTarget);
 						_this.process(form);
@@ -968,6 +971,8 @@ $(function() {
 						{
 							app.widgets.productcart.step('orderInfo');
 						}
+
+						return false;
 
 					});
 
@@ -985,7 +990,7 @@ $(function() {
 						}
 					});
 
-					$(document).on('click', 'button[data-toggle="clear-date"]', function(e) {
+					$(document).on('click tap', 'button[data-toggle="clear-date"]', function(e) {
 						$(this).attr('disabled', 'disabled');
 						_this.clearDate($(this));
 					});
@@ -1000,6 +1005,10 @@ $(function() {
 					$(document).on('init.xdsoft', function() {
 						_this.setPosition();
 						_this.calendarInitialized = true;
+					});
+
+					$('#widget-calendar form').on('submit', function(e) {
+						return false; // safari ios hook?
 					});
 
 					this.loaded = true;
@@ -1120,7 +1129,7 @@ $(function() {
 							obj = $('#bouquet-list li[data-bouquet-id="' + hash.bouquet + '"] > div[data-toggle="popup"]')
 						}
 						if(obj)
-							obj.trigger('click');
+							obj.trigger('click tap');
 					});
 				},
 				load: function() {
@@ -1137,7 +1146,7 @@ $(function() {
 					});
 
 					// Show product info
-					$(document).on('click', '.product-cart button[data-toggle="show-product-info"]', function() {
+					$(document).on('click tap', '.product-cart button[data-toggle="show-product-info"]', function() {
 						var id = $(this).data('product-id');
 						$(this).toggleClass('active');
 						$('#popup-product-' + id + ' .product-info').fadeToggle(300, function() {
@@ -1146,7 +1155,7 @@ $(function() {
 					});
 
 					// Open next/prev product cart
-					$(document).on('click', '.product-cart button.direction', function(e) {
+					$(document).on('click tap', '.product-cart button.direction', function(e) {
 						var direction = $(this).data('direction');
 						if(settings.env == 'dev')
 							console.log('[WIDGET] @productcart - change current cart (' + direction + ')');
@@ -1202,7 +1211,7 @@ $(function() {
 								var current = element.find('.owl-item').eq(item).find('.item');
 
 							});
-							gallery.find('.owl-lazy').on('click', function() {
+							gallery.find('.owl-lazy').on('click tap', function() {
 								gallery.trigger('next.owl.carousel');
 							});
 
@@ -1401,31 +1410,47 @@ $(function() {
 				if(device.type == 'smallmobile' || device.type == 'mobile') {
 					var visible = container.find('.content-panel *:visible');
 					var visibleHeight = 0;
+					var slider = false;
 					visible.each(function() {
 						if($(this).is('div.step'))
 							visibleHeight += $(this).height();
 
 						if($(this).is('div.bottom.show'))
 							visibleHeight += $(this).height();
+
+						if($(this).is('div#slider-content'))
+							slider = true;
 					});
-					//console.log(visible);
-					//console.log(visibleHeight);
 
-					if(visibleHeight < (device.windowHeight - 64) )
-					{
-						container.find('.menu-wrapper').css('height', newH + 'px');
-						container.find('.content-panel').css('height', newH + 'px');
+					switch(layout) {
+						case 'devided-slider':
+							container.find('.menu-wrapper').css('height', newH + 'px');
+							container.find('.content-panel').css('height', newH + 'px');
+							container.find('.owl-item').css('height', newH + 'px');
+							break;
+						case 'devided':
+							container.not('.authorization').find('.menu-wrapper').css('min-height', newH + 'px');
+							container.not('.checkout.checkout-basket').find('.content-panel').css('min-height', newH + 'px');
+							break;
+
+						default:
+
+							break;
 					}
-
+					container.css('min-height', newH + 'px');
+				}
+				else
+				{
+					container.css('height', newH + 'px');
 				}
 
-				container.css('height', newH + 'px');
+
 
 			},
 			loadLayout: function(layout, container, callback) {
 				switch (layout) {
 					case 'devided-slider':
-						this.setStyleLayout(layout, container);
+
 						if(device.type == 'smallmobile' || device.type == 'mobile'){
 							$('.layout-menu li.active').removeClass('active');
 						}
@@ -1434,8 +1459,6 @@ $(function() {
 						var owl = $('#slider-content');
 						if(device.type != 'smallmobile' && device.type != 'mobile')
 							owl.css('width', w/2);
-
-
 
 						owl.on('initialized.owl.carousel', function(event) {
 							var element = $(event.target);
@@ -1451,60 +1474,47 @@ $(function() {
 
 							container.find('.content-panel > .bottom').hide();
 							container.find('.content-panel > .bottom[data-to-slide="'+ hash +'"]').fadeIn(200);
-							console.log(current.height());
 						});
 						owl.on('changed.owl.carousel', function(event) {
 							var element = $(event.target);
 							var item = event.item.index;
 							var current = element.find('.owl-item').eq(item).find('.item');
 							var hash = current.data('hash');
-							if(device.type != 'smallmobile' && device.type != 'mobile') {
-								container.find('.layout-menu li.active').removeClass('active');
-								container.find('.layout-menu a[href="#' + hash + '"]').parent().addClass('active');
-							}
 
-							if(device.type != 'smallmobile' || device.type != 'mobile') {
+							if((device.type == 'smallmobile' || device.type == 'mobile') && hash) {
 								var title = container.find('.layout-menu li a[href="#' + hash + '"]').text();
 								$('#header .mobile.title').html(title);
+							} else {
+								container.find('.layout-menu li.active').removeClass('active');
+								container.find('.layout-menu a[href="#' + hash + '"]').parent().addClass('active');
 							}
 
 							if(hash)
 								window.location.hash = hash;
 							if(settings.env == 'dev')
-								console.log('[OWL Carousel] Event changed.owl.carousel');
+								console.log('[OWL Carousel] Event changed.owl.carousel #' + hash);
 
 							container.find('.content-panel > .bottom').hide();
 							container.find('.content-panel > .bottom[data-to-slide="'+ hash +'"]').fadeIn(300);
+
 						});
-						owl.owlCarousel({
-							autoHeight: true,
+
+						var params = {
 							items:1,
 							URLhashListener:true,
 							startPosition: 'URLHash',
-							animateOut: 'fadeOut',
 							smartSpeed:450,
+							animateOut:'fadeOut',
 							animateIn: 'fadeIn',
 							afterInit: function(elem){
 
 							}
-						});
+						};
+						if(device.type != 'smallmobile' && device.type != 'mobile'){
+							params.autoHeight = true;
+						}
 
-						$("#content ul.layout-menu a").on('click', function(e) {
-							if(!$(this).parent().hasClass('active')) {
-								$(this).parents('.layout-menu').find('li.active').removeClass('active');
-								$(this).parent().addClass('active');
-							}
-							if(device.type == 'smallmobile' || device.type == 'mobile'){
-								$('.layout.devided-slider').css('overflow', 'auto');
-								$('.layout.devided-slider .menu-wrapper').transition({ x: -device.windowWidth, complete: function() {
-								}});
-								$('body').css('overflow', 'auto');
-								$('#header .navbar-toggle').hide();
-								$('#header .back').show();
-								var title = $(this).text();
-								$('#header .mobile.title').html(title);
-							}
-						});
+						owl.owlCarousel(params);
 
 						owl.find('button,input,select').addClass('not-draggable').on("touchstart mousedown", function(e) {
 							// Prevent carousel swipe
@@ -1516,13 +1526,16 @@ $(function() {
 							slide.find('form').trigger('submit');
 						});
 
+						this.setStyleLayout(layout, container);
+
+						// Load mobile binds
 						if(device.type == 'smallmobile' || device.type == 'mobile') {
+							//container.find('.content-panel').hide();
 							var hash = window.location.hash;
 							if(hash){
-								$('.layout.devided-slider').css('overflow', 'auto');
+								container.find('.content-panel').fadeIn(200);
 								$('.layout.devided-slider .menu-wrapper').transition({ x: -device.windowWidth, complete: function() {
 									$(window).scrollTop(0);
-									$('body').css('overflow', 'auto');
 								}});
 								$('#header .navbar-toggle').hide();
 								$('#header .back').show();
@@ -1531,19 +1544,36 @@ $(function() {
 								$('#header .mobile.title').html(title);
 							}
 
-							$('button[data-toggle="devided-slider-back"]').on('click', function() {
+							$('button[data-toggle="devided-slider-back"]').on('click tap', function(e) {
+								$(this).hide();
+								$('#header .navbar-toggle').show();
+								$('#header .mobile.title').html($('title').text());
 								window.location.hash = '';
-								container.css('overflow', 'hidden');
-								$('body').css('overflow', 'hidden');
 								$('.layout.devided-slider .menu-wrapper').transition({ x: 0, complete: function() {
 									$(window).scrollTop(0);
+									container.find('.content-panel').hide();
 								}});
-								$('#header .back').hide();
-								$('#header .mobile.title').html($('title').text());
-								$('#header .navbar-toggle').show();
+								container.find('input').blur();
+								container.find('textarea').blur();
 							});
 						}
 
+						$("#content ul.layout-menu a").on('click', function(e) {
+							if(!$(this).parent().hasClass('active')) {
+								$(this).parents('.layout-menu').find('li.active').removeClass('active');
+								$(this).parent().addClass('active');
+							}
+							if(device.type == 'smallmobile' || device.type == 'mobile'){
+								$('.layout.devided-slider .menu-wrapper').transition({ x: -device.windowWidth, complete: function() {
+
+								}});
+								container.find('.content-panel').show();
+								$('#header .navbar-toggle').hide();
+								$('#header .back').show();
+								var title = $(this).text();
+								$('#header .mobile.title').html(title);
+							}
+						});
 						break;
 
 					case 'default':
@@ -1552,23 +1582,25 @@ $(function() {
 						break;
 
 					case 'devided':
-						this.setStyleLayout(layout, container);
+
 
 						if(device.type == 'smallmobile' || device.type == 'mobile' && container.hasClass('reasons') || container.hasClass('promocodes')){
 
-							$('button[data-toggle="devided-slider-back"]').on('click', function(e) {
+							$('button[data-toggle="devided-slider-back"]').on('click tap', function(e) {
 								Hash.clear();
-								container.css('overflow', 'hidden');
-								$('body').css('overflow', 'hidden');
+								container.find('.menu-wrapper').show();
 								container.find('.menu-wrapper').transition({ x: 0, complete: function() {
 									$(window).scrollTop(0);
 								}});
+								container.find('input').blur();
+								container.find('textarea').blur();
 								$('#header .back').hide();
 								$('#header .mobile.title').html($('title').text());
 								$('#header .navbar-toggle').show();
 							});
 
 						}
+						this.setStyleLayout(layout, container);
 						break;
 				}
 
@@ -1836,7 +1868,7 @@ $(function() {
 	            bottom.find('button.btn-dismiss').removeClass('hide');
 	        });
 	
-	        $(document).on('click', 'button[type="dismiss"]', function(e) {
+	        $('body').on('click', 'button[type="dismiss"]', function(e) {
 	            e.preventDefault();
 	            var form = $('#edit-personal-data');
 	            form[0].reset();
@@ -1849,7 +1881,7 @@ $(function() {
 	            input.parents('.form-group').find('button.edit-phone').hide();
 	        });
 	
-	        $(document).on('click', 'button[type="delete-card"]', function(e) {
+	        $('body').on('click', 'button[type="delete-card"]', function(e) {
 	            e.preventDefault();
 	            var cardId = $(this).parents('li[data-card-id]').data('card-id');
 	            var cartName = $(this).parents('div.creditcard').find('.creditcard-name').html();
@@ -1941,8 +1973,8 @@ $(function() {
 	            });
 	        });
 	
-	        $(document).on('click', 'button[type="delete-address"]', function(e) {
-	            e.preventDefault();
+	        $('body').on('click', 'button[type="delete-address"]', function(e) {
+	            console.log(e);
 	            var addressId = $(this).parents('li[data-address-id]').data('address-id');
 	            var address = $(this).prev().html();
 	            var str = String.template(lang.deliveryaddressrequestdelete, address);
@@ -2193,7 +2225,7 @@ $(function() {
 	                    if(step)
 	                        _this.goToStep(step);
 	                    else
-	                        $(this).find('button[data-toggle!="gotostep"]').trigger('click');
+	                        app.popup.show('#widget-calendar', false);
 	                }
 	
 	
@@ -3303,6 +3335,7 @@ $(function() {
 	                $('#reasons').css('overflow', 'auto');
 	                $('#reasons').find('.menu-wrapper').transition({
 	                    x: -320, complete: function () {
+	                        $('#reasons').find('.menu-wrapper').hide();
 	                    }
 	                });
 	                $('#header .navbar-toggle').hide();
@@ -3590,35 +3623,18 @@ $(function() {
 	            $('#header .basket').hide();
 	            $('#header .mobile.add-promocode').show();
 	
-	            $('body').css('overflow', 'hidden');
 	
 	            $('button[data-toggle="new-promocode"]').on('click', function(e) {
-	                $('#promocodes').css('overflow', 'auto');
 	                $('#promocodes').find('.menu-wrapper').transition({
 	                    x: -device.windowWidth, complete: function () {
 	                        $(window).scrollTop(0);
+	                        $('#promocodes').find('.menu-wrapper').hide();
 	                    }
 	                });
-	                $('body').css('overflow', 'auto');
 	                $('#header .navbar-toggle').hide();
 	                $('#header .back').show();
 	            });
 	        }
-	
-	
-	
-	        $('ul.basket-list li').on('click', function(e) {
-	            if(device.type != 'smallmobile' && device.type != 'mobile')
-	                return;
-	
-	            var $target = $(e.target);
-	
-	            if($target.is('.spin-up') || $target.is('.spin-down') || $target.is('.form-control'))
-	                return;
-	
-	            $('ul.basket-list li').not(this).removeClass('mobile-delete');
-	            $(this).toggleClass('mobile-delete');
-	        });
 	
 	
 	        $('#promocodes .content-panel .bottom button[type="submit"]').on('click', function(e) {
@@ -3657,6 +3673,7 @@ $(function() {
 	            to: '#promocodes .content-panel .static',
 	            title: lang.processConfirmCheck
 	        });
+	        form.find('input').blur();
 	        var _h = $('#promocodes .content-panel .static').outerHeight();
 	        this.process(data, function(response) {
 	            $('#promocodes .content-panel .static').css('height', $('#promocodes').height());

@@ -260,7 +260,7 @@
     triggerOnTouchLeave: false,
     allowPageScroll: "auto",
     fallbackToMouseEvents: true,
-    excludedElements: "label, button, input, select, textarea, a, .noSwipe",
+    excludedElements: "label, button, input, select, textarea, .noSwipe",
     preventDefaultEvents: true
   };
 
