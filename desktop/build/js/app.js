@@ -34,7 +34,10 @@ var lang = {
     bouquetNotFound: 'Доступных букетов не найдено',
     bouquetInBasketPopupCart: 'В корзине {1} на {2}',
     reasonquestdelete: 'Вы уверены что хотите удалить повод?',
-    cardNotApprovedStatus: 'Карта которую вы выбрали не активна. Выберите другую карту.'
+    cardNotApprovedStatus: 'Карта которую вы выбрали не активна. Выберите другую карту.',
+    soldout: 'Полностью распродано',
+    soldoutModalTitle: 'Букет продан',
+    soldoutModalMessage: 'Данный букет был продан. Выберите другой букет.'
 };
 var app;
 var ajaxloader;
@@ -245,27 +248,50 @@ $(function() {
 
 				// Popup
 				$(document).on('click tap', '*[data-toggle="popup"]', function(e) {
-					var order = $(this).data('order') ? $(this).data('order') : false;
-					app.popup.show($(this).data('target'), order);
+					e.stopPropagation();
+					var status = $(this).data('status');
+					if(status == false) {
+						app.modal.dialog({
+							title: lang.soldoutModalTitle,
+							content: lang.soldoutModalMessage,
+							buttons: {
+								no: {
+									title: lang.dialogCloseButton,
+									class: 'dismiss',
+									action: function(){ if(settings.env == 'dev') console.log('[Dialog (default)] Not confirmed'); app.modal.lastConfirmed = false; }
+								}
+							}
+						});
+						return false;
+					}
+					else {
+						var order = $(this).data('order') ? $(this).data('order') : false;
+						app.popup.show($(this).data('target'), order);
+					}
+
 				});
 				$(document).on('click tap', '#popup-bg', function() {
+					console.log('popup bg click')
 					app.popup.hide();
 				});
-				$(document).on('click tap', 'button.popup-close', function() {
+				$(document).on('click tap', 'button.popup-close', function(e) {
+					console.log(e);
 					app.popup.hide();
 				});
 
-				// Modal
+				//Modal
 				$(document).on('click tap', 'button.modal-close', function(e) {
+					console.log(e);
 					if($.magnificPopup)
 						$.magnificPopup.close();
 				});
 
 				// Basket
 				$(document).on('click tap', 'button[data-toggle="to-basket"]', function(e) {
-					event.preventDefault();
+					e.preventDefault();
 					e.stopPropagation();
-					app.basket.add(e);
+					if($(this).data('status') != false)
+						app.basket.add(e);
 				});
 				$(document).on('click tap', 'button[data-toggle="clear-basket"]', function() {
 					app.basket.clear();
@@ -295,6 +321,7 @@ $(function() {
 				})
 
 				$('button[data-toggle="dialog"]').on('click tap', function() {
+					console.log('Dialog init');
 					var title = ($(this).data('title')?$(this).data('title'):'');
 					var content = ($(this).data('content')?$(this).data('content'):'');
 					app.modal.dialog({
@@ -456,11 +483,11 @@ $(function() {
 
 				target.trigger('open');
 				$(document).trigger('popup-show');
-
 				this.opened = target;
 				this.initialized = true;
 			},
 			hide: function() {
+				console.log('Hide popup');
 				if(this.opened) {
 					this.opened.trigger('close');
 					$('#popup-bg').fadeOut(200, function() {
@@ -513,8 +540,29 @@ $(function() {
 					var buttons = $('#' + tmpId + ' button'),
 						i = 0;
 
+
+
+					$.magnificPopup.open({
+						items: {
+							src: '#' + tmpId
+						},
+						showCloseBtn: false,
+						removalDelay: 500,
+						mainClass: 'mfp-zoom-in',
+						callbacks: {
+							close: function() {
+								$('#' + tmpId).remove();
+								if(settings.env == 'dev')
+									console.log('Popup is completely closed');
+
+							}
+						},
+						type: 'inline'
+					});
+
+
 					$.each(_buttons, function(name,obj) {
-						buttons.eq(i++).on('click tap', function(){
+						buttons.eq(i++).on('click', function(){
 							if(params.type == 'form') {
 								var form = $('#' + tmpId).find('form');
 								if(obj.beforeAction && typeof obj.beforeAction === "function" ) {
@@ -538,24 +586,6 @@ $(function() {
 							return false;
 
 						});
-					});
-
-					$.magnificPopup.open({
-						items: {
-							src: '#' + tmpId
-						},
-						showCloseBtn: false,
-						removalDelay: 500,
-						mainClass: 'mfp-zoom-in',
-						callbacks: {
-							close: function() {
-								$('#' + tmpId).remove();
-								if(settings.env == 'dev')
-									console.log('Popup is completely closed');
-
-							}
-						},
-						type: 'inline'
 					});
 				} catch (e) {
 					console.log('Template dialog rendering and open failed', e);
@@ -612,6 +642,7 @@ $(function() {
 					$('#content > .not-found').remove();
 				}
 				var lastItem = 0;
+				var soldout = false;
 				$.each(data, function(key, value) {
 					var item = $('<li />').attr('data-bouquet-id', value.id);
 
@@ -629,11 +660,18 @@ $(function() {
 								console.log(' -> Bouquet #' + value.id + ': ' + value.imgSrc + ': ' + brightness + '(' + lightness + ')');
 
 							list.find('li[data-bouquet-id="'+ value.id +'"] > div.bouquet').addClass(lightness);
-
+							list.find('li[data-bouquet-id="'+ value.id +'"] > div.product-cart').addClass(lightness);
 						});
+
+
 
 					item.append(app.bouquets.render('tmpl-bouquet-list-item', value));
 					item.append(app.bouquets.render('tmpl-bouquet-list-item-popup', value));
+
+					if(value.status == 'soldout')
+					{
+						list.append($('<li />').addClass('soldout-group').html(lang.soldout));
+					}
 					list.append(item);
 					lastItem++;
 				});
@@ -1129,7 +1167,7 @@ $(function() {
 							obj = $('#bouquet-list li[data-bouquet-id="' + hash.bouquet + '"] > div[data-toggle="popup"]')
 						}
 						if(obj)
-							obj.trigger('click tap');
+							obj.trigger('click');
 					});
 				},
 				load: function() {
@@ -1186,11 +1224,23 @@ $(function() {
 						var w = $('.product-cart').width();
 						var h = $('.product-cart').height();
 						if(gallery.length > 0) {
-							gallery.css('height', h);
-							gallery.find('.owl-lazy').css('height', h);
-							gallery.find('.owl-lazy').css('width', w/2);
-							gallery.find('.owl-height').css('height', $('.product-cart').height());
-							gallery.css('width', w/2);
+
+
+							if(device.type != 'smallmobile' && device.type != 'mobile') {
+								gallery.css('height', h);
+								gallery.find('.owl-lazy').css('height', h);
+								gallery.find('.owl-height').css('height', h);
+								gallery.find('.owl-lazy').css('width', w/2);
+								gallery.css('width', w/2);
+							} else {
+								var headerHeight =  $('#header').height();
+								gallery.css('height', h - headerHeight);
+								gallery.find('.owl-lazy').css('height', h - headerHeight);
+								gallery.find('.owl-height').css('height', h - headerHeight);
+								gallery.find('.owl-lazy').css('width', w);
+								gallery.css('width', w);
+							}
+
 
 							var params = {
 								items: 1,
@@ -1198,7 +1248,7 @@ $(function() {
 								lazyLoad:true,
 								loop:true,
 								autoplay: true,
-								autoplayTimeout: 5000,
+								autoplayTimeout: 100000,
 								autoplayHoverPause: true
 							};
 
@@ -1220,6 +1270,12 @@ $(function() {
 						}
 					});
 
+					if(device.type == 'smallmobile' || device.type == 'mobile') {
+						$('button[data-toggle="close-widget"]').on('click tap', function(e) {
+							app.popup.hide();
+						});
+					}
+
 					this.loaded = true;
 				},
 				open: function(e) {
@@ -1229,10 +1285,13 @@ $(function() {
 
 					$('#bouquet-list li[data-bouquet-id="' + obj.data('product-id') + '"] > div[data-toggle="popup"]').data('order', false);
 
-					if(device.type == 'smallmobile' || device.type == 'mobile')
-						$('#header button[data-target="#widget-calendar"]').slideUp(200);
 
-					//var height = ($w.height() - $('#header').height()) - 50;
+					if(device.type == 'smallmobile' || device.type == 'mobile') {
+						$('#header button[data-target="#widget-calendar"]').slideUp(200);
+						obj.css('height', device.windowHeight - $('#header').height());
+						$('#header button.navbar-toggle').hide();
+						$('#header button.mobile.back').show();
+					}
 
 					var height = obj.height();
 					var width = obj.width();
@@ -1241,7 +1300,6 @@ $(function() {
 						obj.css('top', 'auto');
 						obj.css('bottom', -height).css('visibility', 'visible');
 						this.startPosition.bottom = 0;
-						obj.find('.product-info').show();
 					} else {
 						obj.css('top', -height).css('visibility', 'visible');
 						this.startPosition.top = -height;
@@ -1253,7 +1311,8 @@ $(function() {
 					{
 						if(settings.env == 'dev')
 							console.log('[WIDGET] @productcart go to step 3');
-
+						if (device.type == 'smallmobile' || device.type == 'mobile')
+							obj.find('.gallery').css('opacity', 0.2);
 						this.loadStep3(obj, app.basket.productInBasket(obj.data('product-id')));
 					}
 					else if(app.basket.productInBasket(obj.data('product-id')) && $.isEmptyObject(app.checkout.delivery)) // Товар в корзине и дата доставки не указана - шаг 2
@@ -1264,9 +1323,14 @@ $(function() {
 						if($.isEmptyObject(app.checkout.delivery))
 							obj.find('.xdsoft_current').removeClass('xdsoft_current');
 
+						if (device.type == 'smallmobile' || device.type == 'mobile')
+							obj.find('.gallery').css('opacity', 0.2);
+
 						obj.find('.step').hide().removeClass('active');
 						obj.find('.step2').addClass('active').show();
 					}
+
+
 
 					var width = obj.outerWidth();
 					obj.css('margin-left', Math.ceil(-width/2));
@@ -1275,9 +1339,9 @@ $(function() {
 
 					if(device.type == 'desktop' && (device.subtype == 'fullhd' || device.subtype == 'hd'))
 						obj.transition({ y: Math.floor(device.windowHeight - (device.windowHeight - height)/2) });
-					else if (device.type == 'smallmobile' || device.type == 'mobile')
+					else if (device.type == 'smallmobile' || device.type == 'mobile') {
 						obj.transition({ y: Math.floor(- height)});
-					else
+					} else
 						obj.transition({ y: Math.floor(height + $('#header').height())});
 
 					obj.one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend', function(e) {
@@ -1292,12 +1356,18 @@ $(function() {
 				},
 				close: function() {
 					var obj = this.openedObj;
+					console.log(obj);
 					if(settings.env == 'dev')
 						console.log('[WIDGET] Close widget @productcart');
+
+					if (device.type == 'smallmobile' || device.type == 'mobile')
+						obj.find('.gallery').css('opacity', 1);
 
 					if(device.type == 'smallmobile' || device.type == 'mobile') {
 						$('#header button[data-target="#widget-calendar"]').slideDown(200);
 						$('#content .mobile.notify').removeClass('open');
+						$('#header button[data-toggle="close-widget"]').hide();
+						$('#header button.navbar-toggle').show();
 					}
 
 					obj.removeClass('opened').addClass('animation');
@@ -1320,13 +1390,16 @@ $(function() {
 					var obj = this.openedObj;
 					switch (step) {
 						case 'delivaryDate':
-							console.log(obj);
 							obj.find('.step.active').fadeOut('fast', function() {
 								obj.find('.step.step2').fadeIn('fast');
 							});
+							if (device.type == 'smallmobile' || device.type == 'mobile')
+								obj.find('.gallery').css('opacity', 0.2);
 							break;
 						case 'orderInfo':
 							this.loadStep3(obj, app.basket.productInBasket(obj.data('product-id')));
+							if (device.type == 'smallmobile' || device.type == 'mobile')
+								obj.find('.gallery').css('opacity', 0.2);
 							break;
 					}
 				},

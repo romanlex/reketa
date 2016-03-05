@@ -33,7 +33,7 @@
 </head>
 <body>
     <div id="wrapper" class="container">
-        <header id="header">
+        <header id="header" class="mainpage">
             <div class="container">
                 <div class="menu-toggle">
                     <button class="navbar-toggle" data-toggle="popup" data-target="#sidebar">
@@ -41,6 +41,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
+                    <button class="mobile back" data-toggle="close-widget"></button>
                 </div>
                 <div class="twelve columns">
                     <a href="/" class="logo"><img src="img/logo.png" alt=""></a>
@@ -191,6 +192,7 @@
                     },
                     {
                         id: 6,
+                        status: 'soldout',
                         imgSrc: 'img/b6.jpg',
                         price: 2500,
                         name: 'Свадьба близко',
@@ -214,7 +216,7 @@
             </script>
             
             <script type="text/x-tmpl" id="tmpl-bouquet-list-item">
-                <div class="bouquet" data-toggle="popup" data-target="#popup-product-{%=o.id %}">
+                <div class="bouquet {% if (o.status && o.status !== '') { %}{%=o.status%}{% } %}" data-toggle="popup" data-target="#popup-product-{%=o.id %}" {% if (o.status && o.status !== '') { %} data-status="false" {% } %}>
                     {% if (o.imgSrc && o.imgSrc !== '') { %}
                         <img src="{%=o.imgSrc%}" class="bouquet-image" alt="">
                     {% } %}
@@ -234,7 +236,7 @@
                             </div>
                         {% } %}
                         <div class="price-group">
-                            <button class="basket" data-toggle="to-basket" data-product-id="{%=o.id%}">
+                            <button class="basket" data-toggle="to-basket" {% if (o.status && o.status !== '') { %} data-status="false" {% } %} data-product-id="{%=o.id%}">
                                 <span class="price">{%=o.price%} &#x20bd;</span>
                                 <span class="icon">В корзину</span>
                             </button>
@@ -296,6 +298,10 @@
             
                                 <!--Step DeliveryDate-->
                                 <div class="desc step step2">
+                                    <div class="warning hidden">
+                                        <p>Изменяя дату доставки, вы изменяете дату доставки для находящихся в корзине букетов</p>
+                                        <span>Для доставки букетов в разные дни, нужно оформить несколько заказов</span>
+                                    </div>
                                     <div class="title">{%=o.name%}</div>
                                     <h2 class="price">{%=o.price%} &#x20bd;</h2>
                                     <div class="labels">
@@ -332,7 +338,7 @@
                                                 Выбрать
                                             </button>
                                             <button class="btn-dismiss popup-close" tabindex="7">
-                                                Отменить
+                                                Вернуться к цветам
                                             </button>
                                         </div>
                                     </div>
@@ -394,7 +400,7 @@
                                                 Оформить заказ
                                             </a>
                                             <button class="btn-dismiss popup-close" tabindex="7">
-                                                Отменить
+                                                Вернуться к цветам
                                             </button>
                                         </div>
                                     </div>
