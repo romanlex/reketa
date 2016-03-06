@@ -17,6 +17,7 @@
     <link rel="apple-touch-icon" sizes="114x114" href="img/app-logo.png" />
     <link rel="apple-touch-icon" sizes="144x144" href="img/app-logo.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="img/app-logo.png" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
     
     <link rel="icon" sizes="192x192" href="img/app-logo.png">
     <link rel="icon" sizes="128x128" href="img/app-logo.png">
@@ -337,8 +338,8 @@
                                             <button class="btn-primary" type="submit" rel="submit" data-toggle="setDelivaryDate" data-to-form="#set-delivery-date-popup-{%=o.id %}" disabled tabindex="6">
                                                 Выбрать
                                             </button>
-                                            <button class="btn-dismiss popup-close" tabindex="7">
-                                                Вернуться к цветам
+                                            <button class="btn-dismiss" data-toggle="remove-from-basket" data-product-id="{%=o.id %}" tabindex="7">
+                                                Отменить
                                             </button>
                                         </div>
                                     </div>

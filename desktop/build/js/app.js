@@ -198,7 +198,13 @@ $(function() {
 				app.widgets.calendar.setPosition();
 		},
 		scroll: function() {
-
+			this.scrollPos = $(document).scrollTop();
+			this.savedScrollPos = this.scrollPos;
+			//if(device.type == 'smallmobile' || device.type == 'mobile') {
+			//	var scrollTop = window.scrollY;
+			//	//console.log(scrollTop);
+			//	console.log($w.height());
+			//}
 		},
 		bind: {
 			document: function() {
@@ -210,6 +216,8 @@ $(function() {
 					if (e.keyCode == 27 && app.popup.isOpened())
 						app.popup.hide();   // esc
 				});
+
+
 				$('body').swipe( {
 					swipeRight:function(event, direction, distance, duration, fingerCount, fingerData) {
 						if(settings.env == 'dev')
@@ -293,11 +301,23 @@ $(function() {
 					if($(this).data('status') != false)
 						app.basket.add(e);
 				});
-				$(document).on('click tap', 'button[data-toggle="clear-basket"]', function() {
+				$(document).on('click tap', 'button[data-toggle="clear-basket"]', function(e) {
 					app.basket.clear();
 				});
 
-
+				$(document).on('click tap', 'button[data-toggle="remove-from-basket"]', function(e) {
+					var pid = $(this).data('product-id');
+					if(!pid)
+						return;
+					app.basket.removeProductFromBasket(pid, function() {
+						if(app.widgets.productcart
+							&& app.widgets.productcart.openedObj
+							&& app.popup.isOpened())
+						{
+							app.widgets.productcart.step('cart');
+						}
+					});
+				});
 			},
 			forms: function() {
 
@@ -661,6 +681,7 @@ $(function() {
 
 							list.find('li[data-bouquet-id="'+ value.id +'"] > div.bouquet').addClass(lightness);
 							list.find('li[data-bouquet-id="'+ value.id +'"] > div.product-cart').addClass(lightness);
+							list.find('li[data-bouquet-id="'+ value.id +'"] > div.product-cart').data('lightness', lightness).attr('data-lightness', lightness);
 						});
 
 
@@ -703,7 +724,6 @@ $(function() {
 
 			},
 			add: function(e) {
-				console.log(e);
 				var $this = $(e.currentTarget);
 
 				var bid = $this.data('product-id');
@@ -761,8 +781,13 @@ $(function() {
 			},
 			clear: function() {
 				if(this.destroyBasket()) {
-
-
+					if(app.widgets.productcart
+						&& app.widgets.productcart.openedObj
+						&& app.popup.isOpened())
+					{
+						app.popup.hide();
+					}
+					this.updateHtml();
 				} else {
 
 				}
@@ -770,6 +795,7 @@ $(function() {
 			destroyBasket: function() {
 				// Remove basket from Cookie or session
 				// Ajax
+				this.store = [];
 				return true;
 			},
 			saveBasket: function() {
@@ -806,6 +832,8 @@ $(function() {
 						app.checkout.basket.splice(indexes[0], 1);
 						if(typeof callback === "function")
 							callback();
+						app.basket.saveBasket();
+						app.basket.updateHtml();
 					} catch (e) {
 						console.error('Failed to delete product from basket with error: ' + e);
 					}
@@ -836,7 +864,7 @@ $(function() {
 					setTimeout(function() { // <-- example of some async operation
 						// Server Response
 						var response = [{
-							id: 2,
+							id: 5,
 							count: 3,
 							imgSrc: 'img/b2.jpg',
 							price: 2800,
@@ -850,20 +878,21 @@ $(function() {
 							composition: 'Роза свитнесс, Гербера мини, Салал, Эвкалипт Бэби Блю, Хлопок, Лента',
 							info: 'Диаметр: 60см<br>Высота: 30см<hr><p>Роза свитнесс, Гербера мини, Салал, Эвкалипт Бэби Блю, Хлопок, Лента</p>'
 						},
-							{
-								id: 3,
-								count: 1,
-								imgSrc: 'img/b3.jpg',
-								price: 1900,
-								name: 'Свет добра',
-								availableData: 'с 14 марта',
-								size: {
-									dia: '60 см',
-									height: '30 см'
-								},
-								composition: 'Роза свитнесс, Гербера мини, Салал, Эвкалипт Бэби Блю, Хлопок, Лента',
-								info: 'Диаметр: 60см<br>Высота: 30см<hr><p>Роза свитнесс, Гербера мини, Салал, Эвкалипт Бэби Блю, Хлопок, Лента</p>'
-							}];
+							//{
+							//	id: 5,
+							//	count: 1,
+							//	imgSrc: 'img/b3.jpg',
+							//	price: 1900,
+							//	name: 'Свет добра',
+							//	availableData: 'с 14 марта',
+							//	size: {
+							//		dia: '60 см',
+							//		height: '30 см'
+							//	},
+							//	composition: 'Роза свитнесс, Гербера мини, Салал, Эвкалипт Бэби Блю, Хлопок, Лента',
+							//	info: 'Диаметр: 60см<br>Высота: 30см<hr><p>Роза свитнесс, Гербера мини, Салал, Эвкалипт Бэби Блю, Хлопок, Лента</p>'
+							//}
+							 ];
 						app.checkout.basket = response;
 						app.basket.updateHtml();
 						$(document).trigger('raketa.basket.get-data');
@@ -950,7 +979,6 @@ $(function() {
 					if(button.length) {
 						var _w = obj.width();
 						var _h = obj.height() ;
-						console.log(_h);
 						var button_offset = button.offset();
 						var right = device.windowWidth - (button_offset.left + button.outerWidth()) - 20;
 
@@ -1186,7 +1214,9 @@ $(function() {
 					// Show product info
 					$(document).on('click tap', '.product-cart button[data-toggle="show-product-info"]', function() {
 						var id = $(this).data('product-id');
-						$(this).toggleClass('active');
+						$(this).toggleClass('active')
+						if($('#popup-product-' + id).data('lightness') == 'light')
+							$('#popup-product-' + id).toggleClass('light');
 						$('#popup-product-' + id + ' .product-info').fadeToggle(300, function() {
 
 						});
@@ -1234,9 +1264,9 @@ $(function() {
 								gallery.css('width', w/2);
 							} else {
 								var headerHeight =  $('#header').height();
-								gallery.css('height', h - headerHeight);
-								gallery.find('.owl-lazy').css('height', h - headerHeight);
-								gallery.find('.owl-height').css('height', h - headerHeight);
+								gallery.css('height', device.windowHeight - headerHeight);
+								gallery.find('.owl-lazy').css('height', device.windowHeight - headerHeight);
+								gallery.find('.owl-height').css('height', device.windowHeight - headerHeight);
 								gallery.find('.owl-lazy').css('width', w);
 								gallery.css('width', w);
 							}
@@ -1248,7 +1278,7 @@ $(function() {
 								lazyLoad:true,
 								loop:true,
 								autoplay: true,
-								autoplayTimeout: 100000,
+								autoplayTimeout: 4000,
 								autoplayHoverPause: true
 							};
 
@@ -1295,6 +1325,8 @@ $(function() {
 
 					var height = obj.height();
 					var width = obj.width();
+
+					obj.find('.bottom').hide();
 
 					if(device.type == 'smallmobile' || device.type == 'mobile') {
 						obj.css('top', 'auto');
@@ -1347,6 +1379,7 @@ $(function() {
 					obj.one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend', function(e) {
 						obj.removeClass('transition').addClass('opened');
 						obj.find('.bottom button:first-child').focus();
+						obj.find('.bottom').fadeIn(200);
 					});
 					// History add
 					this.startTitle = document.title;
@@ -1356,7 +1389,6 @@ $(function() {
 				},
 				close: function() {
 					var obj = this.openedObj;
-					console.log(obj);
 					if(settings.env == 'dev')
 						console.log('[WIDGET] Close widget @productcart');
 
@@ -1389,9 +1421,18 @@ $(function() {
 
 					var obj = this.openedObj;
 					switch (step) {
+						case 'cart':
+							obj.find('.step.active').fadeOut('fast', function() {
+								$(this).removeClass('active');
+								obj.find('.step.step1').fadeIn('fast').addClass('active');
+							});
+							if (device.type == 'smallmobile' || device.type == 'mobile')
+								obj.find('.gallery').css('opacity', 1);
+							break;
 						case 'delivaryDate':
 							obj.find('.step.active').fadeOut('fast', function() {
-								obj.find('.step.step2').fadeIn('fast');
+								$(this).removeClass('active');
+								obj.find('.step.step2').fadeIn('fast').addClass('active');
 							});
 							if (device.type == 'smallmobile' || device.type == 'mobile')
 								obj.find('.gallery').css('opacity', 0.2);
@@ -3813,6 +3854,7 @@ $(function() {
 		app.resize();
 	});
 
+
 	app.init();
 
 
@@ -3893,33 +3935,33 @@ function getImageLightness(imageSrc) {
 
     var colorSum = 0;
 
-    img.onload = function() {
+    img.onload = function () {
         // create canvas
         var canvas = document.createElement("canvas");
         canvas.width = this.width;
         canvas.height = this.height;
 
         var ctx = canvas.getContext("2d");
-        ctx.drawImage(this,0,0);
+        ctx.drawImage(this, 0, 0);
 
-        var imageData = ctx.getImageData(0,0,canvas.width,canvas.height);
+        var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
         var data = imageData.data;
-        var r,g,b,avg;
+        var r, g, b, avg;
 
-        for(var x = 0, len = data.length; x < len; x+=4) {
+        for (var x = 0, len = data.length; x < len; x += 4) {
             r = data[x];
-            g = data[x+1];
-            b = data[x+2];
+            g = data[x + 1];
+            b = data[x + 2];
 
-            avg = Math.floor((r+g+b)/3);
+            avg = Math.floor((r + g + b) / 3);
             colorSum += avg;
         }
 
-        var brightness = Math.floor(colorSum / (this.width*this.height));
+        var brightness = Math.floor(colorSum / (this.width * this.height));
         deferred.resolve(brightness);
         this.remove();
     }
-    img.onerror = function() {
+    img.onerror = function () {
         console.log('Error loading image: ' + imageSrc);
         deferred.fail();
     }
@@ -3933,11 +3975,11 @@ String.template = function () {
     }
     return str;
 };
-String.prototype.capitalizeFirstLetter = function() {
+String.prototype.capitalizeFirstLetter = function () {
     return this.charAt(0).toUpperCase() + this.slice(1);
 }
 
-Object.size = function(obj) {
+Object.size = function (obj) {
     var size = 0, key;
     for (key in obj) {
         if (obj.hasOwnProperty(key)) size++;
@@ -3953,7 +3995,7 @@ Object.size = function(obj) {
  * @param mixed   s: sections delimiter
  * @param mixed   c: decimal delimiter
  */
-Number.prototype.format = function(n, x, s, c) {
+Number.prototype.format = function (n, x, s, c) {
     var re = '\\d(?=(\\d{' + (x || 3) + '})+' + (n > 0 ? '\\D' : '$') + ')',
         num = this.toFixed(Math.max(0, ~~n));
 
@@ -3966,6 +4008,7 @@ function guid() {
             .toString(16)
             .substring(1);
     }
+
     return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
         s4() + '-' + s4() + s4() + s4();
 }
@@ -3975,7 +4018,7 @@ function countDown(params) {
     var display = params.display;
     var showMinutes = params.showMinutes;
 
-    if(!duration)
+    if (!duration)
         return;
 
     var start = Date.now(),
@@ -3991,14 +4034,14 @@ function countDown(params) {
         minutes = minutes < 10 ? "0" + minutes : minutes;
         seconds = seconds < 10 ? "0" + seconds : seconds;
 
-        if(display && showMinutes)
-            display.text( minutes + ":" + seconds);
-        else if(display)
-            display.text((minutes != 0 ? minutes + ":" : "")    + seconds);
+        if (display && showMinutes)
+            display.text(minutes + ":" + seconds);
+        else if (display)
+            display.text((minutes != 0 ? minutes + ":" : "") + seconds);
 
         if (diff <= 0) {
             clearInterval(interval);
-            if(typeof params.afterFinish === 'function' )
+            if (typeof params.afterFinish === 'function')
                 params.afterFinish();
         }
     }
@@ -4008,17 +4051,17 @@ function countDown(params) {
 }
 
 
-(function($,undefined){
-    $.fn.serializeObject = function(){
+(function ($, undefined) {
+    $.fn.serializeObject = function () {
         var obj = {};
 
-        $.each( this.serializeArray(), function(i,o){
+        $.each(this.serializeArray(), function (i, o) {
             var n = o.name,
                 v = o.value;
 
             obj[n] = obj[n] === undefined ? v
-                : $.isArray( obj[n] ) ? obj[n].concat( v )
-                : [ obj[n], v ];
+                : $.isArray(obj[n]) ? obj[n].concat(v)
+                : [obj[n], v];
         });
 
         return obj;
@@ -4026,23 +4069,43 @@ function countDown(params) {
 })(jQuery);
 
 
-function getNumEnding(iNumber, aEndings)
-{
+function getNumEnding(iNumber, aEndings) {
     var sEnding, i;
     iNumber = iNumber % 100;
-    if (iNumber>=11 && iNumber<=19) {
-        sEnding=aEndings[2];
+    if (iNumber >= 11 && iNumber <= 19) {
+        sEnding = aEndings[2];
     }
     else {
         i = iNumber % 10;
-        switch (i)
-        {
-            case (1): sEnding = aEndings[0]; break;
+        switch (i) {
+            case (1):
+                sEnding = aEndings[0];
+                break;
             case (2):
             case (3):
-            case (4): sEnding = aEndings[1]; break;
-            default: sEnding = aEndings[2];
+            case (4):
+                sEnding = aEndings[1];
+                break;
+            default:
+                sEnding = aEndings[2];
         }
     }
     return sEnding;
+}
+
+function is_iOS() {
+    var iDevices = [
+        'iPad Simulator',
+        'iPhone Simulator',
+        'iPod Simulator',
+        'iPad',
+        'iPhone',
+        'iPod'
+    ];
+    while (iDevices.length) {
+        if (navigator.platform === iDevices.pop()) {
+            return true;
+        }
+    }
+    return false;
 }

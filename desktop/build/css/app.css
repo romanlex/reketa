@@ -3931,6 +3931,10 @@ span.icon-basket {
     padding-top: 0;
   }
 
+  #content .bouquet-list {
+    padding-top: 64px;
+  }
+
   #ajax-loader {
     position: fixed;
   }
@@ -3947,6 +3951,10 @@ span.icon-basket {
     position: relative;
     overflow: visible;
     height: 64px;
+  }
+
+  #header.mainpage {
+    position: fixed;
   }
 
   #header .container {
@@ -3985,6 +3993,7 @@ span.icon-basket {
 
   #header .buttons .calendar {
     position: fixed;
+    -webkit-overflow-scrolling: touch;
     bottom: 0;
     left: 0;
     right: 0;
@@ -4147,9 +4156,13 @@ span.icon-basket {
     background-color: #fff;
   }
 
-  .product-cart.light > .desc > .labels > span.type,
-  .product-cart.light > .desc > .labels > span.special:before {
+  .product-cart.light .desc > .labels > span.type,
+  .product-cart.light .desc > .labels > span.special:before {
     border-color: #000;
+  }
+
+  .product-cart.light button.show-info {
+    background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAMAAAC6V+0/AAAAWlBMVEUAAACAgICAgICAgIB7e3t5eXl1dXV1dXVvb29vb29tbW1ra2tpaWlnZ2dmZmZjY2NaWlpZWVlRUVFERERFRUVDQ0NAQEAuLi4vLy8iIiIjIyMWFhYSEhIBAQHDhuGsAAAAHXRSTlMABAoOHypGSmVnbneDiI6bs7jJ3d3f4vLy+fn9/jStDDUAAACVSURBVHjabZHZDsMgDAQ3hDQ9gKQUUgzt//9mJXDNQ9in0UgGH6hRLlIpFJ2CxFIwGtAmZMtq8mkFZ01+quCPGZL58LU2VbekZ7PJAiq32ts38QtZwQWg2YXh5RBNw+vjztJEkG54+RSWmvBHlE5jSVpkL49GZP/IBZHSEjfPkpuXMbd93+qYbztayHB1jDaflnw+xw+qTQlv+ogqGQAAAABJRU5ErkJggg==") !important;
   }
 
   .product-cart .content {
@@ -4248,6 +4261,15 @@ span.icon-basket {
     z-index: 2;
   }
 
+  .product-cart .content .cart .step1 {
+    height: 0;
+  }
+
+  .product-cart .content .cart .step1 .bottom,
+  .product-cart .content .cart .step1 .product-info {
+    position: fixed;
+  }
+
   .product-cart .content .cart .step2,
   .product-cart .content .cart .step3 {
     bottom: 0;
@@ -4317,6 +4339,8 @@ span.icon-basket {
     bottom: 0;
     z-index: 1;
     background-color: rgba(67,67,67,0.9);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
   }
 
   .checkout-basket .static div.price {
@@ -5286,6 +5310,10 @@ span.icon-basket {
 
   .widget.calendar {
     z-index: 210;
+  }
+
+  button.btn-image.small.show-info.active {
+    background-color: rgba(255,255,255,0.12) !important;
   }
 }
 
