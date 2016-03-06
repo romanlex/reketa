@@ -3992,22 +3992,33 @@ span.icon-basket {
   }
 
   #header .buttons .calendar {
+    display: none;
+  }
+
+  #footer {
     position: fixed;
-    -webkit-overflow-scrolling: touch;
     bottom: 0;
+    z-index: 10;
+    width: 100%;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  #footer .calendar {
     left: 0;
     right: 0;
+    color: #fff;
     background: #242424;
     width: 100%;
     padding: 0;
     z-index: 200;
+    background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAATElEQVQ4T2NkQALLly//HxkZyYgshs5GV4OimCwDQJrw2UhIjhHZVlJdAFKPYgAh27CFB3UMINVmZPXUcQGhuMflwkEUiKNeoCwzAQDCu21pYObjFwAAAABJRU5ErkJggg==");
     background-repeat: no-repeat;
     background-position: 15px center;
     text-align: left;
     padding-left: 40px !important;
   }
 
-  #header .buttons .calendar:after {
+  #footer .calendar:after {
     content: "Выбрать";
     color: #01bfce;
     width: 60px;
@@ -4019,7 +4030,7 @@ span.icon-basket {
     right: 0;
   }
 
-  #header .buttons .calendar:before {
+  #footer .calendar:before {
     content: "";
     position: absolute;
     background: #3a3a3a;
