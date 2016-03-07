@@ -207,7 +207,7 @@
                             <input type="hidden" name="csrf" value="">
                             <div class="form-group">
                                 <label for="checkcode">Проверочный код</label>
-                                <input type="text" name="checkcode" value="" id="checkcode" tabindex="1" autocomplete="off" required>
+                                <input type="text" name="checkcode" value="" id="checkcode" tabindex="1" maxlength="4" autocomplete="off" required>
                             </div>
                         </form>
                         <div class="resend">
@@ -376,6 +376,14 @@
                                 </li>
                             </ul>
                         </div>
+                        <div class="mobile gallery">
+                            <div class="owl-carousel">
+                                <div class="item slide" style="background-image: url('img/b1.jpg')"></div>
+                                <div class="item slide" style="background-image: url('img/b2.jpg')"></div>
+                                <div class="item slide" style="background-image: url('img/b5.jpg')"></div>
+                                <div class="item slide" style="background-image: url('img/b6.jpg')"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div data-to-step="step1" class="bottom">
@@ -418,7 +426,16 @@
                 </div>
                 <div data-to-step="step8" class="bottom">
                     <div class="basket mobile">
-                        <a href="basket.html" class="btn btn-bordered ">Корзина<br><span>2 букета</span><br>7500₽</a>
+                        <div class="basket">
+                            <a href="basket.html" class="btn btn-bordered ">Корзина<br><span>2 букета</span><br><span class="price">7500₽</span></a>
+                        </div>
+                        <div class="credit error" data-toggle="gotostep" data-to-step="7">
+                            <div class="pad">
+                                <span>Карта</span>
+                                <!--<span class="add">Добавить карту</span>-->
+                                <div class="creditcard-type mastercard"></div> <b>1234</b>
+                            </div>
+                        </div>
                     </div>
                     <div class="button-group one-button">
                         <button type="checkout"  class="btn-bordered" tabindex="4" disabled>Оплатить</button>

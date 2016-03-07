@@ -220,6 +220,7 @@
                 <div class="bouquet {% if (o.status && o.status !== '') { %}{%=o.status%}{% } %}" data-toggle="popup" data-target="#popup-product-{%=o.id %}" {% if (o.status && o.status !== '') { %} data-status="false" {% } %}>
                     {% if (o.imgSrc && o.imgSrc !== '') { %}
                         <img src="{%=o.imgSrc%}" class="bouquet-image" alt="">
+                        <div class="mobile bouquet-image" style="background-image: url({%=o.imgSrc%})"></div>
                     {% } %}
                     <div class="desc">
                         <div class="title">{%=o.name%}</div>
@@ -257,7 +258,7 @@
                                 {% if (o.gallery && o.gallery !== '') { %}
                                     <div class="owl-carousel gallery-list">
                                     {% for (var i=0; i<o.gallery.length; i++) { %}
-                                        <img class="owl-lazy" data-src="{%=o.gallery[i]%}" data-src-retina="{%=o.gallery[i]%}" />
+                                        <div class="item slide" style="background-image: url('{%=o.gallery[i]%}')"></div>
                                     {% } %}
                                     </div>
                                 {% } else { %}
@@ -278,9 +279,15 @@
                                         {% } %}
                                     </div>
                                     <div class="product-info">
-                                    {% if (o.info && o.info !== '') { %}
-                                        {%#o.info%}
-                                    {% } %}
+                                        <div class="bluredBg"></div>
+                                        <div class="table">
+                                            <div class="cell">
+                                            {% if (o.info && o.info !== '') { %}
+                                                {%#o.info%}
+                                            {% } %}
+                                            </div>
+                                        </div>
+            
                                     </div>
                                     <div class="bottom">
                                         {% if (o.availableData && o.availableData !== '') { %}

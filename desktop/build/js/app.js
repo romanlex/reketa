@@ -200,17 +200,12 @@ $(function() {
 		scroll: function() {
 			this.scrollPos = $(document).scrollTop();
 			this.savedScrollPos = this.scrollPos;
-			//if(device.type == 'smallmobile' || device.type == 'mobile') {
-			//	var scrollTop = window.scrollY;
-			//	//console.log(scrollTop);
-			//	console.log($w.height());
-			//}
 		},
 		bind: {
 			document: function() {
 				$(document).ready(function(){
-					$('input[type="tel"]').mask('+7(999)999-9999');
-					$('input[name="phone"]').mask('+7(999)999-9999');
+					$('input[type="tel"]').mask('+7(999)999-99-99');
+					$('input[name="phone"]').mask('+7(999)999-99-99');
 				});
 				$(document).keyup(function(e) {
 					if (e.keyCode == 27 && app.popup.isOpened())
@@ -975,7 +970,12 @@ $(function() {
 				position: {},
 				setPosition: function() {
 					var button = $('button[data-target="#widget-calendar"]'); // setting the position relative to the element
+					if(device.type == 'smallmobile' || device.type == 'mobile')
+						button = $('#footer button[data-target="#widget-calendar"]');
 					var obj = $('#widget-calendar');
+
+					app.popup.hide();
+
 					if(button.length) {
 						var _w = obj.width();
 						var _h = obj.height() ;
@@ -984,11 +984,15 @@ $(function() {
 
 						if(device.type == 'smallmobile' || device.type == 'mobile') {
 							obj.css('top', 'auto');
+							obj.css('right', 'auto');
 							obj.css('bottom', - (_h + 40) + 'px');// box shadow
+							obj.css('transform', '');
 						} else {
+							obj.css('bottom', 'auto');
 							obj.css('top', - (_h + 40) + 'px');// box shadow
 							obj.css('right', Math.floor(right) + 'px');
 						}
+
 						//obj.css('height', _h + 'px');
 						this.position.width = _w;
 						this.position.height = _h;
@@ -1081,6 +1085,8 @@ $(function() {
 				},
 				getDateString: function() {
 					var _str = lang.DeliveryFormattedString;
+					//if(device.type == 'smallmobile' || device.type == 'mobile')
+					//	_str = '{1} {2}';
 					var timeofday = this.obj.find('input[name="timeofday"]:checked').val();
 					var date = this.obj.find('input[name="date"]').val();
 					if(date)
@@ -1215,8 +1221,9 @@ $(function() {
 					$(document).on('click tap', '.product-cart button[data-toggle="show-product-info"]', function() {
 						var id = $(this).data('product-id');
 						$(this).toggleClass('active')
-						if($('#popup-product-' + id).data('lightness') == 'light')
-							$('#popup-product-' + id).toggleClass('light');
+						// uncomment to support light\dark product cart color information
+						//if($('#popup-product-' + id).data('lightness') == 'light')
+						//	$('#popup-product-' + id).toggleClass('light');
 						$('#popup-product-' + id + ' .product-info').fadeToggle(300, function() {
 
 						});
@@ -1258,14 +1265,14 @@ $(function() {
 
 							if(device.type != 'smallmobile' && device.type != 'mobile') {
 								gallery.css('height', h);
-								gallery.find('.owl-lazy').css('height', h);
+								gallery.find('.slide').css('height', h);
 								gallery.find('.owl-height').css('height', h);
 								gallery.find('.owl-lazy').css('width', w/2);
 								gallery.css('width', w/2);
 							} else {
 								var headerHeight =  $('#header').height();
 								gallery.css('height', device.windowHeight - headerHeight);
-								gallery.find('.owl-lazy').css('height', device.windowHeight - headerHeight);
+								gallery.find('.slide').css('height', device.windowHeight - headerHeight);
 								gallery.find('.owl-height').css('height', device.windowHeight - headerHeight);
 								gallery.find('.owl-lazy').css('width', w);
 								gallery.css('width', w);
@@ -1275,7 +1282,7 @@ $(function() {
 							var params = {
 								items: 1,
 								margin: 0,
-								lazyLoad:true,
+								lazyLoad:false,
 								loop:true,
 								autoplay: true,
 								autoplayTimeout: 4000,
@@ -1290,6 +1297,21 @@ $(function() {
 								var item = event.item.index;
 								var current = element.find('.owl-item').eq(item).find('.item');
 
+								if(device.type == 'smallmobile' || device.type == 'mobile') {
+									var img = element.find('.owl-item').eq(item).find('img');
+									var info = element.closest('.content');
+									info.find('.cart .product-info > .bluredBg').css('background-image', 'url(' + img.data('src') + ')');
+								}
+							});
+							gallery.on('changed.owl.carousel', function(event) {
+								var element = $(event.target);
+								var item = event.item.index;
+								var current = element.find('.owl-item').eq(item).find('.item');
+								if(device.type == 'smallmobile' || device.type == 'mobile') {
+									var img = element.find('.owl-item').eq(item).find('img');
+									var info = element.closest('.content');
+									info.find('.cart .product-info > .bluredBg').css('background-image', 'url(' + img.data('src') + ')');
+								}
 							});
 							gallery.find('.owl-lazy').on('click tap', function() {
 								gallery.trigger('next.owl.carousel');
@@ -1317,10 +1339,15 @@ $(function() {
 
 
 					if(device.type == 'smallmobile' || device.type == 'mobile') {
-						$('#header button[data-target="#widget-calendar"]').slideUp(200);
 						obj.css('height', device.windowHeight - $('#header').height());
 						$('#header button.navbar-toggle').hide();
 						$('#header button.mobile.back').show();
+
+						var img = obj.find('.gallery img').first();
+						var info_bg = obj.find('.cart .product-info > .bluredBg');
+						console.log(info_bg.css('background-image'));
+						if (info_bg.css('background-image') == 'none')
+							info_bg.css('background-image', 'url(' + img.attr('src') + ')');
 					}
 
 					var height = obj.height();
@@ -1396,7 +1423,7 @@ $(function() {
 						obj.find('.gallery').css('opacity', 1);
 
 					if(device.type == 'smallmobile' || device.type == 'mobile') {
-						$('#header button[data-target="#widget-calendar"]').slideDown(200);
+						//$('#header button[data-target="#widget-calendar"]').slideDown(200);
 						$('#content .mobile.notify').removeClass('open');
 						$('#header button[data-toggle="close-widget"]').hide();
 						$('#header button.navbar-toggle').show();
@@ -1890,9 +1917,18 @@ $(function() {
 
 						setTimeout(function() {
 							message.css('background-color', 'transparent');
+							message.css('height', 'auto');
 							message.find('span').addClass('inline');
+
+							var h = message.height();
+							var offset = form.offset().top;
+							var pos = 0;
+							if(device.windowHeight < 750)
+								pos = -20
+							else
+								pos = -80
 							message.transition({
-								y: -250,
+								y: pos,
 								complete: function() {
 									message.css('z-index', 0);
 									form.fadeTo(200, 1);
@@ -2325,7 +2361,7 @@ $(function() {
 	            return false;
 	        });
 	
-	        $('#checkout-step button[data-toggle="gotostep"]').on('click', function() {
+	        $('#checkout *[data-toggle="gotostep"]').on('click', function() {
 	            var step = $(this).data('to-step');
 	            if(step)
 	                _this.goToStep(step);
@@ -2341,8 +2377,6 @@ $(function() {
 	                    else
 	                        app.popup.show('#widget-calendar', false);
 	                }
-	
-	
 	            });
 	
 	            $('button[data-toggle="devided-slider-back"]').on('click', function() {
@@ -2499,7 +2533,16 @@ $(function() {
 	
 	                form_step__2.find('input').on('keyup', function() {
 	                    form_step__2.closest('.step2').find('.form-status').remove();
-	                    $('button[data-to-form="#' + form_step__2.attr('id') + '"]').removeAttr('disabled').removeClass('btn-bordered').addClass('btn-primary');
+	                    if($(this).attr('name') == 'checkcode')
+	                    {
+	                        console.log($(this).val().length)
+	                        if($(this).val().length == 4)
+	                            $('button[data-to-form="#' + form_step__2.attr('id') + '"]').removeAttr('disabled').removeClass('btn-bordered').addClass('btn-primary');
+	                        else
+	                            $('button[data-to-form="#' + form_step__2.attr('id') + '"]').attr('disabled', 'disabled').removeClass('btn-primary').addClass('btn-bordered');
+	                    } else {
+	                        $('button[data-to-form="#' + form_step__2.attr('id') + '"]').removeAttr('disabled').removeClass('btn-bordered').addClass('btn-primary');
+	                    }
 	                });
 	
 	                form_step__2.on('submit', function() {
@@ -2958,6 +3001,7 @@ $(function() {
 	                form.find('select[name="who"]').selectize({
 	                    allowEmptyOption: false,
 	                    create: false,
+	                    dropdownDirection: 'down',
 	                    plugins: {
 	                        dropdown_footer: {
 	                            title: 'Мы можем доставить цветы вам или поздравить кого-нибудь от вас'
@@ -3206,6 +3250,22 @@ $(function() {
 	                    return false;
 	                });
 	
+	                if(device.type == 'smallmobile' || device.type == 'mobile') {
+	                    var params = {
+	                        items: 1,
+	                        margin: 0,
+	                        lazyLoad: false,
+	                        loop: true,
+	                        autoplay: true,
+	                        animateOut:'fadeOut',
+	                        animateIn: 'fadeIn',
+	                        autoplayTimeout: 4000,
+	                        autoplayHoverPause: true
+	                    };
+	
+	                    $('#checkout-step .step8 .owl-carousel').owlCarousel(params);
+	                }
+	
 	                this.loaded = true;
 	            },
 	            init: function() {
@@ -3220,9 +3280,9 @@ $(function() {
 	                    app.checkout.card
 	                )
 	                {
-	                    $('button[type="checkout"]').removeAttr('disabled');
+	                    $('button[type="checkout"]').removeAttr('disabled').removeClass('btn-bordered').addClass('btn-primary');
 	                } else {
-	                    $('button[type="checkout"]').attr('disabled', 'disabled');
+	                    $('button[type="checkout"]').attr('disabled', 'disabled').removeClass('btn-primary').addClass('btn-bordered');
 	                }
 	
 	
@@ -3281,6 +3341,12 @@ $(function() {
 	                    row.removeClass('error');
 	                    row.find('span').html('Карта <b>' + app.checkout.card.lastdiggit + '</b>');
 	                    row.find('.creditcard-type').addClass(app.checkout.card.type);
+	                    if(device.type == 'smallmobile' || device.type == 'mobile') {
+	                        var card = $('#checkout .content-panel .bottom .credit');
+	                        card.removeClass('error');
+	                        card.find('b').html(app.checkout.card.lastdiggit)
+	                        card.find('.creditcard-type').addClass(app.checkout.card.type);
+	                    }
 	                }
 	            }
 	        }
@@ -3388,7 +3454,7 @@ $(function() {
 	            if(device.type == 'smallmobile' || device.type == 'mobile') {
 	                $('#reasons').css('overflow', 'auto');
 	                $('#reasons').find('.menu-wrapper').transition({
-	                    x: -320, complete: function () {
+	                    x: -device.windowWidth, complete: function () {
 	                    }
 	                });
 	                $('#header .navbar-toggle').hide();
@@ -3448,7 +3514,7 @@ $(function() {
 	            if(device.type == 'smallmobile' || device.type == 'mobile' && parentStep.data('to-step') != 'onboard') {
 	                $('#reasons').css('overflow', 'auto');
 	                $('#reasons').find('.menu-wrapper').transition({
-	                    x: -320, complete: function () {
+	                    x: -device.windowWidth, complete: function () {
 	                        $('#reasons').find('.menu-wrapper').hide();
 	                    }
 	                });
