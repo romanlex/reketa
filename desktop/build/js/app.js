@@ -200,6 +200,14 @@ $(function() {
 		scroll: function() {
 			this.scrollPos = $(document).scrollTop();
 			this.savedScrollPos = this.scrollPos;
+			var header = $('#header');
+			if(device.type == 'smallmobile' || device.type == 'mobile') {
+				if (header.hasClass('mainpage') && this.scrollPos > 0) {
+					header.addClass('blurred');
+				} else if (header.hasClass('mainpage') && this.scrollPos == 0) {
+					header.removeClass('blurred');
+				}
+			}
 		},
 		bind: {
 			document: function() {
@@ -1220,7 +1228,8 @@ $(function() {
 					// Show product info
 					$(document).on('click tap', '.product-cart button[data-toggle="show-product-info"]', function() {
 						var id = $(this).data('product-id');
-						$(this).toggleClass('active')
+						$(this).toggleClass('active');
+						$('#header').toggleClass('transparent');
 						// uncomment to support light\dark product cart color information
 						//if($('#popup-product-' + id).data('lightness') == 'light')
 						//	$('#popup-product-' + id).toggleClass('light');
@@ -1266,6 +1275,7 @@ $(function() {
 							if(device.type != 'smallmobile' && device.type != 'mobile') {
 								gallery.css('height', h);
 								gallery.find('.slide').css('height', h);
+								$('.product-cart').find('.gallery .slide').css('height', h);
 								gallery.find('.owl-height').css('height', h);
 								gallery.find('.owl-lazy').css('width', w/2);
 								gallery.css('width', w/2);
@@ -1273,6 +1283,7 @@ $(function() {
 								var headerHeight =  $('#header').height();
 								gallery.css('height', device.windowHeight - headerHeight);
 								gallery.find('.slide').css('height', device.windowHeight - headerHeight);
+								$('.product-cart').find('.gallery .slide').css('height', device.windowHeight - headerHeight);
 								gallery.find('.owl-height').css('height', device.windowHeight - headerHeight);
 								gallery.find('.owl-lazy').css('width', w);
 								gallery.css('width', w);
@@ -1298,9 +1309,9 @@ $(function() {
 								var current = element.find('.owl-item').eq(item).find('.item');
 
 								if(device.type == 'smallmobile' || device.type == 'mobile') {
-									var img = element.find('.owl-item').eq(item).find('img');
+									var img = element.find('.owl-item').eq(item).find('.slide');
 									var info = element.closest('.content');
-									info.find('.cart .product-info > .bluredBg').css('background-image', 'url(' + img.data('src') + ')');
+									info.find('.cart .product-info > .bluredBg').css('background-image', img.css('background-image'));
 								}
 							});
 							gallery.on('changed.owl.carousel', function(event) {
@@ -1308,9 +1319,9 @@ $(function() {
 								var item = event.item.index;
 								var current = element.find('.owl-item').eq(item).find('.item');
 								if(device.type == 'smallmobile' || device.type == 'mobile') {
-									var img = element.find('.owl-item').eq(item).find('img');
+									var img = element.find('.owl-item').eq(item).find('.slide');
 									var info = element.closest('.content');
-									info.find('.cart .product-info > .bluredBg').css('background-image', 'url(' + img.data('src') + ')');
+									info.find('.cart .product-info > .bluredBg').css('background-image', img.css('background-image'));
 								}
 							});
 							gallery.find('.owl-lazy').on('click tap', function() {
@@ -1343,11 +1354,11 @@ $(function() {
 						$('#header button.navbar-toggle').hide();
 						$('#header button.mobile.back').show();
 
-						var img = obj.find('.gallery img').first();
+						var img = obj.find('.gallery .slide').first();
+						console.log(img.css('background-image'));
 						var info_bg = obj.find('.cart .product-info > .bluredBg');
-						console.log(info_bg.css('background-image'));
 						if (info_bg.css('background-image') == 'none')
-							info_bg.css('background-image', 'url(' + img.attr('src') + ')');
+							info_bg.css('background-image', img.css('background-image'));
 					}
 
 					var height = obj.height();
@@ -1396,18 +1407,18 @@ $(function() {
 
 					obj.addClass('transition');
 
-					if(device.type == 'desktop' && (device.subtype == 'fullhd' || device.subtype == 'hd'))
-						obj.transition({ y: Math.floor(device.windowHeight - (device.windowHeight - height)/2) });
-					else if (device.type == 'smallmobile' || device.type == 'mobile') {
-						obj.transition({ y: Math.floor(- height)});
-					} else
-						obj.transition({ y: Math.floor(height + $('#header').height())});
-
-					obj.one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend', function(e) {
+					var transEnd = function() {
 						obj.removeClass('transition').addClass('opened');
 						obj.find('.bottom button:first-child').focus();
-						obj.find('.bottom').fadeIn(200);
-					});
+						obj.find('.bottom').fadeIn(100);
+					}
+					if(device.type == 'desktop' && (device.subtype == 'fullhd' || device.subtype == 'hd'))
+						obj.transition({ y: Math.floor(device.windowHeight - (device.windowHeight - height)/2), complete: transEnd});
+					else if (device.type == 'smallmobile' || device.type == 'mobile') {
+						obj.transition({ y: Math.floor(- height), complete: transEnd});
+					} else
+						obj.transition({ y: Math.floor(height + $('#header').height()), complete: transEnd});
+
 					// History add
 					this.startTitle = document.title;
 					document.title = lang.bouquet + ' ' + obj.data('title');
