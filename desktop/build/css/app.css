@@ -263,7 +263,10 @@ li {
   z-index: 1;
   position: fixed;
   top: 0;
-  height: 100%;
+  bottom: 0;
+  height: auto;
+  padding-top: 74px;
+  padding-bottom: 20px;
   display: inline-block;
   float: left;
 }
@@ -288,6 +291,10 @@ li {
   animation-iteration-count: 1;
 }
 
+#sidebar .offset-top {
+  position: relative;
+}
+
 #sidebar .sidebar-content {
   position: relative;
   height: 100%;
@@ -295,14 +302,12 @@ li {
 }
 
 #sidebar .sidebar-top {
-  padding-top: 74px;
   position: relative;
 }
 
 #sidebar .sidebar-bottom {
   position: absolute;
   bottom: 0;
-  padding-right: 20px;
   -webkit-transition: all 0.3s ease-in-out;
   transition: all 0.3s ease-in-out;
 }
@@ -354,6 +359,9 @@ li {
 #sidebar .auth-panel .button {
   position: absolute;
   margin-bottom: 0;
+  width: auto;
+  left: 0;
+  right: 0;
   bottom: 22px;
 }
 
@@ -2549,7 +2557,7 @@ span.icon-basket {
 }
 
 .order-info .price {
-  padding-top: 35px;
+  margin-bottom: 0px;
 }
 
 .order-info .status-order {
@@ -3751,7 +3759,8 @@ span.icon-basket {
 }
 
 .layout.support,
-.layout.checkout {
+.layout.checkout,
+.layout.orders {
   min-height: 700px;
 }
 
@@ -4107,12 +4116,30 @@ span.icon-basket {
     left: 15px;
   }
 
-  #sidebar .sidebar-top {
-    padding-top: 64px;
+  #sidebar {
+    width: 280px;
   }
 
-  .sidemenu > .menu li > a {
+  #sidebar .nano>.nano-pane {
+    opacity: 1;
+    left: auto;
+    right: 10px;
+  }
+
+  #sidebar .sidemenu > .menu {
+    padding-right: 40px;
+  }
+
+  #sidebar .sidemenu > .menu li > a {
     line-height: 2em;
+  }
+
+  #sidebar .auth-panel .button {
+    margin-right: 30px;
+  }
+
+  #sidebar.collapsed .sidemenu > .menu {
+    padding-right: 30px;
   }
 
   .bouquet-list {
@@ -5655,6 +5682,7 @@ span.icon-basket {
     width: 84%;
     height: 75%;
     max-width: 988px;
+    min-height: 600px;
   }
 
   .product-cart button.popup-close,

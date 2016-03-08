@@ -212,8 +212,8 @@ $(function() {
 		bind: {
 			document: function() {
 				$(document).ready(function(){
-					$('input[type="tel"]').mask('+7(999)999-99-99');
-					$('input[name="phone"]').mask('+7(999)999-99-99');
+					$('input[type="tel"]').mask('+7 (999) 999-99-99');
+					$('input[name="phone"]').mask('+7 (999) 999-99-99');
 				});
 				$(document).keyup(function(e) {
 					if (e.keyCode == 27 && app.popup.isOpened())
@@ -398,6 +398,10 @@ $(function() {
 
 				this.initStyle();
 
+				sidebar.find('.nano').nanoScroller({
+					iOSNativeScrolling: true
+				});
+
 				$(document).on('raketa.bouquets.loaded', function() {
 					var offset = 0;
 					var content = $("#bouquet-list");
@@ -500,7 +504,9 @@ $(function() {
 						.fadeIn(200);
 
 					$('body').css('overflow', 'hidden').on('touchmove', function(e) {
-						e.preventDefault();
+						var target = $(e.target);
+						if(!target.is('.nano') && !target.closest('.nano'))
+							e.preventDefault();
 					});
 				}
 
@@ -977,7 +983,7 @@ $(function() {
 				calendarInitialized: false,
 				position: {},
 				setPosition: function() {
-					var button = $('button[data-target="#widget-calendar"]'); // setting the position relative to the element
+					var button = $('#header button[data-target="#widget-calendar"]'); // setting the position relative to the element
 					if(device.type == 'smallmobile' || device.type == 'mobile')
 						button = $('#footer button[data-target="#widget-calendar"]');
 					var obj = $('#widget-calendar');
@@ -985,31 +991,35 @@ $(function() {
 					app.popup.hide();
 
 					if(button.length) {
-						var _w = obj.width();
-						var _h = obj.height() ;
 						var button_offset = button.offset();
 						var right = device.windowWidth - (button_offset.left + button.outerWidth()) - 20;
-
-						if(device.type == 'smallmobile' || device.type == 'mobile') {
-							obj.css('top', 'auto');
-							obj.css('right', 'auto');
-							obj.css('bottom', - (_h + 40) + 'px');// box shadow
-							obj.css('transform', '');
-						} else {
-							obj.css('bottom', 'auto');
-							obj.css('top', - (_h + 40) + 'px');// box shadow
-							obj.css('right', Math.floor(right) + 'px');
-						}
-
-						//obj.css('height', _h + 'px');
-						this.position.width = _w;
-						this.position.height = _h;
-						if(device.type == 'smallmobile' || device.type == 'mobile')
-							this.position.bottom = 0;
-						else
-							this.position.top = - _h;
-						this.position.right = - right;
+					} else  {
+						var anotherButton = $('#header .buttons .basket').offset();
+						var right = device.windowWidth - (anotherButton.left + $('#header .buttons .basket').outerWidth() - 40);
 					}
+
+					var _w = obj.width();
+					var _h = obj.height() ;
+
+					if(device.type == 'smallmobile' || device.type == 'mobile') {
+						obj.css('top', 'auto');
+						obj.css('right', 'auto');
+						obj.css('bottom', - (_h + 40) + 'px');// box shadow
+						obj.css('transform', '');
+					} else {
+						obj.css('bottom', 'auto');
+						obj.css('top', - (_h + 40) + 'px');// box shadow
+						obj.css('right', Math.floor(right) + 'px');
+					}
+
+					//obj.css('height', _h + 'px');
+					this.position.width = _w;
+					this.position.height = _h;
+					if(device.type == 'smallmobile' || device.type == 'mobile')
+						this.position.bottom = 0;
+					else
+						this.position.top = - _h;
+					this.position.right = - right;
 
 				},
 				localInit: function(obj) {
@@ -1501,7 +1511,6 @@ $(function() {
 					$('#p' + obj.data('product-id') + '-count').val(inBasket.count);
 
 					$('[data-trigger="spinner"]')
-						.spinner('max', 99)
 						.spinner('changing', function(e, newVal, oldVal) {
 							var name = $(this).attr('name');
 
@@ -1560,20 +1569,6 @@ $(function() {
 					newH += 50;
 
 				if(device.type == 'smallmobile' || device.type == 'mobile') {
-					var visible = container.find('.content-panel *:visible');
-					var visibleHeight = 0;
-					var slider = false;
-					visible.each(function() {
-						if($(this).is('div.step'))
-							visibleHeight += $(this).height();
-
-						if($(this).is('div.bottom.show'))
-							visibleHeight += $(this).height();
-
-						if($(this).is('div#slider-content'))
-							slider = true;
-					});
-
 					switch(layout) {
 						case 'devided-slider':
 							container.find('.menu-wrapper').css('height', newH + 'px');
@@ -1593,11 +1588,35 @@ $(function() {
 				}
 				else
 				{
-					container.css('height', newH + 'px');
+					var visibleHeight = 0;
+					switch(layout) {
+						case 'devided':
+							// prority of content-panel block
+							var _cont = container.find('.content-panel');
+							_cont.children().each(function() {
+								visibleHeight += $(this).outerHeight(true);
+							});
+							console.log(visibleHeight);
+							if(visibleHeight > device.windowHeight - $('#header').outerHeight())
+								container.css('min-height', newH + 'px');
+							else
+								container.css('height', newH + 'px');
+							break;
+						case 'default':
+							container.children().each(function() {
+								visibleHeight += $(this).outerHeight(true);
+							});
+							console.log(visibleHeight);
+							if(visibleHeight > device.windowHeight - $('#header').outerHeight())
+								container.css('min-height', newH + 'px');
+							else
+								container.css('height', newH + 'px');
+							break;
+						default:
+							container.css('height', newH + 'px');
+							break;
+					}
 				}
-
-
-
 			},
 			loadLayout: function(layout, container, callback) {
 				switch (layout) {
@@ -1853,7 +1872,7 @@ $(function() {
 						phone: {
 							required: true,
 							minlength: 5,
-							regexp: '^\\+[0-9\\+\\-()\s]{14,16}$'
+							regexp: '[0-9\\+\\-\\s\\(\\)]{18}$'
 						},
 						email: {
 							required: true,
@@ -1934,7 +1953,7 @@ $(function() {
 							var h = message.height();
 							var offset = form.offset().top;
 							var pos = 0;
-							if(device.windowHeight < 750)
+							if(device.windowHeight < 900)
 								pos = -20
 							else
 								pos = -80
@@ -2442,7 +2461,7 @@ $(function() {
 	                        phone: {
 	                            required: true,
 	                            minlength: 5,
-	                            regexp: '^\\+[0-9\\+\\-()\s]{14,16}$'
+	                            regexp: '[0-9\\+\\-\\s\\(\\)]{18}$'
 	                        },
 	                        email: {
 	                            required: true,

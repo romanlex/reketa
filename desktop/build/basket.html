@@ -58,68 +58,71 @@
         </div>
     </header>
     <div id="sidebar">
-        <button class="popup-close"></button>
-        <div class="sidebar-content">
-            <div class="sidebar-top">
-                <div class="sidemenu">
-                    <ul class="menu">
-                        <li class="active"><a href="index.html">Цветы</a></li>
-                        <li><a href="orders.html">Заказы</a></li>
-                        <li><a href="orders_empty.html">Заказы пусто</a></li>
-                        <li><a href="basket.html">Корзина</a></li>
-                        <li><a href="basket_empty.html">Корзина пусто</a></li>
-                        <li><a href="checkout.html">Оформление заказа</a></li>
-                        <li><a href="reasons.html">Поводы</a></li>
-                        <li><a href="promocodes.html">Промокод</a></li>
-                        <li><a href="about.html">О Сервисе</a></li>
-                        <li><a href="support.html">Помощь</a></li>
-                        <li><a href="502.html">Ошибка сайта</a></li>
-                    </ul>
+            <button class="popup-close"></button>
+            <div class="offset-top nano">
+                <div class="sidebar-content nano-content">
+                <div class="sidebar-top">
+                    <div class="sidemenu">
+                        <ul class="menu">
+                            <li class="active"><a href="index.html">Цветы</a></li>
+                            <li><a href="orders.html">Заказы</a></li>
+                            <li><a href="orders_empty.html">Заказы пусто</a></li>
+                            <li><a href="basket.html">Корзина</a></li>
+                            <li><a href="basket_empty.html">Корзина пусто</a></li>
+                            <li><a href="checkout.html">Оформление заказа</a></li>
+                            <li><a href="reasons.html">Поводы</a></li>
+                            <li><a href="promocodes.html">Промокод</a></li>
+                            <li><a href="about.html">О Сервисе</a></li>
+                            <li><a href="support.html">Помощь</a></li>
+                            <li><a href="502.html">Ошибка сайта</a></li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
-            <div class="sidebar-bottom">
-                <div class="upcoming-event">
-                    <ul>
-                        <li>
-                            <div class="upevent table" data-upevent-id="1">
-                                <div class="upevent-image cell">
-                                    <span class="label">ДР</span>
+                <div class="sidebar-bottom">
+                    <div class="upcoming-event">
+                        <ul>
+                            <li>
+                                <div class="upevent table" data-upevent-id="1">
+                                    <div class="upevent-image cell">
+                                        <span class="label">ДР</span>
+                                    </div>
+                                    <div class="upevent data cell">
+                                        Константин Константинопольский
+                                        <div class="cause">День рождения <span>через 2 дня</span></div>
+                                    </div>
                                 </div>
-                                <div class="upevent data cell">
-                                    Константин Константинопольский
-                                    <div class="cause">День рождения <span>через 2 дня</span></div>
+                            </li>
+                            <li>
+                                <div class="upevent table" data-upevent-id="2">
+                                    <div class="upevent-image cell">
+                                        <img src="img/upcoming-photo.png" alt="">
+                                    </div>
+                                    <div class="upevent data cell">
+                                        Елена Максимова
+                                        <div class="cause">День свадьбы <span>18 сен</span></div>
+                                    </div>
                                 </div>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="upevent table" data-upevent-id="2">
-                                <div class="upevent-image cell">
-                                    <img src="img/upcoming-photo.png" alt="">
-                                </div>
-                                <div class="upevent data cell">
-                                    Елена Максимова
-                                    <div class="cause">День свадьбы <span>18 сен</span></div>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="soon">
-                            <a href="#soon">Скоро еще 3 праздника</a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="auth-panel not-authorized">
-                    <a href="/login.html" class="button">Вход</a>
-                </div>
-                <!--<div class="auth-panel">-->
-                   <!--<div class="username">-->
-                       <!--<a href="profile.html">Коля</a>-->
-                   <!--</div>-->
-                    <!--<div class="username-buttons pull-right">-->
-                        <!--<a href="?logout">Выход</a>-->
+                            </li>
+                            <li class="soon">
+                                <a href="#soon">Скоро еще 3 праздника</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="auth-panel not-authorized">
+                        <a href="/login.html" class="button">Вход</a>
+                    </div>
+                    <!--<div class="auth-panel">-->
+                       <!--<div class="username">-->
+                           <!--<a href="profile.html">Коля</a>-->
+                       <!--</div>-->
+                        <!--<div class="username-buttons pull-right">-->
+                            <!--<a href="?logout">Выход</a>-->
+                        <!--</div>-->
                     <!--</div>-->
-                <!--</div>-->
+                </div>
             </div>
-        </div>
+            </div>
+    
     </div>
     <div id="content">
         <div class="table layout devided checkout checkout-basket warning" data-layout="devided">
@@ -140,7 +143,7 @@
                             <span class="cell middle count">
                                 <div class="basket_info__spinner spinner" data-trigger="spinner">
                                     <a href="javascript:;" class="spin-down" data-spin="down"></a>
-                                    <input type="text" id="p1-count" name="p1-count" value="2" class="form-control" data-rule="quantity">
+                                    <input type="text" id="p1-count" name="p1-count" value="2" class="form-control" data-rule="quantity" data-min="0" data-max="99">
                                     <a href="javascript:;" class="spin-up" data-spin="up"></a>
                                 </div>
                             </span>
@@ -161,7 +164,7 @@
                             <span class="cell middle count">
                                 <div class="basket_info__spinner spinner" data-trigger="spinner">
                                     <a href="javascript:;" class="spin-down" data-spin="down"></a>
-                                    <input type="text" id="p2-count" name="p2-count" value="23" class="form-control" data-rule="quantity">
+                                    <input type="text" id="p2-count" name="p2-count" value="23" class="form-control" data-rule="quantity" data-min="0" data-max="99">
                                     <a href="javascript:;" class="spin-up" data-spin="up"></a>
                                 </div>
                             </span>
@@ -182,7 +185,7 @@
                             <span class="cell middle count">
                                 <div class="basket_info__spinner spinner" data-trigger="spinner">
                                     <a href="javascript:;" class="spin-down" data-spin="down"></a>
-                                    <input type="text" id="p3-count" name="p3-count" value="1" class="form-control" data-rule="quantity">
+                                    <input type="text" id="p3-count" name="p3-count" value="1" class="form-control" data-rule="quantity" data-min="0" data-max="99">
                                     <a href="javascript:;" class="spin-up" data-spin="up"></a>
                                 </div>
                             </span>
@@ -314,6 +317,28 @@
                 alert('Товар с данным ID не найден в вашей корзине');
             }
             return false;
+        });
+        $('[data-trigger="spinner"]')
+            .spinner('changing', function(e, newVal, oldVal) {
+                var name = $(this).attr('name');
+
+                if(newVal < 0)
+                	return;
+
+                app.checkout.basket[index[0]].count = newVal;
+
+                var _str = lang.bouquetInBasketPopupCart;
+                var _str2 = newVal + ' ' + lang.bouquet + getNumEnding(inBasket.count, ['', 'а', 'ов']);
+
+                var price = newVal * inBasket.price;
+                if(price > 10000)
+                    price = price.format(0, 3, ' ', '.');
+
+                _str = String.template(_str, _str2.toLowerCase(), price + lang.currencySymbol);
+
+                $('#in-basket-product-' + obj.data('product-id')).html('<span class="icon-basket"></span> ' + _str);
+
+                app.basket.saveBasket();
         });
     })
 </script>
