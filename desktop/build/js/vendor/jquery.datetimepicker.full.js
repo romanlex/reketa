@@ -2728,7 +2728,10 @@ var DateFormatter;
 					.data('xdsoft_datetimepicker', null)
 					.off('.xdsoft');
 				$(window).off('resize.xdsoft');
-				$([window, document.body]).off('mousedown.xdsoft touchstart');
+                //$([window, document.body]).off('mousedown.xdsoft touchstart');
+                // Raketa
+				$([window, document.body]).off('mousedown.xdsoft'); //sidebar after bouquets load touchstart fix
+                // End Raketa
 				if (input.unmousewheel) {
 					input.unmousewheel();
 				}

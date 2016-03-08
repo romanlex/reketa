@@ -70,7 +70,6 @@ $(function() {
 	    maxDate: new Date(+new Date + 12096e5), // magic number is 14 days in ms
 	    onChangeDateTime:function(dp,$input){
 	        var obj = $input.closest('.widget').length ? $input.closest('.widget') : $input.closest('.product-cart');
-	        obj.find('button[type="submit"]').removeAttr('disabled');
 	        obj.find('input[name="timeofday"]').removeAttr('disabled');
 	        obj.find('button[data-toggle="clear-date"]').removeAttr('disabled');
 	        $('#selectedDate').html(app.widgets.calendar.getDateString());
@@ -757,7 +756,7 @@ $(function() {
 
 				product.count = 1;
 
-				var indexes = $.map(app.checkout.basket, function(obj, index) { if(obj.id == product.id) return index; });
+				var indexes = $.map(app.checkout.basket, function(obj, index) { if(obj !== undefined && obj.id == product.id) return index; });
 				if(indexes.length > 0)
 				{
 					if(settings.env == 'dev')
@@ -819,21 +818,21 @@ $(function() {
 				basketButton.addClass('notempty').html('<span>' + app.checkout.basket.length + '</span>');
 			},
 			productInBasket: function(productId) {
-				var indexes = $.map(app.checkout.basket, function(obj, index) { if(obj.id == productId) return index; });
+				var indexes = $.map(app.checkout.basket, function(obj, index) { if(obj !== undefined && obj.id == productId) return index; });
 				if(indexes.length > 0)
 					return indexes;
 				else
 					return false;
 			},
 			getProductFromBasket: function(productId) {
-				var indexes = $.map(app.checkout.basket, function(obj, index) { if(obj.id == productId) return index; });
+				var indexes = $.map(app.checkout.basket, function(obj, index) { if(obj !== undefined && obj.id == productId) return index; });
 				if(indexes.length > 0)
 					return app.checkout.basket[indexes];
 				else
 					return false;
 			},
 			removeProductFromBasket: function(productId, callback) {
-				var indexes = $.map(app.checkout.basket, function(obj, index) { if(obj.id == productId) return index; });
+				var indexes = $.map(app.checkout.basket, function(obj, index) { if(obj !== undefined && obj.id == productId) return index; });
 				if(indexes.length > 0)
 				{
 					try {
@@ -1046,6 +1045,8 @@ $(function() {
 
 					$(document).on('click tap', 'button[data-toggle="setDelivaryDate"]', function(e) {
 						e.stopPropagation();
+						if($(this).attr('disabled'))
+							return;
 						var formTarget = $(this).data('to-form');
 						var form = $(formTarget);
 						_this.process(form);
@@ -1064,15 +1065,50 @@ $(function() {
 
 					});
 
-					$(document).on('change', 'input[name="timeofday"]', function() {
+					$(document).on('change', 'form.set-delivery-date input', function() {
 						if(_this.obj && _this.obj.hasClass('widget'))
 						{
-							$('#selectedDate').html(_this.getDateString());
-							if(button.data('thischange') === undefined || button.data('thischange') == true) {
-								if(app.checkout.delivery !== undefined)
-									button.html(_this.getDateString());
-								else
-									button.html(lang.DeliveryDate);
+							console.log('change delivery date');
+
+							var form = $(this).closest('form.set-delivery-date');
+							var i = 0;
+							form.find('input').each(function(index, value) {
+								//console.log(value);
+								var input = $(value);
+
+								switch (input.attr('name')) {
+									case 'date':
+										if(input.val() != '' || input.val() !== undefined)
+											i++;
+										break;
+
+									case 'timeofday':
+										if(input.is(':checked'))
+											i++
+										break;
+								}
+
+							});
+
+							if(i == 2)
+							{
+								$('button[data-toggle="setDelivaryDate"]').each(function() {
+									$(this).removeAttr('disabled').removeClass('btn-bordered').addClass('btn-primary')
+								});
+							} else {
+								$('button[data-toggle="setDelivaryDate"]').each(function() {
+									$(this).attr('disabled', 'disabled').removeClass('btn-primary').addClass('btn-bordered')
+								});
+							}
+
+							if($(this).is('[name="timeofday"]')) {
+								$('#selectedDate').html(_this.getDateString());
+								if(button.data('thischange') === undefined || button.data('thischange') == true) {
+									if(app.checkout.delivery !== undefined)
+										button.html(_this.getDateString());
+									else
+										button.html(lang.DeliveryDate);
+								}
 							}
 
 						}
@@ -1126,7 +1162,7 @@ $(function() {
 					if(!but.data('thischange'))
 						but.html(lang.DeliveryDate);
 
-					$('button[data-toggle="setDelivaryDate"]').attr('disabled', 'disabled');
+					$('button[data-toggle="setDelivaryDate"]').attr('disabled', 'disabled').removeClass('btn-primary').addClass('btn-bordered');
 					form.find('input[name="timeofday"]:checked').attr('checked', false);
 					form.find('input[name="timeofday"]').attr('disabled', 'disabled');
 					delete app.checkout.delivery;
@@ -1243,9 +1279,15 @@ $(function() {
 						// uncomment to support light\dark product cart color information
 						//if($('#popup-product-' + id).data('lightness') == 'light')
 						//	$('#popup-product-' + id).toggleClass('light');
+						var owl = _this.gallery;
+						if($(this).hasClass('active'))
+							owl.trigger('stop.owl.autoplay');
+						else
+							owl.trigger('play.owl.autoplay');
 						$('#popup-product-' + id + ' .product-info').fadeToggle(300, function() {
 
 						});
+
 					});
 
 					// Open next/prev product cart
@@ -1339,7 +1381,7 @@ $(function() {
 							});
 
 							gallery.owlCarousel(params);
-
+							_this.gallery = gallery;
 						}
 					});
 
@@ -1365,7 +1407,6 @@ $(function() {
 						$('#header button.mobile.back').show();
 
 						var img = obj.find('.gallery .slide').first();
-						console.log(img.css('background-image'));
 						var info_bg = obj.find('.cart .product-info > .bluredBg');
 						if (info_bg.css('background-image') == 'none')
 							info_bg.css('background-image', img.css('background-image'));
@@ -1408,6 +1449,9 @@ $(function() {
 
 						obj.find('.step').hide().removeClass('active');
 						obj.find('.step2').addClass('active').show();
+					} else {
+						obj.find('.step.active').removeClass('active');
+						obj.find('.step1').addClass('active').show();
 					}
 
 
@@ -1517,7 +1561,11 @@ $(function() {
 							if(newVal < 0)
 								return;
 
-							app.checkout.basket[index[0]].count = newVal;
+							if(app.checkout.basket[index[0]])
+								app.checkout.basket[index[0]].count = newVal;
+
+							if(newVal == 0)
+								delete app.checkout.basket[index[0]];
 
 							var _str = lang.bouquetInBasketPopupCart;
 							var _str2 = newVal + ' ' + lang.bouquet + getNumEnding(inBasket.count, ['', 'а', 'ов']);

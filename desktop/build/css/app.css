@@ -3432,10 +3432,20 @@ span.icon-basket {
 
 .promocodes .menu-wrapper {
   padding-top: 80px;
+  padding-bottom: 30px;
 }
 
 .promocodes ul.promocodes-list {
-  padding: 0 30px;
+  padding: 0;
+  width: auto;
+}
+
+.promocodes ul.promocodes-list .nano-pane {
+  left: 10px;
+}
+
+.promocodes ul.promocodes-list .nano-content {
+  margin: 0 30px;
 }
 
 .promocodes ul.promocodes-list li {
@@ -4440,11 +4450,10 @@ span.icon-basket {
     top: 0;
     left: 0;
     right: 0;
-    -webkit-transition: all 0.3s ease-in-out;
-    transition: all 0.3s ease-in-out;
     height: 100%;
     z-index: -1;
-    background-size: 100% 100%;
+    background-size: cover;
+    background-position: 50%;
     filter: blur(10px);
     -webkit-filter: blur(10px);
   }
@@ -5546,6 +5555,16 @@ span.icon-basket {
 
   button.btn-image.small.show-info.active {
     background-color: rgba(255,255,255,0.12) !important;
+  }
+
+  .promocodes ul.promocodes-list {
+    position: static;
+    overflow: auto;
+  }
+
+  .promocodes ul.promocodes-list .nano-content {
+    position: relative;
+    margin: 0;
   }
 }
 
