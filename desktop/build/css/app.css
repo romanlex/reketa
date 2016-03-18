@@ -1157,6 +1157,7 @@ span.icon-basket {
   height: auto;
   line-height: 15px;
   border: 1px solid #fff;
+  font-weight: normal;
 }
 
 .widget .widget-button:disabled {
@@ -1255,6 +1256,10 @@ span.icon-basket {
 
 .widget .widget-submit > button:disabled {
   background-color: #565656;
+}
+
+.widget .widget-submit > button.btn-bordered {
+  opacity: 1;
 }
 
 .widget.calendar {

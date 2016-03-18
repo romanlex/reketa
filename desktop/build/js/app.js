@@ -425,9 +425,11 @@ $(function() {
 				else
 					sidebar.addClass('collapsed');
 
-				var sh = sidebar.find('.sidebar-top').outerHeight() + sidebar.find('.sidebar-bottom').height();
+				var sh = sidebar.find('.sidebar-top').outerHeight() + sidebar.find('.sidebar-bottom').height() + $('#header').height();
+
 				var posB = $w.height() < sh? 'relative': 'absolute';
 				var posS = $w.height() < sh? 'absolute': 'fixed';
+				console.log(sh);
 				var offset = 0;
 				var content = $("#bouquet-list"); // mainpage content
 
@@ -1642,11 +1644,12 @@ $(function() {
 							// prority of content-panel block
 							var _cont = container.find('.content-panel');
 							_cont.children().each(function() {
+								console.log($(this).outerHeight(true));
 								visibleHeight += $(this).outerHeight(true);
 							});
 							console.log(visibleHeight);
 							if(visibleHeight > device.windowHeight - $('#header').outerHeight())
-								container.css('min-height', newH + 'px');
+								container.css('min-height', visibleHeight + 'px');
 							else
 								container.css('height', newH + 'px');
 							break;
@@ -2628,7 +2631,7 @@ $(function() {
 	                    return false;
 	                });
 	
-	                $(document).on('click', 'button[data-toggle="resendConfirmCode"]', function() {
+	                $('#checkout-step').on('click', 'button[data-toggle="resendConfirmCode"]', function() {
 	                   _this.resendCode();
 	                });
 	
